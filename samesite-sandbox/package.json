@@ -15,7 +15,7 @@
     "node": "8.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/samesite-sandbox"
+    "url": "https://github.com/GoogleChromeLabs/trust-safety-demo/samesite-sandbox"
   },
   "license": "Apache-2.0",
   "keywords": [
