@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<title>Proxy Advertisement</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link id="favicon" rel="icon" href="data:" type="image/x-icon" />
+<meta name="Description" content="Heavy Network Advertisement" />
+<style>
+  body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0
+  }
+  
+  iframe {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    width: 100vh;
+    height: 100vw;
+  }
+</style>
+<main></main>
+<script>
+  "use strict";
+
+  async function sendReports(reports) {
+    for (let report of reports) {
+      // Log the `report` json via your own reporting process
+      window.parent.postMessage(JSON.stringify(report, null, 2), 'https://heavy-ads.glitch.me/');
+      // Don't attempt fetch or other requests within the beforeunload / unload events
+      navigator.sendBeacon("/", report);
+    }
+  }
+
+  const observer = new ReportingObserver((reports, observer) => {
+    sendReports(reports);
+  }, { buffered: true });
+  observer.observe();
+
+  window.addEventListener('beforeunload', (event) => {
+    let reports = observer.takeRecords();
+    sendReports(reports);
+  });
+
+// create an iframe for the add
+const frame = document.createElement('iframe');
+frame.setAttribute('allow', 'autoplay');
+let iframeSrc = '/empty/_ads.html';
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.get('site')) {
+  // or load the user's content
+  iframeSrc = urlParams.get('site');
+}
+
+// update the iframe URL and add it to the page
+frame.src = iframeSrc;
+document.querySelector('main').appendChild(frame);
+</script>

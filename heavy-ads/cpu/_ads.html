@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<title>Heavy CPU Advertisement</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link id="favicon" rel="icon" href="data:" type="image/x-icon" />
+
+<meta name="Description" content="Heavy CPU Ad" />
+
+<style>
+  body {
+    font-family: sans-serif;
+    margin: 1rem;
+    background: #e1e1e1;
+    color: #777
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  h1,
+  p {
+    margin: 0.2rem;
+  }
+
+  .hashes {
+    color: #555;
+    font-weight: bold;
+  }
+  .bad-anim {
+    border: 1px solid red;
+    border-radius: 10px;    width: 10px;
+    height: 10px;
+    box-shadow: 4px 4px 4px hsla(0 0% 30% / 50%), inset 4px 4px 4px hsla(0 0% 30% / 50%);
+  }
+</style>
+<header>
+  <h1>Heavy CPU ad</h1>
+  <p>🚫👆 <b>Do not</b> tap or click in the frame.</p>
+</header>
+<main>
+  <p>Generating hashes and bad animation.</p>
+  <p>Seconds: <span class="seconds">0</span>
+    <p>Hashes generated: <span class="hashes">0</span></p>
+    <div class="bad-anim"></div>
+    <p>Recent hash: <tt class="hash"></tt></p>
+</main>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.min.js"></script>
+<script>
+  'use strict';
+
+  function sendReports(reports) {
+    for (let report of reports) {
+      // Log the `report` json via your own reporting process
+      window.parent.postMessage(JSON.stringify(report, null, 2), 'https://heavy-ads.glitch.me/');
+      // Don't attempt fetch or other requests within the beforeunload / unload events
+      navigator.sendBeacon("/", report);
+    }
+  }
+
+  const observer = new ReportingObserver((reports, observer) => {
+    sendReports(reports);
+  }, { buffered: true });
+  observer.observe();
+
+  window.addEventListener('unload', (event) => {
+    let reports = observer.takeRecords();
+    sendReports(reports);
+  });
+
+  const NUM_PARALLEL_HASHERS = 40;
+  let seed = "starting seed for hash";
+  let hashes = 0;
+  const start = Date.now();
+  let anim = 0;
+  let direction = 1;
+
+  function doHash() {
+    seed = CryptoJS.MD5(seed);
+    setTimeout(doHash, 0);
+    document.querySelector('.hashes').textContent = ++hashes;
+    document.querySelector('.hash').textContent = seed;
+    document.querySelector('.seconds').textContent = Math.floor((Date.now() - start) / 1000);
+    // These are intentionally bad, expensive animations to trigger paint and layout
+    // Don't judge me
+    document.querySelector('.bad-anim').style.height = `${10 + anim * 0.0001}px`;
+    document.querySelector('.bad-anim').style.width = `${10 + anim * 0.01}px`;
+    document.querySelector('.bad-anim').style.border = `${1 + anim * 0.001}px solid hsl(${anim * 0.01 % 360}, 100%, 50%)`;
+    document.querySelector('main').style.margin = `${anim * 0.00002}px`;
+    document.querySelectorAll('p').forEach((p) => {
+      p.style.paddingTop = `${anim * 0.00001}px`;
+    });
+    
+    if (anim >= 36000) {
+      direction = -1;
+    } else if (anim <= 0) {
+      direction  = 1;
+    }
+    
+    anim += direction;    
+  }
+
+  for (let i = 0; i < NUM_PARALLEL_HASHERS; i++) {
+    doHash();
+  }
+</script>
+

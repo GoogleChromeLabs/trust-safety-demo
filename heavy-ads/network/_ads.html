@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<title>Heavy Network Advertisement</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link id="favicon" rel="icon" href="data:" type="image/x-icon" />
+<meta name="Description" content="Heavy Network Advertisement" />
+<style>
+  body {
+    font-family: sans-serif;
+    margin: 1rem;
+    background: #e1e1e1;
+    color: #777
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  h1,
+  p {
+    margin: 0.2rem;
+  }
+
+  img {
+    width: 45vmin;
+    height: 45vmin;
+  }
+</style>
+<header>
+  <h1>Heavy network ad</h1>
+  <p>🚫👆 <b>Do not</b> tap or click in the frame.</p>
+</header>
+<main>
+  <p>This page loads a small (~15kB) image and a large (~6MB) image.</p>
+  <img
+    src="https://cdn.glitch.com/e6885787-0a66-45e0-997e-cc55c210acf6%2Fimg_small.jpg?v=1587559846298">
+</main>
+<script>
+  "use strict";
+
+  async function sendReports(reports) {
+    for (let report of reports) {
+      // Log the `report` json via your own reporting process
+      window.parent.postMessage(JSON.stringify(report, null, 2), 'https://heavy-ads.glitch.me/');
+      // Don't attempt fetch or other requests within the beforeunload / unload events
+      navigator.sendBeacon("/", report);
+    }
+  }
+
+  const observer = new ReportingObserver((reports, observer) => {
+    sendReports(reports);
+  }, { buffered: true });
+  observer.observe();
+
+  window.addEventListener('beforeunload', (event) => {
+    let reports = observer.takeRecords();
+    sendReports(reports);
+  });
+
+  // create the element for the large image
+  // add a timestamp to avoid the cache
+  const img = document.createElement('img');
+  img.setAttribute(
+    'src',
+    'https://cdn.glitch.com/e6885787-0a66-45e0-997e-cc55c210acf6%2Fimg_large.jpg?v=1587559852111&n=' + Date.now()
+  );
+  document.querySelector('main').appendChild(img);
+</script>
