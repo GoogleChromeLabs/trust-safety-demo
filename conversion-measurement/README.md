@@ -15,7 +15,7 @@ Ping [ChromiumDev](https://twitter.com/ChromiumDev) or [maudnals](https://twitte
 ## Set and run locally
 
 - Run `sh ./init.sh`
-- Run `sh ./start.sh` -> You should have 3 servers runnning: `8080` (publisher), `8081` (advertiser), `3000` (adtech)
+- Run `sh ./start.sh` -> You should have 4 servers runnning: `8082` (home), `8080` (publisher), `8081` (advertiser), `3000` (adtech)
 - Open Chrome Canary
 - In Chrome Canary, enable the flags:
   `#enable-experimental-web-platform-features` and `#conversion-measurement-api`
