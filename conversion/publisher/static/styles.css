@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  --max-width: 30rem;
+  max-width: var(--max-width);
+}
+
+h1 {
+  display: inline-block;
+  background: #00c5334d;
+  padding: 0.1rem 0.2rem;
+}
+
+article {
+  margin: 2rem 0;
+  line-height: 1.8;
+}

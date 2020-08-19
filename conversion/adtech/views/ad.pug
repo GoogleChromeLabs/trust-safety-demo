@@ -1,0 +1,22 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Ad
+body(style={"font-family": "sans-serif"})
+| Ad
+// 604800000 = 7 days in milliseconds
+a#ad(href=href conversiondestination=conversiondestination impressiondata='' reportingorigin=reportingorigin impressionexpiry='604800000' target='_parent')
+  img(width='200' src='/shoe07.jpg' alt='shoe 07')
+script.
+  const adLink = document.getElementById('ad')
+  // random 64 bit hex number
+  const randomNums = new Uint32Array(2)
+  // ?
+  window.crypto.getRandomValues(randomNums)
+  // dynamically add impression data (click ID)
+  // TODO: this should move away from setAttribute (crbug.com/1097144)
+  adLink.setAttribute(
+  'impressiondata',
+  randomNums[0].toString(16) + randomNums[1].toString(16)
+  )

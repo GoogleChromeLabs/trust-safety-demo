@@ -1,0 +1,3 @@
+# prettier-ignore
+service: publisher
+runtime: nodejs12
