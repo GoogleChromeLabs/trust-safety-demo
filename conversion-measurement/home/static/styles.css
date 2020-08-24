@@ -20,9 +20,10 @@ article {
   line-height: 1.8;
 }
 
-.code {
+.code,
+.status {
   font-size: var(--font-size-xs);
-  font-family: 'Lucida Console', Monaco, monospace;
+  font-family: "Lucida Console", Monaco, monospace;
 }
 
 .hint,
@@ -67,4 +68,32 @@ article {
 
 .actor-browser {
   background-color: #0050ff38;
+}
+
+.status {
+  border-radius: 30px;
+  padding: 1px 12px;
+  color: white;
+  display: inline-block;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.ok {
+  background-color: #00c535;
+}
+
+.nok {
+  background-color: red;
+}
+
+.xs {
+  transform: scale(0.8);
+}
+
+.display {
+  display: inline-block;
+}
+.hide {
+  display: none;
 }

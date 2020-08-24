@@ -5,6 +5,23 @@ head
   title 📐Demo: event-level conversion measurement API
   link(rel='stylesheet' href='/styles.css')
 h1 Demo: event-level conversion measurement API
+h2 Before you start: 
+    div.status.ok#ok OK
+    div.status.nok#nok Not OK
+ul
+    li Make sure you're in Chrome Canary.
+    li Make sure you've activated the flags 
+        span.select.code #enable-experimental-web-platform-features
+        |  and 
+        span.select.code #conversion-measurement-api
+        |.
+
+| If this is all set,  
+div.status.ok.xs OK
+|  should be displayed above. Until 
+div.status.ok.xs OK
+| is displayed above, the demo won't run properly. 
+
 h2 Wait - what is this demo about?
 | Event-level API: 
 a(href="https://github.com/WICG/conversion-measurement-api") explainer
@@ -15,14 +32,6 @@ a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversi
 h2 👋 Questions/feedback? 
 | Ping 
 a(href="https://twitter.com/maudnals") @maudnals.
-h2 Before you start:
-ul
-    li Make sure you're in Chrome Canary.
-    li Make sure you've activated the flags 
-        span.select.code #enable-experimental-web-platform-features
-        |  and 
-        span.select.code #conversion-measurement-api
-        |.
 h2 Ready? 
 h3 Open these:
 ul
@@ -41,7 +50,6 @@ p.hint ⚠️ Gotcha: in local development, open
     |  (see 
     span.code .env 
     | files).
-
 h3 Follow these steps:
 | On the 
 span.actor-publisher publisher
@@ -97,3 +105,14 @@ div.do
     | 👁 See the report data on the 
     a(href=adtechUrl) Adtech server UI
     |  (refresh).
+script.
+    const statusOkEl = document.getElementById("ok")
+    const statusNokEl = document.getElementById("nok")
+    const isOk = document.featurePolicy.features().includes('conversion-measurement')
+    if (isOk) {
+        statusOkEl.classList.add("display")
+        statusNokEl.classList.add("hide")
+    } else {
+        statusOkEl.classList.add("hide")
+        statusNokEl.classList.add("display")     
+    }
