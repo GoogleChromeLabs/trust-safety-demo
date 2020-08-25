@@ -6,8 +6,6 @@ head
   link(rel='stylesheet' href='/styles.css')
 h1 Demo: event-level conversion measurement API
 h2 Before you start: 
-    div.status.ok#ok OK
-    div.status.nok#nok Not OK
 ul
     li Make sure you're in Chrome Canary.
     li Make sure you've activated the flags 
@@ -15,12 +13,16 @@ ul
         |  and 
         span.select.code #conversion-measurement-api
         |.
+| If this is all set, the status should be 
+div.status.ok.xs OK
+| . Until the status is 
+div.status.ok.xs OK
+| , the demo won't run properly. 
 
-| If this is all set,  
-div.status.ok.xs OK
-|  should be displayed above. Until 
-div.status.ok.xs OK
-| is displayed above, the demo won't run properly. 
+| Status: 
+div.status.ok#ok OK
+div.status.nok#nok Not OK
+|
 
 h2 Wait - what is this demo about?
 | Event-level API: 
