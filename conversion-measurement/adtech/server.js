@@ -3,27 +3,19 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 const app = express()
 app.set('view engine', 'pug')
-// TODO make it env var
 const PORT = 3000
-// TODO clean pug files
 
 // Utils
 
-function toHex(value, maxValue) {
-  return (parseInt(value, 16) % maxValue).toString(16)
-}
+const toHex = (value) => value.toString(16)
 
 // Conversion logics
 
 const conversionValues = {
-  checkout: 1,
+  signup: 1,
   'add-to-cart': 2,
-  signup: 3
+  checkout: 3
 }
-
-const maxValue = Math.max(...Object.values(conversionValues))
-
-const getConversionData = (value) => toHex(value, maxValue)
 
 // Reports
 
@@ -58,12 +50,11 @@ app.get('/script', (req, res) => {
 })
 
 app.get('/conversion', (req, res) => {
-  // TODO what if 3?
-  const priceBucket = conversionValues[req.query.type]
-  const conversionData = getConversionData(priceBucket)
+  const conversionData = conversionValues[req.query.type]
+  const encodedConversionData = toHex(conversionData)
   res.redirect(
     302,
-    `/.well-known/register-conversion?conversion-data=${conversionData}`
+    `/.well-known/register-conversion?conversion-data=${encodedConversionData}`
   )
 })
 
