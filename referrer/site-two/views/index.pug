@@ -1,0 +1,13 @@
+html
+  head
+    title="2️⃣ site-two"
+    style
+      include ../public/style.css
+  body
+    h1="2️⃣ site-two"
+    h4= "site-two received in the Referer header:"
+    div(class="referrer" id="headerReferrer")=referrer
+    h4="site-two document.referrer:"
+    div(class="referrer" id="documentReferrer")
+    script
+      include ../public/script.js

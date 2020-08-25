@@ -1,0 +1,31 @@
+body {
+  font-family: sans-serif;
+  background: #f3f3f3;
+  line-height: 1.5em;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 1.2em;
+}
+
+h4 {
+  margin: 1rem 0 0 0;
+  font-size: 1em;
+}
+
+.nok {
+  color: red;
+  background-color: rgba(255, 0, 0, 0.158);
+}
+
+.referrer {
+  font-family: 'Lucida Console', Monaco, monospace;
+  letter-spacing: -0.3px;
+  line-height: 1.1rem;
+  font-size: 0.8rem;
+}
+
+* {
+  box-sizing: border-box;
+}

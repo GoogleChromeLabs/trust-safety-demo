@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head id="head">
+    <meta charset="utf-8" />
+    <title>1️⃣ site-one (referrer demo)</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A referrer demo made with Glitch" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1>1️⃣ site-one (Referrer demo)</h1>
+    <details>
+      <summary>ℹ️About this demo</summary>
+      <div>
+        🔷What this demo does:
+        <ul>
+          <li>
+            Infers your browser's default referrer policy (⚠️ accurate in
+            Chrome, not in all other browsers).
+          </li>
+          <li>
+            Demoes the policies no-referrer-when-downgrade and
+            strict-origin-when-cross-origin.
+          </li>
+        </ul>
+        🔷How to use it:
+        <ul>
+          <li>
+            Do nothing and observe the behaviour when your browser's
+            <b>default referrer policy</b> is used.
+          </li>
+          <li>
+            Then select another policy with the buttons below and observe the
+            behaviour.
+          </li>
+          <li>
+            <img src="/chrome-logo-xs.png" alt="chrome logo" width="12" />
+            Are you in Chrome? If so: you can experiment with another
+            <b>default referrer policy</b>. Enable the flag at
+            <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
+          </li>
+        </ul>
+      </div>
+    </details>
+    <h2>
+      Your browser's default referrer policy (⚠️ accurate in Chrome, not in all
+      other browsers)
+    </h2>
+    Detected <b>default</b> referrer policy:
+    <div id="detected-policy" class="async policy">...</div>
+    <br />
+    <img src="/chrome-logo-xs.png" alt="chrome logo" width="12" />
+    Are you in Chrome? If so: you can experiment with another
+    <b>default referrer policy</b>. Enable the flag at
+    <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
+    <h2>Pick a referrer policy</h2>
+    <div class="btn-group-policy">
+      <button value="p0" class="selected" onclick="switchPolicy(event)">
+        no policy set: browser default is used 👆
+      </button>
+      <button value="p1" onclick="switchPolicy(event)">
+        <div class="policy">no-referrer-when-downgrade</div>
+      </button>
+      <button value="p2" onclick="switchPolicy(event)">
+        <div class="policy">strict-origin-when-cross-origin</div>
+      </button>
+    </div>
+    <h2>Let's <span class="code">fetch</span> stuff</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Request to...
+          </th>
+          <th>
+            What was sent in the Referer header?
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div>another HTTPS origin</div>
+            <span class="description">cross-origin no downgrade</span>
+          </td>
+          <td>
+            <div class="url async" id="cross-origin-no-downgrade">...</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>the same origin</div>
+            <span class="description">same-origin</span>
+          </td>
+          <td>
+            <div class="url async" id="same-origin">...</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>an HTTP origin</div>
+            <div class="description-wrapper">
+              <span class="description">cross-origin with downgrade</span>
+            </div>
+          </td>
+          <td>
+            <div class="url async">
+              [BLOCKED because mixed content]
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Let's embed a cross-origin HTTPS <span class="code">iframe</span></h2>
+    <div id="iframeWrapper"></div>
+    <h2>Let's embed a cross-origin image</h2>
+    <div id="imageWrapper"></div>
+    Open DevTools > Open Network Panel > Click on the image request > See the
+    "referer" field under "Request Headers".
+    <footer>
+      <p>
+        <a
+          noreferrer
+          noopener
+          href="https://www.chromestatus.com/feature/6251880185331712"
+          >Chromium status entry</a
+        >
+      </p>
+      <p>
+        Ping
+        <a noreferrer noopener href="https://twitter.com/maudnals">@maudnals</a>
+        for issues / questions with this demo.
+      </p>
+      <!-- <p>
+        👩🏻‍💻You can access the code on Glitch:
+        <ul>
+          <li><a noreferrer noopener href="https://glitch.com/edit/#!/site-one">site-one</a></li>
+          <li><a noreferrer noopener href="https://glitch.com/edit/#!/site-two">site-two</a></li>
+        </ul>
+      </p> -->
+      "Mars" picture by
+      <a noreferrer noopener href="https://unsplash.com/@yukato">Yukato</a> on
+      Unsplash.
+    </footer>
+    <script src="/script.js" defer></script>
+  </body>
+</html>
