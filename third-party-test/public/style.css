@@ -1,0 +1,19 @@
+* {
+  font-family: Roboto;
+}
+
+code {
+  font-family: monospace;
+}
+
+fieldset {
+  margin-bottom: 10px;
+}
+
+input {
+  margin: 10px 0;
+}
+
+input, select {
+  display: inline-block;
+}
