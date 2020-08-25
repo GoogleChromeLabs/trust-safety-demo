@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>COEP Sample</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="origin-trial" content="{{origin_trial}}">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/client2.js" defer></script>
+  </head>
+  <body>
+    <h1>
+    COEP demo
+    </h1>
+    <p>
+      Works on Chrome 83+ or Firefox 76+.
+    </p>
+    <div>
+      <form>
+        <h2>
+          1. Load this page with a COEP header.
+        </h2>
+        <label for="_coep">Cross Origin Embedder Policy</label>
+        <select id="_coep">
+          <option value="">--</option>
+          <option value="require-corp">require-corp</option>
+        </select><br>
+        <input type="text" id="_url" style="width:500px">
+        <h2>
+          2. See how COEP affected a cross-origin image and a cross-origin iframe.
+        </h2>
+        <table class="left">
+          <tr><td>
+            <h2>
+              I am a cross-origin image
+            </h2>
+            <img id="image" src="https://third-party-test.glitch.me/check.svg" width="100" height="100">
+          </td></tr>
+        </table>
+        <h2>
+          3. Load the cross-origin image with various CORP headers to see how they affect.
+        </h2>
+        <label for="corp1">Cross Origin Resource Policy</label>
+        <select id="corp1">
+          <option value="">--</option>
+          <option value="same-site">same-site</option>
+          <option value="same-origin">same-origin</option>
+          <option value="cross-origin">cross-origin</option>
+        </select><br>
+        <input type="text" id="image_url" style="width:500px">
+        <button id="reload_image">Reload the image</button>
+        <div style="clear:both"></div>
+        <table class="left">
+          <tr><td>
+            <h2>
+              I am a cross-origin iframe window
+            </h2>
+            <iframe id="iframe" src="https://third-party-test.glitch.me/iframe" width="420" height="240"></iframe>
+          </td></tr>
+        </table>
+        <h2>
+          4. Load the cross-origin iframe with various headers and see how they affect.
+        </h2>
+        <label for="coep2">Cross Origin Embedder Policy</label>
+        <select id="coep2">
+          <option value="">--</option>
+          <option value="require-corp">require-corp</option>
+        </select><br>
+        <label for="corp2">Cross Origin Resource Policy</label>
+        <select id="corp2">
+          <option value="">--</option>
+          <option value="same-site">same-site</option>
+          <option value="same-origin">same-origin</option>
+          <option value="cross-origin">cross-origin</option>
+        </select><br>
+        <input type="text" id="iframe_url" style="width:500px">
+        <button id="reload_iframe">Reload the iframe</button>
+      </form>
+      <mwc-snackbar id="toast"></mwc-snackbar>
+    </div>
+  </body>
+</html>

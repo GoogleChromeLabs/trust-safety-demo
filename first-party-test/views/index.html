@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>First Party Test</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="{{client_id}}">
+    <meta http-equiv="origin-trial" content="{{origin_trial}}">
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js" crossorigin></script>
+    <script src="https://unpkg.com/@material/mwc-button@0.15.0?module" type="module" async defer></script>
+    <script src="https://unpkg.com/@material/mwc-snackbar@0.15.0?module" type="module" async defer></script>
+  </head>
+  <body>
+    <h1>
+    COOP + COEP Demo
+    </h1>
+    <p>
+      Works on Chrome 83+ or Firefox 76+.
+    </p>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
+    <div>
+      <form>
+        <h2>
+          Set HTTP headers for this page.
+        </h2>
+        <div id="main_container"></div>
+        <h2>
+          Set various headers for the cross-origin image.
+        </h2>
+        <div id="image_container"></div>
+        <h2>
+          Set various headers for the cross-origin iframe.
+        </h2>
+        <div id="iframe_container"></div>
+        <h2>
+          Set various headers for the cross-origin popup window.
+        </h2>
+        <div id="popup_container"></div>
+      </form>
+      <mwc-snackbar id="toast"></mwc-snackbar>
+    </div>
+    <script src="/client.js" type="module" defer></script>
+  </body>
+</html>

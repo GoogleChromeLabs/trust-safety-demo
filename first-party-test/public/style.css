@@ -1,0 +1,39 @@
+* {
+  font-family: Roboto;
+}
+
+code {
+  font-family: monospace;
+}
+
+fieldset {
+  margin-bottom: 10px;
+  background-color: #eeeeff;
+  border: transparent;
+}
+
+input {
+  margin: 10px 0;
+}
+
+input, select {
+  display: inline-block;
+}
+
+table {
+  width: 440px;
+  border: 3px ridge;
+}
+
+iframe {
+  border: solid #aaa 1px;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+  margin-right: 10px;
+}

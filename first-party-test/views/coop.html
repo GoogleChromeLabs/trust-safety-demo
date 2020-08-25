@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>COOP Sample</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="origin-trial" content="{{origin_trial}}">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/client2.js" defer></script>
+  </head>
+  <body>
+    <h1>
+    COOP demo
+    </h1>
+    <p>
+      Works on Chrome 83+ or Firefox 76+.
+    </p>
+    <div>
+      <form>
+        <h2>
+          1. Load this page with a COOP header.
+        </h2>
+        <label for="_coop">Cross Origin Opener Policy</label>
+        <select id="_coop">
+          <option value="">--</option>
+          <option value="same-origin">same-origin</option>
+          <option value="same-origin-allow-popups">same-origin-allow-popups</option>
+          <option value="unsafe-none">unsafe-none</option>
+        </select><br>
+        <input type="text" id="_url" style="width:500px">
+        <h2>
+          2. Set a COOP header for cross-origin popup window.
+        </h2>
+        <label for="coop3">Cross Origin Opener Policy</label>
+        <select id="coop3">
+          <option value="">--</option>
+          <option value="same-origin">same-origin</option>
+          <option value="same-origin-allow-popups">same-origin-allow-popups</option>
+          <option value="unsafe-none">unsafe-none</option>
+        </select><br>
+        <h2>
+          3. Open the cross-origin popup and see if it will be in the same browsing context group.
+        </h2>
+        <input type="text" id="popup_url" style="width:500px">
+        <button id="open_popup">Open a popup</button>
+      </form>
+      <mwc-snackbar id="toast"></mwc-snackbar>
+    </div>
+  </body>
+</html>
