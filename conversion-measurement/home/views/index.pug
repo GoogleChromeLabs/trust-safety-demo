@@ -2,7 +2,7 @@ doctype html
 head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title 📐Demo: event-level conversion measurement API
+  title 🧮 Demo: event-level conversion measurement API
   link(rel='stylesheet' href='/styles.css')
 h1 Demo: event-level conversion measurement API
 h2 Before you start: 
@@ -12,7 +12,7 @@ ul
         | . You can check what version of Chrome you're using by typing 
         span.select.code chrome://version
         |  in the URL bar.
-    li Make sure you've turned on the TWO flags 
+    li Make sure you've turned on the <strong>two</strong> flags 
         span.select.code #enable-experimental-web-platform-features
         |  and 
         span.select.code #conversion-measurement-api
@@ -20,6 +20,9 @@ ul
         | You can enable flags by typing 
         span.select.code chrome://flags
         |  in the URL bar.
+    li Disable third-party cookie
+        strong  blocking 
+        |. In the long term, dedicated browser settings will be available to enable or disable the conversion measurement API. Until then, third-party cookie blocking is used as the signal that users don't want data about their conversions to be shared—and hence that the event-level conversion measurement API should be blocked.
 | If this is all set, the status 👇 should be "OK". Until the status is "OK", the demo won't run properly. 
 
 h3 Status: 
@@ -41,7 +44,8 @@ h2 Ready?
 h3 Open these:
 ul
     li 
-        a(href=publisherUrl) 📰 Publisher website (leading to 👟 Advertiser website)
+        a(href=publisherUrl) 📰 Publisher website
+        |  (leading to 👟 Advertiser website)
     li
         a(href=adtechUrl) 🚀 Adtech server
     li
