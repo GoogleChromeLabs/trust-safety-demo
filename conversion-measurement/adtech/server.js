@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/ad', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}/shoe07`
+  const href = `${process.env.ADVERTISER_URL}/shoes07`
   const conversionDestination = process.env.ADVERTISER_URL
   const reportingOrigin = process.env.ADTECH_URL
   res.render('ad', {
