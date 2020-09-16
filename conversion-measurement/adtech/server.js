@@ -5,11 +5,7 @@ const app = express()
 app.set('view engine', 'pug')
 const PORT = 3000
 
-// Utils
-
-const toHex = (value) => value.toString(16)
-
-// Conversion logics
+// Conversion value mapping
 
 const conversionValues = {
   signup: 1,
@@ -51,10 +47,9 @@ app.get('/script', (req, res) => {
 
 app.get('/conversion', (req, res) => {
   const conversionData = conversionValues[req.query.type]
-  const encodedConversionData = toHex(conversionData)
   res.redirect(
     302,
-    `/.well-known/register-conversion?conversion-data=${encodedConversionData}`
+    `/.well-known/register-conversion?conversion-data=${conversionData}`
   )
 })
 
