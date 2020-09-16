@@ -8,11 +8,13 @@ body(style={"font-family": "sans-serif"})
 // 864000000 = 10 days in milliseconds
 a#ad(href=href conversiondestination=conversiondestination impressiondata='' reportingorigin=reportingorigin impressionexpiry='864000000' target='_parent')
   img(width='200' src='/shoes07.jpg' alt='shoes 07')
+  // TODO make this a separate script!
 script.
+  const toHex = (value) => value.toString(16)
   function getRandom64BitsIntegerAsHex() {
     const randomInts = new Uint32Array(2);
     window.crypto.getRandomValues(randomInts)
-    return `${randomInts[0].toString(16)}${randomInts[1].toString(16)}`
+    return `${toHex(randomInts[0])}${toHex(randomInts[1])}`
   }
   const adLink = document.getElementById('ad')
   adLink.setAttribute(
