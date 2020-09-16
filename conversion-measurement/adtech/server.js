@@ -66,7 +66,7 @@ app.post('/*', (req, res) => {
   const newReport = req.query
   console.log(req.query)
   reports = [...reports, newReport]
-  // TODO response OK
+  res.sendStatus(200)
 })
 
 const listener = app.listen(process.env.PORT || PORT, () => {
