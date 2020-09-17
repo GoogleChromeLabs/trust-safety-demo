@@ -1,3 +1,7 @@
+html {
+  font-size: 14px;
+}
+
 body {
   font-family: sans-serif;
   --max-width: 50rem;
@@ -7,34 +11,32 @@ body {
 }
 
 h2 {
-  padding: 0.3rem 0 0 0;
+  padding: 0;
+  margin: 1.2rem 0 0.2rem 0;
   font-size: 1.2rem;
 }
 
 h3 {
+  padding: 0;
+  margin: 0.6rem 0 0.1rem 0;
   font-size: 1rem;
 }
 
-article {
-  margin: 2rem 0;
-  line-height: 1.8;
+ul {
+  margin: 0.2rem 0;
 }
 
-.code,
-.status {
-  font-size: var(--font-size-xs);
-  font-family: "Lucida Console", Monaco, monospace;
+a,
+a:visited {
+  color: #003aff;
 }
 
-.hint,
-.do {
-  font-size: var(--font-size-s);
+.show {
+  display: inline-block;
 }
 
-.do {
-  background: whitesmoke;
-  padding: 0.2rem;
-  margin: 0.4rem 0 1.2rem 0;
+.hide {
+  display: none;
 }
 
 .select {
@@ -45,6 +47,18 @@ article {
 ::selection {
   color: white;
   background: black;
+}
+
+.code {
+  font-size: var(--font-size-xs);
+  font-family: 'Lucida Console', Monaco, monospace;
+}
+
+.do {
+  font-size: var(--font-size-s);
+  background: whitesmoke;
+  padding: 0.2rem;
+  margin: 0.4rem 0 1.2rem 0;
 }
 
 .actor-adtech,
@@ -70,30 +84,14 @@ article {
   background-color: #0050ff38;
 }
 
-.status {
-  border-radius: 30px;
-  padding: 1px 12px;
-  color: white;
-  display: inline-block;
-  min-width: 3rem;
-  text-align: center;
+.success {
+  color: #00c535;
 }
 
-.ok {
-  background-color: #00c535;
-}
-
-.nok {
-  background-color: red;
+.error {
+  color: red;
 }
 
 .xs {
   transform: scale(0.8);
-}
-
-.display {
-  display: inline-block;
-}
-.hide {
-  display: none;
 }

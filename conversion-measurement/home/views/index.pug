@@ -2,126 +2,73 @@ doctype html
 head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title 🧮 Demo: event-level conversion measurement API
+  title ⚡️ Demo: Event-Level Conversion Measurement API
   link(rel='stylesheet' href='/styles.css')
-h1 Demo: event-level conversion measurement API
-h2 Before you start: 
-ul
-    li Use Chrome, version 86 or later, for example 
-        a(href="https://www.google.com/chrome/canary/" noreferrer noopener) Chrome Canary
-        | . You can check what version of Chrome you're using by typing 
-        span.select.code chrome://version
-        |  in the URL bar.
-    li Make sure you've turned on the <strong>two</strong> flags 
-        span.select.code #enable-experimental-web-platform-features
-        |  and 
-        span.select.code #conversion-measurement-api
-        |.
-        | You can enable flags by typing 
-        span.select.code chrome://flags
-        |  in the URL bar.
-    li Disable third-party cookie
-        strong  blocking 
-        |. In the long term, dedicated browser settings will be available to enable or disable the conversion measurement API. Until then, third-party cookie blocking is used as the signal that users don't want data about their conversions to be shared—and hence that the event-level conversion measurement API should be disabled in the user's browser.
-| If this is all set, the status 👇 should be "OK". Until the status is "OK", the demo won't run properly. 
-
-h3 Status: 
-div.status.ok#ok OK
-div.status.nok#nok Not OK
-|
-
-h2 Wait - what is this demo about?
-| Event-level API: 
-a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) explainer
-|.
-h2 👩🏻‍💻 Where's the code for this demo? 
-a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Right here on GitHub
-| .
-h2 👋 Questions/feedback? 
-| Ping 
-a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals.
-h2 Ready? 
-h3 Open these:
-ul
-    li 
-        a(href=publisherUrl) 📰 Publisher website
-        |  (leading to 👟 Advertiser website)
-    li
-        a(href=adtechUrl) 🚀 Adtech server
-    li
-        span.select.code chrome://conversion-internals/
-p.hint ⚠️ Gotcha: in local development, open
-    span.code 127.0.0.1 
-    | (not 
-    span.code localhost
-    | ). Because conversions and reporting are origin-dependent, and this codebase specifies 
-    span.code 127.0.0.1
-    |  (see 
-    span.code .env 
-    | files).
-h3 Follow these steps:
-| On the 
-span.actor-publisher publisher
-|  website, an authorized third-party script from 
-span.actor-adtech adtech
-|  loads an iframe.
-|  This iframe includes an ad tag that contains the attributes needed for the conversion measurement API: 
-span.code impressiondata
-| , 
-span.code impressionexpiry
-| , 
-span.code conversiondestination 
-| (an 
-span.actor-advertiser advertiser
-|  URL) and 
-span.code reportingorigin
-|  (an 
-span.actor-adtech adtech
-|  server).
-div.do
-    | 👁 Open the DevTools (press F12) on the publisher page to see these attributes.
-    br
-    | 👉 Click the ad.
-| Once the ad is clicked, you're taken to the 
-span.actor-advertiser advertiser
-|'s. An impression event is sent to 
-span.actor-browser browser
-|  storage. No conversion has happened yet. 
-div.do
-    | 👁 See the impression event in 
-    span.select.code chrome://conversion-internals/
-    |  (refresh).
-    br
-    | 👉 Click the "add to cart" button on the advertiser's page.
-| As defined by the 
-span.actor-advertiser advertiser
-| , this page contains a conversion pixel ( 🟥 ). This triggers a request to the 
-span.actor-adtech adtech
-|  server, which in turn determines whether a conversion should be registered. If so: the server send a 302 request to the 
-span.actor-browser browser
-| , who then schedules a conversion report. This report will be sent to the 
-span.code reportingorigin
-|  defined in the ad tag (typically, the 
-span.actor-adtech adtech
-|  server).
-div.do
-    | 👁 See the conversion report in 
-    span.select.code chrome://conversion-internals/
-    |  (refresh).
-    br
-    | 👉 Click "send all reports" in the Chrome internals.
-    br
-    | 👁 See the report data on the 
-    a(href=adtechUrl) Adtech server UI
-    |  (refresh).
-script.
-    const statusOkEl = document.getElementById("ok")
-    const statusNokEl = document.getElementById("nok")
-    const isOk = document.featurePolicy.features().includes('conversion-measurement')
-    if (isOk) {
-        statusOkEl.classList.add("display")
-        statusNokEl.classList.add("hide")
-    } else {
-        statusOkEl.classList.add("hide")
-        statusNokEl.classList.add("display")     
-    }
+body
+    h1 ⚡️ Demo: Event-Level Conversion Measurement API
+    h2.ok.success ✅ You're all set to run the demo.
+    h2.nok.error ❌ You need to do this before you can run the demo:
+    ul.nok
+        li Make sure you're in Chrome, version 86 or later (for example 
+            a(href="https://www.google.com/chrome/canary/" noreferrer noopener) Chrome Canary
+            | ). You can check what version of Chrome you're using by typing 
+            span.select.code chrome://version
+            |  in the URL bar.
+        li Turn on the <strong>two</strong> flags 
+            span.select.code #enable-experimental-web-platform-features
+            |  and 
+            span.select.code #conversion-measurement-api
+            |.
+            | Go to flags by typing 
+            span.select.code chrome://flags
+            |  in the URL bar.
+        li Disable third-party cookie
+            strong  blocking
+            |. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
+    ul.ok
+        li 🆗 Chrome 86 or later
+        li 🆗
+            span.select.code #enable-experimental-web-platform-features
+            |  and 
+            span.select.code #conversion-measurement-api
+        | are on
+        li 🆗 No third-party cookie blocking
+    h2 Run the demo
+    | Open these in new tabs:
+    ul
+        li 
+            a(href=publisherUrl) 📰 Publisher website
+        li
+            a(href=adtechUrl) 🚀 Adtech server
+        li
+            span.select.code chrome://conversion-internals/
+    | And follow the steps indicated on each page.
+    h2 Code and feedback
+    ul
+        li 
+            a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code
+            |
+        li
+            a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer
+        li Ping 
+            a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
+            |  for feedback / questions about the demo 👋
+    script.
+        const okEls = document.querySelectorAll(".ok")
+        const nokEls = document.querySelectorAll(".nok")
+        const canDemoRun = document.featurePolicy.features().includes('conversion-measurement')
+        if (canDemoRun) {
+            okEls.forEach(el => {
+                el.classList.add("show")
+            });
+            nokEls.forEach(el => {
+                el.classList.add("hide")
+            });
+        } else {
+            okEls.forEach(el => {
+                el.classList.add("hide")
+            });
+            nokEls.forEach(el => {
+                el.classList.add("show")
+            });
+        }
