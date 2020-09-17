@@ -18,3 +18,7 @@ Ping [@ChromiumDev](https://twitter.com/ChromiumDev) or [@maudnals](https://twit
 - Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server
 - Open `127.0.0.1:8082` in Chrome Canary
 - Follow the instructions
+
+## ⚠️ Gotcha
+
+In local development, use and open `127.0.0.1` URLs, not `localhost`. Because conversions and reporting are origin-dependent and this code uses `127.0.0.1` (see `.env` files).
