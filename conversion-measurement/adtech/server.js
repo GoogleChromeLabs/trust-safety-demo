@@ -36,8 +36,7 @@ app.get('/ad', (req, res) => {
   })
 })
 
-// TODO rename "script"
-app.get('/script', (req, res) => {
+app.get('/ad-script', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad`
   res.send(
@@ -59,7 +58,6 @@ app.get('/reports', (req, res) => {
 
 app.post('/*', (req, res) => {
   const newReport = req.query
-  console.log(req.query)
   reports = [...reports, newReport]
   res.sendStatus(200)
 })

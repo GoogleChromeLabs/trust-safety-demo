@@ -8,7 +8,7 @@ const PORT = 8080
 app.use(express.static('static'))
 
 app.get('/', (req, res) => {
-  const adScriptUrl = `${process.env.ADTECH_URL}/script`
+  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script`
   res.render('index', { adScriptUrl })
 })
 
