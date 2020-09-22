@@ -158,7 +158,6 @@ function createOtherImages() {
   }`
   newImage3.width = 70
   newImage3.height = 70
-  newImage3.referrerPolicy = 'strict-origin-when-cross-origin'
   document.getElementById('imageWrapper3').appendChild(newImage3)
 }
 
