@@ -3,7 +3,7 @@ body {
   margin: 1rem;
   line-height: 1.5em;
   font-size: 14px;
-  max-width: 860px;
+  max-width: 1060px;
   --font-size-s: 0.9rem;
   --font-size-xs: 0.78rem;
   --font-size-xxs: 0.65rem;
@@ -35,13 +35,18 @@ h2 {
   margin: 1.8rem 0 0.5rem 0;
 }
 
+h3 {
+  font-size: 0.9em;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                   Layout                                   */
 /* -------------------------------------------------------------------------- */
 
 iframe,
 table,
-h2 {
+h2,
+h3 {
   width: 100%;
 }
 
@@ -175,7 +180,7 @@ td {
 /*                                   Buttons                                  */
 /* -------------------------------------------------------------------------- */
 
-@media only screen and (max-width: 849px) {
+@media only screen and (max-width: 1059px) {
   .btn-group-policy {
     display: flex;
     flex-direction: column;
@@ -193,7 +198,7 @@ td {
   }
 }
 
-@media only screen and (min-width: 850px) {
+@media only screen and (min-width: 1060px) {
   .btn-group-policy {
     display: flex;
     flex-direction: row;
