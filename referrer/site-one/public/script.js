@@ -6,6 +6,7 @@ const siteTwo = 'https://site-two-dot-referrer-demo-280711.ey.r.appspot.com'
 const crossOriginHttpsUrl = `${siteTwo}/ref`
 const crossOriginHttpsUrlIframe = `${siteTwo}/ifr`
 const crossOriginHttpsUrlImage = `${siteTwo}/mars.jpg`
+const crossOriginHttpsUrlOtherImage = `${siteTwo}/cross-o-img`
 const sameOriginUrl = '/ref'
 const urlsToFetch = [crossOriginHttpsUrl, sameOriginUrl]
 
@@ -15,10 +16,12 @@ const urlsToFetch = [crossOriginHttpsUrl, sameOriginUrl]
 
 const nrwd = 'no-referrer-when-downgrade'
 const sowco = 'strict-origin-when-cross-origin'
+const nr = 'no-referrer'
 const policyIdToName = {
   p0: null,
   p1: nrwd,
-  p2: sowco
+  p2: sowco,
+  p3: nr
 }
 
 /* -------------------------------------------------------------------------- */
@@ -69,6 +72,7 @@ function main() {
   getAndDisplayAllFetchReferrers(policyId)
   createIframe()
   createImage()
+  createOtherImages()
 }
 
 /* -------------------------------------------------------------------------- */
@@ -117,11 +121,45 @@ function createImage() {
   }
   const newImage = document.createElement('img')
   // new date and time: hack to re-trigger the request
-  newImage.src = `${crossOriginHttpsUrlImage}?dummy=${new Date().getTime()}`
+  newImage.src = `${crossOriginHttpsUrlImage}?dummy=${
+    new Date().getTime() + Math.random() * 100
+  }`
   newImage.id = 'img'
   newImage.width = 70
   newImage.height = 70
   imageWrapperEl.appendChild(newImage)
+}
+
+function createOtherImages() {
+  const newImage1 = document.createElement('img')
+  // new date and time: hack to re-trigger the request
+  newImage1.src = `${crossOriginHttpsUrlOtherImage}?dummy=${
+    new Date().getTime() + Math.random() * 100
+  }`
+  newImage1.width = 70
+  newImage1.height = 70
+  newImage1.referrerPolicy = 'no-referrer-when-downgrade'
+  document.getElementById('imageWrapper1').appendChild(newImage1)
+
+  const newImage2 = document.createElement('img')
+  // new date and time: hack to re-trigger the request
+  newImage2.src = `${crossOriginHttpsUrlOtherImage}?dummy=${
+    new Date().getTime() + Math.random() * 100
+  }`
+  newImage2.width = 70
+  newImage2.height = 70
+  newImage2.referrerPolicy = 'strict-origin-when-cross-origin'
+  document.getElementById('imageWrapper2').appendChild(newImage2)
+
+  const newImage3 = document.createElement('img')
+  // new date and time: hack to re-trigger the request
+  newImage3.src = `${crossOriginHttpsUrlOtherImage}?dummy=${
+    new Date().getTime() + Math.random() * 100
+  }`
+  newImage3.width = 70
+  newImage3.height = 70
+  newImage3.referrerPolicy = 'strict-origin-when-cross-origin'
+  document.getElementById('imageWrapper3').appendChild(newImage3)
 }
 
 function createIframe() {

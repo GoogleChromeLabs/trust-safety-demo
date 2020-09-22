@@ -12,17 +12,48 @@ app.use(express.static('public'))
 
 app.get('/', function (req, res) {
   const referrer = req.get('Referer')
-  res.render('index', { message: `${referrer}` })
+  const referrerToDisplay = referrer || ''
+  res.render('index', { referrer: `${referrerToDisplay}` })
 })
 
 app.get('/ifr', function (req, res) {
   const referrer = req.get('Referer')
-  res.render('index', { referrer: `${referrer}` })
+  const referrerToDisplay = referrer || ''
+  res.render('index', { referrer: `${referrerToDisplay}` })
 })
 
 app.get('/ref', function (req, res) {
-  const referer = req.get('Referer')
-  res.send(referer)
+  const referrer = req.get('Referer')
+  res.send(referrer)
+})
+
+app.get('/cross-o-img', function (req, res) {
+  const referrer = req.get('Referer')
+  console.log(referrer)
+  if (!referrer) {
+    res.sendFile(__dirname + '/assets/empty.jpg')
+  } else if (referrer.includes('stuff')) {
+    res.sendFile(__dirname + '/assets/full.jpg')
+  } else if (referrer.length > 0) {
+    res.sendFile(__dirname + '/assets/origin.jpg')
+  } else {
+    res.sendFile(__dirname + '/assets/empty.jpg')
+  }
+})
+
+app.get('/cross-o-script', function (req, res) {
+  const elId = req.query.elId
+  const referrer = req.get('Referer')
+  console.log(referrer)
+  if (!referrer) {
+    res.send(`document.getElementById("${elId}").innerText = 'empty'`)
+  } else if (referrer.includes('stuff')) {
+    res.send(`document.getElementById("${elId}").innerText = 'full'`)
+  } else if (referrer.length > 0) {
+    res.send(`document.getElementById("${elId}").innerText = 'origin'`)
+  } else {
+    res.send(`document.getElementById("${elId}").innerText = 'empty'`)
+  }
 })
 
 const listener = app.listen(process.env.PORT, () => {
