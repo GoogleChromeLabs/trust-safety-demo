@@ -1,8 +1,8 @@
 # Referrer demo
 
 Go to https://site-one-dot-referrer-demo-280711.ey.r.appspot.com/stuff/detail?tag=red&p=p0.
-- `site-one` 👆 is the main site, from which requests are made
-- `site-two` is used as the cross-origin host for various resources
+- `site-one` 👆 is the main site, from which requests are made.
+- `site-two` is used as the cross-origin host for various resources.
 - `site-three` and `site-four` are only used to test request-level `referrerPolicy` made by a third-party script.
 
 ## To test document-level policy
@@ -15,8 +15,9 @@ Go to https://site-one-dot-referrer-demo-280711.ey.r.appspot.com/stuff/detail?ta
   
 ## To test element-level `referrerpolicy`
 - Check the section "Let's test element-level referrerpolicy" (bottom of the page)
-- For images and scripts: clcik the link, the `Referer` will be displayed on the navigation destination page (`site-two`).
+- For navigations: click the link, the `Referer` will be displayed on the navigation destination page (`site-two`).
 - For images and scripts: `FULL` means the full URL was shared in the `Referer`, `ORIGIN` only the origin, `EMPTY` means no `Referer`.
+**ℹ️ Note:** to make sure all requests are made even though the images could be cached, a timestamp + random number is added to each image's `src`.
   
 ## To test request-level `referrerPolicy`
 - Check the section "Let's test fetch-level referrerPolicy" (bottom of the page)
