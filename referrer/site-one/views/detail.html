@@ -59,7 +59,7 @@
     you can experiment with the new behaviour (strict-origin-when-cross-origin
     by default) by enabling the flag at
     <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
-    <h2>Pick a referrer policy</h2>
+    <h2>Pick a document-level referrer policy</h2>
     <div class="btn-group-policy">
       <button value="p0" class="selected" onclick="switchPolicy(event)">
         no policy set: browser default is used 👆
@@ -74,7 +74,10 @@
         <div class="policy">no-referrer</div>
       </button>
     </div>
-    <h2>Let's <span class="code">fetch</span> stuff</h2>
+    <h2>
+      Impact of the document-level policy: let's
+      <span class="code">fetch</span> stuff
+    </h2>
     <table>
       <thead>
         <tr>
@@ -114,9 +117,12 @@
         </tr>
       </tbody>
     </table>
-    <h2>Let's embed a cross-origin HTTPS <span class="code">iframe</span></h2>
+    <h2>
+      Impact of the document-level policy: let's embed a cross-origin HTTPS
+      <span class="code">iframe</span>
+    </h2>
     <div id="iframeWrapper"></div>
-    <h2>Let's test element-based referrerpolicy</h2>
+    <h2>Let's test element-level referrerpolicy</h2>
     <h3>Navigation requests (cross-origin)</h3>
     <div>
       No referrerpolicy:
@@ -164,7 +170,7 @@
       referrerpolicy="strict-origin-when-cross-origin"
       src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script2"
     ></script>
-    <h2>Let's test fetch-based referrerpolicy</h2>
+    <h2>Let's test fetch-level referrerPolicy</h2>
     A third-party script (`3pscript.js`) makes fetch requests with specific
     policies. Open the developer view in your browser (DevTools or other) > Open
     the Network Panel > Click on the "fetchtest" requests > See the "referer"
