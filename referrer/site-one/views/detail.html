@@ -36,8 +36,11 @@
           </li>
           <li>
             <img src="/chrome-logo-xs.png" alt="chrome logo" width="12" />
-            Are you in Chrome? If so: you can experiment with another
-            <b>default referrer policy</b>. Enable the flag at
+            Chrome is in the process of gradually changing its default policy.
+            If you're in Chrome and the displayed default policy is
+            no-referrer-when-downgrade, you can experiment with the new
+            behaviour (strict-origin-when-cross-origin by default) by enabling
+            the flag at
             <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
           </li>
         </ul>
@@ -51,8 +54,10 @@
     <div id="detected-policy" class="async policy">...</div>
     <br />
     <img src="/chrome-logo-xs.png" alt="chrome logo" width="12" />
-    Are you in Chrome? If so: you can experiment with another
-    <b>default referrer policy</b>. Enable the flag at
+    Chrome is in the process of gradually changing its default policy. If you're
+    in Chrome and the displayed default policy is no-referrer-when-downgrade,
+    you can experiment with the new behaviour (strict-origin-when-cross-origin
+    by default) by enabling the flag at
     <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
     <h2>Pick a referrer policy</h2>
     <div class="btn-group-policy">
@@ -111,12 +116,14 @@
     </table>
     <h2>Let's embed a cross-origin HTTPS <span class="code">iframe</span></h2>
     <div id="iframeWrapper"></div>
-    <h2>Let's embed a cross-origin image</h2>
-    <div id="imageWrapper"></div>
-    Open DevTools > Open Network Panel > Click on the image request > See the
-    "referer" field under "Request Headers".
     <h2>Let's test element-based referrerpolicy</h2>
-    <h3>Navigation requests</h3>
+    <h3>Navigation requests (cross-origin)</h3>
+    <div>
+      No referrerpolicy:
+      <a href="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com"
+        >`a` link</a
+      >
+    </div>
     <div>
       referrerpolicy = no-referrer-when-downgrade:
       <a
@@ -133,20 +140,18 @@
         >`a` link</a
       >
     </div>
-    <div>
-      No referrerpolicy:
-      <a href="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com"
-        >`a` link</a
-      >
-    </div>
-    <h3>Image requests</h3>
-    <div>referrerpolicy = no-referrer-when-downgrade:</div>
-    <div id="imageWrapper1"></div>
-    <div>referrerpolicy = strict-origin-when-cross-origin:</div>
-    <div id="imageWrapper2"></div>
+    <h3>Image requests (cross-origin)</h3>
     <div>No referrerpolicy:</div>
-    <div id="imageWrapper3"></div>
+    <img class="img" />
+    <div>referrerpolicy = no-referrer-when-downgrade:</div>
+    <img class="img" referrerpolicy="no-referrer-when-downgrade" />
+    <div>referrerpolicy = strict-origin-when-cross-origin</div>
+    <img class="img" referrerpolicy="strict-origin-when-cross-origin" />
+    <!-- </div> -->
     <h3>Script requests</h3>
+    <div>No referrerpolicy:</div>
+    <div id="script3">...</div>
+    <script src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script3"></script>
     <div>referrerpolicy = no-referrer-when-downgrade:</div>
     <div id="script1">...</div>
     <script
@@ -159,9 +164,11 @@
       referrerpolicy="strict-origin-when-cross-origin"
       src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script2"
     ></script>
-    <div>No referrerpolicy:</div>
-    <div id="script3">...</div>
-    <script src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script3"></script>
+    <h2>Let's test fetch-based referrerpolicy</h2>
+    A third-party script (`3pscript.js`) makes fetch requests with specific
+    policies. Open the developer view in your browser (DevTools or other) > Open
+    the Network Panel > Click on the "fetchtest" requests > See the "referer"
+    field under "Request Headers".
     <footer>
       <p>
         <a
@@ -188,5 +195,9 @@
       Unsplash.
     </footer>
     <script src="/script.js" defer></script>
+    <script
+      src="https://site-three-dot-referrer-demo-280711.ey.r.appspot.com/3pscript.js"
+      defer
+    ></script>
   </body>
 </html>
