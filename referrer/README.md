@@ -6,7 +6,8 @@
   - Select a policy in the button bar.
   - Note that the policy is set as a URL parameter. `p=p0` (default), `p1` (no-referrer-when-downgrade), `p2` (strict-origin-when-cross-origin), `p3` (strict-origin-when-cross-origin)
 - **To test element-level `referrerpolicy`:**
-  - Check the last sections "Let's test element-based referrerpolicy" 
+  - Check the section "Let's test element-based referrerpolicy" (bottom of the page)
   - `FULL` = the full URL was shared in the `Referer`, `ORIGIN` = only the origin, `EMPTY` = no `Referer`.
- - **To test request-level `referrerPolicy`:**
-  - Follow the on-screen indications.
+ - **To test request-level `referrerPolicy`:** 
+   - Check the section "Let's test fetch-based referrerpolicy" (bottom of the page)
+   - Follow the indications in the UI.
