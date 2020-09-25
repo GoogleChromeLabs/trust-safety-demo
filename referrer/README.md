@@ -6,8 +6,8 @@
   - Select a policy in the button bar. See in the table below and in the iframe how the sent `Referer` is affected.
   - Note that the policy is set as a URL parameter. `p=p0` (default), `p1` (no-referrer-when-downgrade), `p2` (strict-origin-when-cross-origin), `p3` (strict-origin-when-cross-origin)
 - **To test element-level `referrerpolicy`:**
-  - Check the section "Let's test element-based referrerpolicy" (bottom of the page)
-  - `FULL` = the full URL was shared in the `Referer`, `ORIGIN` = only the origin, `EMPTY` = no `Referer`.
+  - Check the section "Let's test element-level referrerpolicy" (bottom of the page)
+  - For images and scripts: `FULL` means the full URL was shared in the `Referer`, `ORIGIN` only the origin, `EMPTY` means no `Referer`.
  - **To test request-level `referrerPolicy`:** 
-   - Check the section "Let's test fetch-based referrerpolicy" (bottom of the page)
+   - Check the section "Let's test fetch-level referrerPolicy" (bottom of the page)
    - Follow the indications in the UI.
