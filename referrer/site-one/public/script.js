@@ -75,6 +75,33 @@ function main() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                               Images + Iframe                              */
+/* -------------------------------------------------------------------------- */
+
+function triggerLoadImages() {
+  const imagesToLoad = document.querySelectorAll('.img')
+  imagesToLoad.forEach((image) => {
+    // new date and time: hack to re-trigger the request
+    image.src = `${crossOriginHttpsUrlOtherImage}?dummy=${
+      new Date().getTime() + Math.random() * 100
+    }`
+  })
+}
+
+function createIframe() {
+  const newIframe = document.createElement('iframe')
+  newIframe.id = 'iframe'
+  newIframe.src = crossOriginHttpsUrlIframe
+  newIframe.height = 150
+  const oldIframe = document.getElementById('iframe')
+  if (oldIframe) {
+    iframeWrapperEl.replaceChild(newIframe, oldIframe)
+  } else {
+    iframeWrapperEl.appendChild(newIframe)
+  }
+}
+
+/* -------------------------------------------------------------------------- */
 /*                               Referrer utils                               */
 /* -------------------------------------------------------------------------- */
 
@@ -108,33 +135,6 @@ async function getAndDisplayAllFetchReferrers(policyId) {
     const referrer = await referrerResponse.text()
     displayReferrer(url, referrer, policyId)
   })
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                   Images                                   */
-/* -------------------------------------------------------------------------- */
-
-function triggerLoadImages() {
-  const imagesToLoad = document.querySelectorAll('.img')
-  imagesToLoad.forEach((image) => {
-    // new date and time: hack to re-trigger the request
-    image.src = `${crossOriginHttpsUrlOtherImage}?dummy=${
-      new Date().getTime() + Math.random() * 100
-    }`
-  })
-}
-
-function createIframe() {
-  const newIframe = document.createElement('iframe')
-  newIframe.id = 'iframe'
-  newIframe.src = crossOriginHttpsUrlIframe
-  newIframe.height = 150
-  const oldIframe = document.getElementById('iframe')
-  if (oldIframe) {
-    iframeWrapperEl.replaceChild(newIframe, oldIframe)
-  } else {
-    iframeWrapperEl.appendChild(newIframe)
-  }
 }
 
 /* -------------------------------------------------------------------------- */
