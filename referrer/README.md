@@ -7,6 +7,7 @@
   - Note that the policy is set as a URL parameter. `p=p0` (default), `p1` (no-referrer-when-downgrade), `p2` (strict-origin-when-cross-origin), `p3` (strict-origin-when-cross-origin)
 - **To test element-level `referrerpolicy`:**
   - Check the section "Let's test element-level referrerpolicy" (bottom of the page)
+  - For images and scripts: clcik the link, the `Referer` will be displayed on the navigation destination page (`site-two`).
   - For images and scripts: `FULL` means the full URL was shared in the `Referer`, `ORIGIN` only the origin, `EMPTY` means no `Referer`.
  - **To test request-level `referrerPolicy`:** 
    - Check the section "Let's test fetch-level referrerPolicy" (bottom of the page)
