@@ -8,13 +8,13 @@ Go to https://site-one-dot-referrer-demo-280711.ey.r.appspot.com/stuff/detail?ta
 ## To test document-level policy
 - Select a policy in the button bar. See in the table below and in the iframe how the sent `Referer` is affected.
 - Note that the policy is set as a URL parameter:
-  - `p=p0` // browser default (no document-leve policy)
+  - `p=p0` // browser default (no document-level policy)
   - `p=p1` // `no-referrer-when-downgrade`
   - `p=p2` // `strict-origin-when-cross-origin`
   - `p=p3` // `no-referrer`
   
 ## To test element-level `referrerpolicy`
-- Check the section "Let's test element-level referrerpolicy" (bottom of the page)
+- Check the section "Let's test element-level referrerpolicy" (bottom of the page).
 - For navigations: click the link, the `Referer` will be displayed on the navigation destination page (`site-two`).
 - For images and scripts: `FULL` means the full URL was shared in the `Referer`, `ORIGIN` only the origin, `EMPTY` means no `Referer`.
 **ℹ️ Note:** to make sure all requests are made even though the images could be cached, a timestamp + random number is added to each image's `src` (look  for `dummy=...` is the source code).
