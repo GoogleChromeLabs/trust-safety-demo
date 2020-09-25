@@ -117,7 +117,6 @@
         </tr>
       </tbody>
     </table>
-    <div id="iframe-wrapper"></div>
     <h2>Let's test element-level <span class="code">referrerpolicy</span></h2>
     <h3>iframe (cross-origin)</h3>
     <div id="iframes-with-referrerpolicy-wrapper"></div>
@@ -152,27 +151,7 @@
     <div>referrerpolicy = strict-origin-when-cross-origin</div>
     <img class="img" referrerpolicy="strict-origin-when-cross-origin" />
     <h3>Script requests</h3>
-    <p>
-      <div>No referrerpolicy:</div>
-      <div class="url" id="script3">...</div>
-      <script src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script3"></script>
-    </p>
-    <p>
-      <div>referrerpolicy = no-referrer-when-downgrade:</div>
-      <div class="url" id="script1">...</div>
-      <script
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script1"
-      ></script>
-    </p>
-    <p>
-      <div>referrerpolicy = strict-origin-when-cross-origin:</div>
-      <div class="url" id="script2">...</div>
-      <script
-        referrerpolicy="strict-origin-when-cross-origin"
-        src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script2"
-      ></script>
-    </p>
+    <div id="scripts-with-referrerpolicy-wrapper"></div>
     <h2>Let's test fetch-level referrerPolicy</h2>
     <div id="script-referrer-wrapper"></div>
     Note: A third-party script (`3pscript.js`) makes fetch requests with

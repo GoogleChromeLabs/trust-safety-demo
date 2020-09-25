@@ -24,6 +24,7 @@ const policyIdToName = {
   p2: sowco,
   p3: nr
 }
+const allPoliciesForElements = ['', nrwd, sowco, nr]
 
 /* -------------------------------------------------------------------------- */
 /*                          DOM elements and mapping                          */
@@ -70,6 +71,7 @@ function main() {
   getAndDisplayAllFetchReferrers(policyId)
   createIframes()
   triggerLoadImages()
+  createScripts()
 }
 
 /* -------------------------------------------------------------------------- */
@@ -87,15 +89,11 @@ function triggerLoadImages() {
 }
 
 function createIframes() {
-  const policies = [
-    '',
-    'no-referrer-when-downgrade',
-    'strict-origin-when-cross-origin',
-    'no-referrer'
-  ]
-  policies.forEach((policy) => {
+  allPoliciesForElements.forEach((policy) => {
     const newIframe = document.createElement('iframe')
-    newIframe.src = crossOriginHttpsUrlIframe
+    newIframe.src = `${crossOriginHttpsUrlIframe}?dummy=${
+      new Date().getTime() + Math.random() * 100
+    }`
     newIframe.height = 150
     if (policy) {
       newIframe.referrerPolicy = policy
@@ -109,6 +107,35 @@ function createIframes() {
       : 'No referrerpolicy'
     wrapper.appendChild(title)
     wrapper.appendChild(newIframe)
+  })
+}
+
+function createScripts() {
+  allPoliciesForElements.forEach((policy, idx) => {
+    const elIdToDisplayReferrer = `el${idx}`
+    const newScript = document.createElement('script')
+    newScript.src = `https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=${elIdToDisplayReferrer}&dummy=${
+      new Date().getTime() + Math.random() * 100
+    }`
+    if (policy) {
+      newScript.referrerPolicy = policy
+    }
+    const wrapper = document.getElementById(
+      'scripts-with-referrerpolicy-wrapper'
+    )
+    const title = document.createElement('div')
+    title.innerText = policy
+      ? `referrerpolicy = ${policy}`
+      : 'No referrerpolicy'
+    const referrerEl = document.createElement('div')
+    referrerEl.id = elIdToDisplayReferrer
+    referrerEl.classList = 'url'
+    const p = document.createElement('p')
+
+    wrapper.appendChild(p)
+    p.appendChild(title)
+    p.appendChild(referrerEl)
+    p.appendChild(newScript)
   })
 }
 
