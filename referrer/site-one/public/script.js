@@ -35,7 +35,7 @@ const policyEl = document.getElementById('detected-policy')
 const buttonEls = document.querySelectorAll('button')
 const requestTypeXEl = document.getElementById('cross-origin-no-downgrade')
 const requestTypeSameEl = document.getElementById('same-origin')
-const iframeWrapperEl = document.getElementById('iframeWrapper')
+const iframeWrapperEl = document.getElementById('iframe-wrapper')
 const elementsByUrlMap = {
   [crossOriginHttpsUrl]: requestTypeXEl,
   [sameOriginUrl]: requestTypeSameEl

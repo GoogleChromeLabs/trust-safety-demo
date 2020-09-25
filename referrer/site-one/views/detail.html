@@ -121,7 +121,7 @@
       Impact of the document-level policy: let's embed a cross-origin HTTPS
       <span class="code">iframe</span>
     </h2>
-    <div id="iframeWrapper"></div>
+    <div id="iframe-wrapper"></div>
     <h2>Let's test element-level referrerpolicy</h2>
     <h3>Navigation requests (cross-origin)</h3>
     <div>
@@ -153,28 +153,34 @@
     <img class="img" referrerpolicy="no-referrer-when-downgrade" />
     <div>referrerpolicy = strict-origin-when-cross-origin</div>
     <img class="img" referrerpolicy="strict-origin-when-cross-origin" />
-    <!-- </div> -->
     <h3>Script requests</h3>
-    <div>No referrerpolicy:</div>
-    <div id="script3">...</div>
-    <script src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script3"></script>
-    <div>referrerpolicy = no-referrer-when-downgrade:</div>
-    <div id="script1">...</div>
-    <script
-      referrerpolicy="no-referrer-when-downgrade"
-      src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script1"
-    ></script>
-    <div>referrerpolicy = strict-origin-when-cross-origin:</div>
-    <div id="script2">...</div>
-    <script
-      referrerpolicy="strict-origin-when-cross-origin"
-      src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script2"
-    ></script>
+    <p>
+      <div>No referrerpolicy:</div>
+      <div class="uppercase url" id="script3">...</div>
+      <script src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script3"></script>
+    </p>
+    <p>
+      <div>referrerpolicy = no-referrer-when-downgrade:</div>
+      <div class="uppercase url" id="script1">...</div>
+      <script
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script1"
+      ></script>
+    </p>
+    <p>
+      <div>referrerpolicy = strict-origin-when-cross-origin:</div>
+      <div class="uppercase url" id="script2">...</div>
+      <script
+        referrerpolicy="strict-origin-when-cross-origin"
+        src="https://site-two-dot-referrer-demo-280711.ey.r.appspot.com/cross-o-script?elId=script2"
+      ></script>
+    </p>
     <h2>Let's test fetch-level referrerPolicy</h2>
-    A third-party script (`3pscript.js`) makes fetch requests with specific
-    policies. Open the developer view in your browser (DevTools or other) > Open
-    the Network Panel > Click on the "fetchtest" requests > See the "referer"
-    field under "Request Headers".
+    <div id="script-referrer-wrapper"></div>
+    Note: A third-party script (`3pscript.js`) makes fetch requests with
+    specific policies. You can also open the developer view in your browser
+    (DevTools or other) > Open the Network Panel > Click on the "fetchtest"
+    requests > See the "referer" field under "Request Headers".
     <footer>
       <p>
         <a

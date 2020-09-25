@@ -7,7 +7,8 @@ app.use(cors())
 app.use(express.static('public'))
 
 app.get('/fetchtest', function (req, res) {
-  res.send('OK')
+  const referer = req.get('Referer')
+  res.send(referer)
 })
 
 const listener = app.listen(process.env.PORT, () => {
