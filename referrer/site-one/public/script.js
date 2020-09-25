@@ -29,13 +29,11 @@ const policyIdToName = {
 /*                          DOM elements and mapping                          */
 /* -------------------------------------------------------------------------- */
 
-const image = document.getElementById('img')
 const head = document.getElementById('head')
 const policyEl = document.getElementById('detected-policy')
 const buttonEls = document.querySelectorAll('button')
 const requestTypeXEl = document.getElementById('cross-origin-no-downgrade')
 const requestTypeSameEl = document.getElementById('same-origin')
-const iframeWrapperEl = document.getElementById('iframe-wrapper')
 const elementsByUrlMap = {
   [crossOriginHttpsUrl]: requestTypeXEl,
   [sameOriginUrl]: requestTypeSameEl
@@ -70,7 +68,7 @@ function main() {
   }
 
   getAndDisplayAllFetchReferrers(policyId)
-  createIframe()
+  createIframes()
   triggerLoadImages()
 }
 
@@ -88,17 +86,30 @@ function triggerLoadImages() {
   })
 }
 
-function createIframe() {
-  const newIframe = document.createElement('iframe')
-  newIframe.id = 'iframe'
-  newIframe.src = crossOriginHttpsUrlIframe
-  newIframe.height = 150
-  const oldIframe = document.getElementById('iframe')
-  if (oldIframe) {
-    iframeWrapperEl.replaceChild(newIframe, oldIframe)
-  } else {
-    iframeWrapperEl.appendChild(newIframe)
-  }
+function createIframes() {
+  const policies = [
+    '',
+    'no-referrer-when-downgrade',
+    'strict-origin-when-cross-origin',
+    'no-referrer'
+  ]
+  policies.forEach((policy) => {
+    const newIframe = document.createElement('iframe')
+    newIframe.src = crossOriginHttpsUrlIframe
+    newIframe.height = 150
+    if (policy) {
+      newIframe.referrerPolicy = policy
+    }
+    const wrapper = document.getElementById(
+      'iframes-with-referrerpolicy-wrapper'
+    )
+    const title = document.createElement('div')
+    title.innerText = policy
+      ? `referrerpolicy = ${policy}`
+      : 'No referrerpolicy'
+    wrapper.appendChild(title)
+    wrapper.appendChild(newIframe)
+  })
 }
 
 /* -------------------------------------------------------------------------- */
