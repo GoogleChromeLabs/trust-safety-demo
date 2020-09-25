@@ -3,7 +3,7 @@
 - Go to https://site-one-dot-referrer-demo-280711.ey.r.appspot.com/stuff/detail?tag=red&p=p0
 - `site-one` is the main site, from which requests are made. `site-two` is used as the cross-origin host for various resources. `site-three` and `site-four` are only used to test request-level `referrerPolicy` that would be made by a third-party script.
 - **To test document-level policy**:
-  - Select a policy in the button bar.
+  - Select a policy in the button bar. See in the table below and in the iframe how the sent `Referer` is affected.
   - Note that the policy is set as a URL parameter. `p=p0` (default), `p1` (no-referrer-when-downgrade), `p2` (strict-origin-when-cross-origin), `p3` (strict-origin-when-cross-origin)
 - **To test element-level `referrerpolicy`:**
   - Check the section "Let's test element-based referrerpolicy" (bottom of the page)
