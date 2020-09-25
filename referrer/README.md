@@ -17,7 +17,7 @@ Go to https://site-one-dot-referrer-demo-280711.ey.r.appspot.com/stuff/detail?ta
 - Check the section "Let's test element-level referrerpolicy" (bottom of the page)
 - For navigations: click the link, the `Referer` will be displayed on the navigation destination page (`site-two`).
 - For images and scripts: `FULL` means the full URL was shared in the `Referer`, `ORIGIN` only the origin, `EMPTY` means no `Referer`.
-**ℹ️ Note:** to make sure all requests are made even though the images could be cached, a timestamp + random number is added to each image's `src`.
+**ℹ️ Note:** to make sure all requests are made even though the images could be cached, a timestamp + random number is added to each image's `src` (look  for `dummy=...` is the source code).
   
 ## To test request-level `referrerPolicy`
 - Check the section "Let's test fetch-level referrerPolicy" (bottom of the page)
