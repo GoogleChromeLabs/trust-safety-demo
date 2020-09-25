@@ -141,10 +141,6 @@ async function getAndDisplayAllFetchReferrers(policyId) {
 /*                         Side effects / DOM display                         */
 /* -------------------------------------------------------------------------- */
 
-function displayPolicy(policy) {
-  policyEl.innerHTML = policy
-}
-
 function styleButtons(policyId) {
   buttonEls.forEach((btn) => (btn.className = ''))
   // [...] to transform the NodeList into a map
@@ -158,14 +154,20 @@ function displayAsLoading() {
   })
 }
 
+function displayPolicy(policy) {
+  policyEl.innerHTML = policy
+}
+
 function displayReferrer(url, referrer, policyId) {
   let pathHighlightCssClass = 'ok'
   if (url === crossOriginHttpsUrl) {
     pathHighlightCssClass = 'nok'
   }
-  const formattedReferrer = referrer.replace(
-    /stuff\/detail\?tag=red&p=p[0-2]{1}/g,
-    `<span class="${pathHighlightCssClass}">stuff/detail?tag=red&p=${policyId}</span>`
-  )
+  const formattedReferrer = referrer
+    ? referrer.replace(
+        /stuff\/detail\?tag=red&p=p[0-2]{1}/g,
+        `<span class="${pathHighlightCssClass}">stuff/detail?tag=red&p=${policyId}</span>`
+      )
+    : 'empty (no referrer)'
   elementsByUrlMap[url].innerHTML = formattedReferrer
 }

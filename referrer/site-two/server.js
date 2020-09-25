@@ -43,17 +43,8 @@ app.get('/cross-o-img', function (req, res) {
 
 app.get('/cross-o-script', function (req, res) {
   const elId = req.query.elId
-  const referrer = req.get('Referer')
-  console.log(referrer)
-  if (!referrer) {
-    res.send(`document.getElementById("${elId}").innerText = 'empty'`)
-  } else if (referrer.includes('stuff')) {
-    res.send(`document.getElementById("${elId}").innerText = 'full'`)
-  } else if (referrer.length > 0) {
-    res.send(`document.getElementById("${elId}").innerText = 'origin'`)
-  } else {
-    res.send(`document.getElementById("${elId}").innerText = 'empty'`)
-  }
+  const referrer = req.get('Referer') || 'empty (no referrer)'
+  res.send(`document.getElementById("${elId}").innerText = '${referrer}'`)
 })
 
 const listener = app.listen(process.env.PORT, () => {
