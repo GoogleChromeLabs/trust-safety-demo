@@ -3,7 +3,7 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 const app = express()
 app.set('view engine', 'pug')
-const PORT = 8080
+const PORT = 8081
 
 app.use(express.static('static'))
 

@@ -29,7 +29,7 @@ To do so, you can:
 
 - Run `sh ./init.sh`
 - Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server.
-- Open `127.0.0.1:8082` in Chrome Canary.
+- Open `127.0.0.1:8080` in Chrome Canary.
 - Follow the instructions in the UI.
 
 ## ⚠️ Gotcha

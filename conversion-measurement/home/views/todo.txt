@@ -1,0 +1,34 @@
+
+Add OT https://developers.chrome.com/origintrials/#/view_trial/3411476717733150721 
+Better home page / status check
+TEST ON MOBILE
+Add index to advertiser's page 
+Redeploy
+Add screeenhsot to home page
+
++++++++++++ OT (should I link to the OT page?)
+explainer: change "impression"
+article: change to 2
+article: origintrials
+article: link to tips for devs on trust safety repo
+internals: Change impression wording
++++++ see other todos in j c Maud
+
+// MAYBE LATER:
+Fix "click ID" issue
+Server UI: sort reports (?)
+Centralize styles
+Add HOME link to all demos
+
+// DONE:
+Changed port
+Add color to console logs
+Change to signup
+Improve signup button layout
+Add background colors
+Change conversion data to 2
+Document how to send reports immediately
+Add inline documentation
+Document clearly flags to activate if running locally
+Remove all maudnals occurences
+TEST DEV CHECKOUT
