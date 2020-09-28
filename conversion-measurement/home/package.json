@@ -1,5 +1,5 @@
 {
-  "name": "home",
+  "name": "demo-event-level-conversion-measurement-api",
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -7,9 +7,10 @@
     "start:dev": "NODE_ENV=development node server.js"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/maudnals/gdemo-event.git"
+    "type": "git"
   },
+  "bugs": {},
+  "homepage": "https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#readme",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
