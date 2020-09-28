@@ -20,6 +20,17 @@ h1 {
   margin: 0;
 }
 
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.button-wrapper {
+  width: 14rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .button {
   color: white;
   background-color: black;
