@@ -43,6 +43,16 @@ a:visited {
   color: #003aff;
 }
 
+/* .full {
+  width: 100%;
+} */
+
+video {
+  margin: 1rem 0 0 0;
+  width: 100%;
+  max-width: 24rem;
+}
+
 .show {
   display: inline-block;
 }
