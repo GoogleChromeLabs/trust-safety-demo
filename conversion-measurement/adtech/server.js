@@ -44,8 +44,16 @@ app.get('/ad-script', (req, res) => {
   )
 })
 
+
+const conversionValues = {
+  signup: 1,
+  checkout: 2
+}
+
 app.get('/conversion', (req, res) => {
-  const conversionData = conversionValues[req.query.type]
+  const conversionData = conversionValues[req.query['conversion-type']]
+  console.log(conversionData)
+
   res.redirect(
     302,
     `/.well-known/register-conversion?conversion-data=${conversionData}`
