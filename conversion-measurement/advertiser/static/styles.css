@@ -20,6 +20,16 @@ h1 {
   margin: 0;
 }
 
+.select {
+  user-select: all;
+  cursor: default;
+}
+
+::selection {
+  color: white;
+  background: black;
+}
+
 .flex {
   display: flex;
   align-items: center;

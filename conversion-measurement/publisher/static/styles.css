@@ -25,7 +25,15 @@ article {
   line-height: 1.8;
 }
 
-/**/
+.select {
+  user-select: all;
+  cursor: default;
+}
+
+::selection {
+  color: white;
+  background: black;
+}
 
 .details {
   margin-top: 3rem;
