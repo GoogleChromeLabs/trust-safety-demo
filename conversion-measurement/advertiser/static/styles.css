@@ -23,6 +23,7 @@ h1 {
 .flex {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .button-wrapper {
@@ -38,7 +39,6 @@ h1 {
   text-decoration: none;
   padding: 0.8rem 2rem;
   border-radius: 7px;
-  margin: 0 auto;
 }
 
 .button:hover {

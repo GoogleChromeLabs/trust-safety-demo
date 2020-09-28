@@ -13,13 +13,17 @@ app.get('/shoes07', (req, res) => {
 
 app.get('/checkout', (req, res) => {
   // pass the conversion type to adtech - but more data could be passed e.g. the model purchased
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=checkout`
-  res.render('checkout', { adtechRequestUrl })
+  const conversionType = 'checkout'
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
+  const adtechServerUi = `${process.env.ADTECH_URL}`
+  res.render('checkout', { adtechRequestUrl, adtechServerUi })
 })
 
 app.get('/signup', (req, res) => {
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=signup`
-  res.render('signup', { adtechRequestUrl })
+  const conversionType = 'signup'
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
+  const adtechServerUi = `${process.env.ADTECH_URL}`
+  res.render('signup', { adtechRequestUrl, adtechServerUi })
 })
 
 const listener = app.listen(process.env.PORT || PORT, () => {

@@ -10,3 +10,38 @@ div.flex
     a.button(href='/signup') Sign up
 h2 Checked out ✅
 img.pixel(src=adtechRequestUrl height='12' width='12')
+div.details
+  strong ℹ️ DEMO
+  p 
+  strong On this page: 
+  | As defined by the 
+  span.actor-advertiser advertiser
+  | , this page contains a conversion pixel ( 🟥 ).
+  | Now that you've checked out, you're on this page, and the pixel triggers a request to the 
+  span.actor-adtech adtech server
+  |. Upon receiving this request, the 
+  span.actor-adtech adtech server
+  |  determines whether a conversion should be registered and what the conversion value should be.
+  | It sends a 302 request to the 
+  span.actor-browser browser
+  |. Upon receiving this request, the  
+  span.actor-browser browser
+  |  maps the click and conversion data, and schedules a conversion report.
+  p 
+  strong Do:
+  ul
+    li See the conversion report stored by the browser, in 
+      span.select.code chrome://conversion-internals
+      |  (refresh if needed).
+    li (Optional: in 
+      span.select.code chrome://conversion-internals
+      |, click 
+      strong Send All Reports
+      |. This sends all the conversion reports immediately to the reporting endpoint, instead
+      | of waiting for the browser to send the reports at the scheduled time. This is useful for debugging.
+      | You can then see the reports immediately on the 
+      a(href=adtechServerUi) adtech server UI
+      |.)
+    li Open the 
+      a(href=adtechServerUi) adtech server UI
+      |  to see the reports once the browser has sent them.
