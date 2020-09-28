@@ -16,7 +16,16 @@ So, if you're running the demo locally (`127.0.0.1`):
 - Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the **two** flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
 - **Disable** third-party cookie **blocking**. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
 
-## Set and run
+### (Optional) Other useful debugging features
+
+You can see the conversion reports the browser has scheduled to send at `chrome://conversion-internals/` > **Pending Reports**.
+Reports are sent at scheduled times. But for debugging purposes, you may not want to wait for these scheduled times.
+To do so, you can:
+
+- Click **Send All Reports** in `chrome://conversion-internals/` > **Pending Reports**.
+- Or activate the flag `chrome://flags/#conversion-measurement-debug-mode`, so that all reports are always sent **immediately**.
+
+## Setup and run
 
 - Run `sh ./init.sh`
 - Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server.
