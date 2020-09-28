@@ -10,24 +10,18 @@ body
     h2.nok.error ❌ You need to do this before you can run the demo:
     ul.nok
         li Make sure you're in Chrome, version 86 or later (for example 
-            a(href="https://www.google.com/chrome/canary/" noreferrer noopener) Chrome Canary
+            a(href='https://www.google.com/chrome/canary/' noreferrer noopener) Chrome Canary
             | ). You can check what version of Chrome you're using by typing 
             span.select.code chrome://version
             |  in the URL bar.
-        li Turn on the <strong>two</strong> flags 
-            span.select.code #enable-experimental-web-platform-features
-            |  and 
-            span.select.code #conversion-measurement-api
+        li If you're running the demo locally (
+            strong 127.0.0.1
+            |): follow these 
+            a(href='https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#browser-setup' noopener) additional instructions
             |.
-            | Go to flags by typing 
-            span.select.code chrome://flags
-            |  in the URL bar.
-        li Disable third-party cookie
-            strong  blocking
-            |. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
     ul.ok
         li 🆗 Chrome 86 or later
-        li 🆗
+        li 🆗 The feature is ON (via origin trial tokens or flags)
             span.select.code #enable-experimental-web-platform-features
             |  and 
             span.select.code #conversion-measurement-api
@@ -42,17 +36,20 @@ body
             a(href=adtechUrl) 🚀 Adtech server
         li
             span.select.code chrome://conversion-internals/
+            |  (copy and paste in Chrome's URL bar)
     | And follow the steps indicated on each page.
-    h2 Code and feedback
+    h2 See the code
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
+    h2 Learn more
     ul
-        li 
-            a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code
-            |
         li
-            a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer
-        li Ping 
-            a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
-            |  for feedback / questions about the demo 👋
+            a(href="https://web.dev/TODO" noreferrer noopener) Article 
+        li
+            a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer 
+    h2 Ask questions / Share feedback
+    | 👋 Ping 
+    a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
+    |  for feedback / questions about this demo.
     script.
         const okEls = document.querySelectorAll(".ok")
         const nokEls = document.querySelectorAll(".nok")
