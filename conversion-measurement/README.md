@@ -16,6 +16,9 @@ So, if you're running the demo locally (`127.0.0.1`):
 - Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the **two** flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
 - **Disable** third-party cookie **blocking**. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
 
+Whether or not the demo is running locally, you need Chrome version **86** or later (for example [Chrome Canary](https://www.google.com/chrome/canary/).
+You can check what version of Chrome you're using by typing `chrome://version` in the URL bar.
+
 ### (Optional) Other useful debugging features
 
 You can see the conversion reports the browser has scheduled to send at `chrome://conversion-internals/` > **Pending Reports**.
