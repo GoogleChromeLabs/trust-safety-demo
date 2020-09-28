@@ -13,6 +13,11 @@ body {
   cursor: default;
 }
 
+h1 {
+  padding: 0.1rem 0.2rem;
+  margin: 0;
+}
+
 h2 {
   padding: 0;
   margin: 1.2rem 0 0.2rem 0;
@@ -25,8 +30,12 @@ h3 {
   font-size: 1rem;
 }
 
-ul {
+ol {
   margin: 0.2rem 0;
+}
+
+li {
+  margin: 0.4rem 0;
 }
 
 a,

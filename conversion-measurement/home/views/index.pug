@@ -6,27 +6,37 @@ head
   link(rel='stylesheet' href='/styles.css')
 body
     h1 ⚡️ Demo: Event-Level Conversion Measurement API
-    h2.ok.success ✅ You're all set to run the demo.
-    h2.nok.error ❌ You need to do this before you can run the demo:
-    ul.nok
-        li Make sure you're in Chrome, version 86 or later (for example 
+    h2 Before you can run this demo
+    ol
+        li Make sure you're in Chrome, version 
+            strong 86 
+            | or later (for example 
             a(href='https://www.google.com/chrome/canary/' noreferrer noopener) Chrome Canary
             | ). You can check what version of Chrome you're using by typing 
             span.select.code chrome://version
             |  in the URL bar.
-        li If you're running the demo locally (
-            strong 127.0.0.1
-            |): follow these 
-            a(href='https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#browser-setup' noopener) additional instructions
-            |.
-    ul.ok
-        li 🆗 Chrome 86 or later
-        li 🆗 The feature is ON (via origin trial tokens or flags)
+        li Make sure that 
+            strong no browser extensions 
+            | are enabled. You can use Chrome Incognito for an extension-free Chrome.
+        li Go to flags by typing or pasting 
+            span.select.code chrome://flags 
+            | in Chrome's URL bar. 
+            | Turn on the 
+            strong two flags 
             span.select.code #enable-experimental-web-platform-features
             |  and 
             span.select.code #conversion-measurement-api
-        | are on
-        li 🆗 No third-party cookie blocking
+            |.
+        li 
+            strong Disable 
+            | third-party cookie 
+            strong blocking
+            |. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
+        li If you're running the demo locally (
+            strong 127.0.0.1
+            |), follow these 
+            a(href='https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#browser-setup' noopener) additional instructions
+            |.
     h2 Run the demo
     | Open these in new tabs:
     ul
@@ -36,7 +46,7 @@ body
             a(href=adtechUrl) Adtech server 🚀 
         li
             span.select.code chrome://conversion-internals
-            |  (copy and paste in Chrome's URL bar)
+            |  (type or paste in Chrome's URL bar)
     | And follow the steps indicated on each page.
     h2 See the code
     a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
