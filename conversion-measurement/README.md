@@ -8,12 +8,12 @@
 
 ### Browser setup
 
-The deployed version of the demo uses origin trials, so that conversion measurement is automatically enabled for the origins of the deployed demo sites.
+Conversion measurement is automatically enabled for the origins of the deployed demo sites, via origin trial tokens.
 But when running the demo **locally**, the origin trial tokens won't be valid. You'll need to configure your browser to support conversion measurement instead.
 
-So, if you're running the demo locally (`localhost` or `127.0.0.1`):
+So, if you're running the demo locally (`127.0.0.1`):
 
-- Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the two flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
+- Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the **two** flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
 - **Disable** third-party cookie **blocking**. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
 
 ## Set and run
