@@ -1,24 +1,36 @@
+html {
+  font-size: 14px;
+}
+
 body {
   font-family: sans-serif;
+  --max-width: 50rem;
+  --font-size-s: 0.9rem;
+  --font-size-xs: 0.8rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+  background: #ffdede;
 }
 
 h1 {
   display: inline-block;
   background: #ff00003d;
   padding: 0.1rem 0.2rem;
+  margin: 0;
 }
 
 #reportList > div,
 .row {
   display: flex;
-  width: 80%;
-  max-width: 40rem;
   justify-content: space-between;
 }
 
 #reportList > div > div,
 .header > div {
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #reportList > div > div {

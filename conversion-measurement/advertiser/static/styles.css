@@ -1,13 +1,23 @@
+html {
+  font-size: 14px;
+}
+
 body {
   font-family: sans-serif;
-  --max-width: 30rem;
+  --max-width: 50rem;
+  --font-size-s: 0.9rem;
+  --font-size-xs: 0.8rem;
   max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+  background: #ffffd0;
 }
 
 h1 {
   display: inline-block;
   background: #fff59a;
   padding: 0.1rem 0.2rem;
+  margin: 0;
 }
 
 .button {
@@ -36,10 +46,50 @@ img {
 }
 
 .pixel {
-  background-color: red;
+  background-color: black;
 }
 
 .center {
   margin: 0 auto;
   text-align: center;
+}
+
+/**/
+
+.details {
+  margin-top: 3rem;
+  background: #e9f0f7;
+  padding: 0.5rem;
+  line-height: 1rem;
+  color: #0d304a;
+  outline: none;
+  cursor: default;
+}
+
+.actor-adtech,
+.actor-publisher,
+.actor-advertiser,
+.actor-browser {
+  padding: 0 2px;
+}
+
+.actor-adtech {
+  background-color: #ff00003d;
+}
+
+.actor-publisher {
+  background-color: #00c5334d;
+}
+
+.actor-advertiser {
+  background-color: #fff59a;
+}
+
+.actor-browser {
+  background-color: #0050ff38;
+}
+
+.code {
+  font-size: var(--font-size-xs);
+  font-family: 'Lucida Console', Monaco, monospace;
 }

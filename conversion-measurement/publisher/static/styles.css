@@ -1,16 +1,70 @@
+html {
+  font-size: 14px;
+}
+
 body {
   font-family: sans-serif;
-  --max-width: 30rem;
+  --max-width: 50rem;
+  --font-size-s: 0.9rem;
+  --font-size-xs: 0.8rem;
   max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: #d0ffe1;
 }
 
 h1 {
   display: inline-block;
   background: #00c5334d;
   padding: 0.1rem 0.2rem;
+  margin: 0;
 }
 
 article {
   margin: 2rem 0;
   line-height: 1.8;
+}
+
+/**/
+
+.details {
+  margin-top: 3rem;
+  background: #e9f0f7;
+  padding: 0.5rem;
+  line-height: 1rem;
+  color: #0d304a;
+  outline: none;
+  cursor: default;
+}
+
+summary {
+  outline: none;
+}
+
+.actor-adtech,
+.actor-publisher,
+.actor-advertiser,
+.actor-browser {
+  padding: 0 2px;
+}
+
+.actor-adtech {
+  background-color: #ff00003d;
+}
+
+.actor-publisher {
+  background-color: #00c5334d;
+}
+
+.actor-advertiser {
+  background-color: #fff59a;
+}
+
+.actor-browser {
+  background-color: #0050ff38;
+}
+
+.code {
+  font-size: var(--font-size-xs);
+  font-family: 'Lucida Console', Monaco, monospace;
 }

@@ -8,6 +8,9 @@ body {
   --font-size-s: 0.9rem;
   --font-size-xs: 0.8rem;
   max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+  cursor: default;
 }
 
 h2 {
@@ -65,7 +68,7 @@ a:visited {
 .actor-publisher,
 .actor-advertiser,
 .actor-browser {
-  padding: 2px 4px;
+  padding: 0 2px;
 }
 
 .actor-adtech {
