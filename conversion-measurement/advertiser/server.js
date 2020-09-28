@@ -23,6 +23,7 @@ app.get('/shoes07/checkout', (req, res) => {
 
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
-    '👟 Advertiser server is listening on port ' + listener.address().port
+    '\x1b[1;33m%s\x1b[0m',
+    `👟 Advertiser server is listening on port ${listener.address().port}`
   )
 })

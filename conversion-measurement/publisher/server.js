@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
-    '📰 Publisher server is listening on port ' + listener.address().port
+    '\x1b[1;32m%s\x1b[0m',
+    `📰 Publisher server is listening on port ${listener.address().port}`
   )
 })

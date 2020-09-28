@@ -5,25 +5,15 @@ const app = express()
 app.set('view engine', 'pug')
 const PORT = 3000
 
-// Conversion value mapping
-
-const conversionValues = {
-  signup: 1,
-  'add-to-cart': 2,
-  checkout: 3
-}
-
-// Reports
-
-let reports = []
-
-// Server
-
 app.use(express.static('static'))
 
 app.get('/', (req, res) => {
   res.render('index')
 })
+
+/* -------------------------------------------------------------------------- */
+/*                                 Ad serving                                 */
+/* -------------------------------------------------------------------------- */
 
 app.get('/ad', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}/shoes07`
@@ -44,6 +34,9 @@ app.get('/ad-script', (req, res) => {
   )
 })
 
+/* -------------------------------------------------------------------------- */
+/*                                 Conversion                                 */
+/* -------------------------------------------------------------------------- */
 
 const conversionValues = {
   signup: 1,
@@ -52,13 +45,22 @@ const conversionValues = {
 
 app.get('/conversion', (req, res) => {
   const conversionData = conversionValues[req.query['conversion-type']]
-  console.log(conversionData)
-
+  console.log(
+    '\x1b[1;31m%s\x1b[0m',
+    `🚀 Adtech sends a conversion record request to the browser with conversion data = ${conversionData}`
+  )
+  // adtech orders the browser to send a conversion report
   res.redirect(
     302,
     `/.well-known/register-conversion?conversion-data=${conversionData}`
   )
 })
+
+/* -------------------------------------------------------------------------- */
+/*                             Conversion reports                             */
+/* -------------------------------------------------------------------------- */
+
+let reports = []
 
 app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
@@ -67,11 +69,16 @@ app.get('/reports', (req, res) => {
 app.post('/*', (req, res) => {
   const newReport = req.query
   reports = [...reports, newReport]
+  console.log(
+    '\x1b[1;31m%s\x1b[0m',
+    `🚀 Adtech has received a conversion report from the browser`
+  )
   res.sendStatus(200)
 })
 
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
-    '🚀 Adtech server is listening on port ' + listener.address().port
+    '\x1b[1;31m%s\x1b[0m',
+    `🚀 Adtech server is listening on port ${listener.address().port}`
   )
 })
