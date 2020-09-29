@@ -45,4 +45,4 @@ In local development, use and open `127.0.0.1` URLs, not `localhost`. Because co
 
 ## Questions or issues?
 
-Ping [@maudnals](https://twitter.com/maudnals) on Twitter.
+Ping [@maudnals](https://twitter.com/maudnals) or [@ChromiumDev](https://twitter.com/ChromiumDev) on Twitter.
