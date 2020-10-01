@@ -67,8 +67,8 @@ app.get('/reports', (req, res) => {
 })
 
 app.post('/*', (req, res) => {
-  const newReport = req.query
-  reports = [...reports, newReport]
+  const newReport = { ...req.query, date: new Date() }
+  reports = [newReport, ...reports]
   console.log(
     '\x1b[1;31m%s\x1b[0m',
     `🚀 Adtech has received a conversion report from the browser`
