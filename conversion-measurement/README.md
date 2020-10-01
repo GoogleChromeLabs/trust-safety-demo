@@ -1,4 +1,4 @@
-# ⚡️ Event conversion measurement API: demo
+# ⚡️ Event Conversion Measurement API: demo
 
 ## Live demo
 
