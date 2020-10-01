@@ -8,25 +8,34 @@ app.set('views', './views');
 app.use(express.static("public"));
 app.use(express.json({type: "application/reports+json"}));
 
+// const reporting_endpoint = 'https://742ee3e6f7d80ca065e6cc05f16b6947.report-uri.com/a/d/g';
+// const reporting_endpoint = `https://${process.env.PROJECT_DOMAIN}.glitch.me/report`;
+// const reporting_endpoint = 'https://reportingapi.tools/public/submit';
+const reporting_endpoint = 'https://reporting-endpoint.glitch.me/post';
+
+const ot = (req, res, next) => {
+  res.set('Origin-Trial', `${process.env.OT_TOKEN}`);
+  next();
+}
+
 const coep = (req, res, next) => {
   if (req.query.coep && ['require-corp'].includes(req.query.coep)) {
-    if ('report' in req.query) {
-      const reportTo = {
-        group: 'coep',
-        max_age: 60*60*24,
-        endpoints: [{
-          url: 'https://742ee3e6f7d80ca065e6cc05f16b6947.report-uri.com/a/d/g'
-          // url: 'https://first-party-test.glitch.me/report'
-        }]
-      };
-      res.set('Report-To', JSON.stringify(reportTo));
-      if ('only' in req.query) {
-        res.set('Cross-Origin-Embedder-Policy-Report-Only', `${req.query.coep};report-to="coep"`);
-      } else {
-        res.set('Cross-Origin-Embedder-Policy', `${req.query.coep};report-to="coep"`);
-      }
+    const reportTo = {
+      group: 'coep',
+      max_age: 60*60*24,
+      endpoints: [{
+        url: reporting_endpoint
+      }],
+      "include_subdomains":true
+    };
+    const previousReportTo = res.get('Report-To');
+    const parsedReporTo = JSON.stringify(reportTo);
+    const newReportTo = previousReportTo ? `${previousReportTo},${parsedReporTo}` : parsedReporTo;
+    res.set('Report-To', newReportTo);
+    if ('report-only' in req.query) {
+      res.set('Cross-Origin-Embedder-Policy-Report-Only', `${req.query.coep};report-to="coep"`);
     } else {
-      res.set('Cross-Origin-Embedder-Policy', `${req.query.coep}`);
+      res.set('Cross-Origin-Embedder-Policy', `${req.query.coep};report-to="coep"`);
     }
   }
   next();
@@ -35,7 +44,22 @@ const coep = (req, res, next) => {
 const coop = (req, res, next) => {
   if (req.query.coop &&
       ['same-origin', 'same-origin-allow-popups', 'unsafe-none'].includes(req.query.coop)) {
-    res.set('Cross-Origin-Opener-Policy', `${req.query.coop}`);
+    const reportTo = {
+      group: 'coop',
+      max_age: 60*60*24,
+      endpoints: [{
+        url: reporting_endpoint
+      }]
+    };
+    const previousReportTo = res.get('Report-To');
+    const parsedReporTo = JSON.stringify(reportTo);
+    const newReportTo = previousReportTo ? `${previousReportTo},${parsedReporTo}` : parsedReporTo;
+    res.set('Report-To', newReportTo);
+    if ('report-only' in req.query) {
+      res.set('Cross-Origin-Opener-Policy-Report-Only', `${req.query.coop};report-to="coop"`);
+    } else {
+      res.set('Cross-Origin-Opener-Policy', `${req.query.coop};report-to="coop"`);
+    }
   }
   next();
 }
@@ -52,7 +76,7 @@ app.use((req, res, next) => {
   console.log(req.get('x-forwarded-proto'));
   if (req.get('x-forwarded-proto') &&
      (req.get('x-forwarded-proto')).split(',')[0] === 'http') {
-    return res.redirect(301, `https://${process.env.HOSTNAME}${req.originalUrl}`);
+    return res.redirect(301, `https://${process.env.PROJECT_DOMAIN}.glitch.me/${req.originalUrl}`);
   }
   req.protocol = 'https';
   next();
@@ -68,7 +92,7 @@ app.post('/report', (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/', coep, coop, corp, (req, res) => {
+app.get('/', ot, coep, coop, corp, (req, res) => {
   res.render("index.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -76,7 +100,7 @@ app.get('/', coep, coop, corp, (req, res) => {
   });
 });
 
-app.get('/coep', coep, coop, corp, (req, res) => {
+app.get('/coep', ot, coep, coop, corp, (req, res) => {
   res.render("coep.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -84,7 +108,7 @@ app.get('/coep', coep, coop, corp, (req, res) => {
   });
 });
 
-app.get('/coop', coep, coop, corp, (req, res) => {
+app.get('/coop', ot, coep, coop, corp, (req, res) => {
   res.render("coop.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -92,7 +116,7 @@ app.get('/coop', coep, coop, corp, (req, res) => {
   });
 });
 
-app.get('/popup', coep, coop, corp, (req, res) => {
+app.get('/popup', ot, coep, coop, corp, (req, res) => {
   res.render("popup.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -100,7 +124,7 @@ app.get('/popup', coep, coop, corp, (req, res) => {
   });
 });
 
-app.get('/iframe', coep, coop, corp, (req, res) => {
+app.get('/iframe', ot, coep, coop, corp, (req, res) => {
   res.render("iframe.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -108,7 +132,7 @@ app.get('/iframe', coep, coop, corp, (req, res) => {
   });
 });
 
-app.get('/ls', coep, coop, corp, (req, res) => {
+app.get('/ls', ot, coep, coop, corp, (req, res) => {
   res.render("ls.html", {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,

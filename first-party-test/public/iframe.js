@@ -22,7 +22,7 @@ export class CrossOriginIframe {
     this.iframe_url = this.url;
 
     window.addEventListener('message', e => {
-      alert('message received');
+      // alert('message received');
     });
 
     this.render();
@@ -38,10 +38,10 @@ export class CrossOriginIframe {
         <select id="iframe_corp" @change="${this.change.bind(this)}">
           ${renderOptions(this.corp, ['--', 'same-site', 'same-origin', 'cross-origin'])}
         </select><br>
-<!--         <label for="iframe_xfo">X-Frame-Options</label>
+        <label for="iframe_xfo">X-Frame-Options</label>
         <select id="iframe_xfo" @change="${this.change.bind(this)}">
           ${renderOptions(this.xfo, ['--', 'deny', 'sameorigin'])}
-        </select><br> -->
+        </select><br>
         <input type="text" id="iframe_url" style="width:500px" value="${this.url}">
         <mwc-button id="reload_iframe" @click="${this.reload.bind(this)}" raised>Reload the iframe</mwc-button><br/>
         <mwc-button id="postmessage_iframe" @click="${this.postMessage.bind(this)}">Send a postMessage</mwc-button>`, this.parent);
