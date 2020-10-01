@@ -1,4 +1,4 @@
-# ⚡️ Click-through conversion measurement event-Level API: demo
+# ⚡️ Event conversion measurement API: demo
 
 ## Live demo
 
