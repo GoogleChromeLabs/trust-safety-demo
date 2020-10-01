@@ -7,9 +7,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="origin-trial" content="{{origin_trial}}">
     <link rel="stylesheet" href="/style.css">
-    <script src="/client2.js" defer></script>
+    <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js" crossorigin></script>
+    <script src="https://unpkg.com/@material/mwc-button@0.15.0?module" type="module" async defer></script>
+    <script src="https://unpkg.com/@material/mwc-snackbar@0.15.0?module" type="module" async defer></script>
   </head>
   <body>
     <h1>
@@ -18,68 +19,32 @@
     <p>
       Works on Chrome 83+ or Firefox 76+.
     </p>
+    <p>
+      Reports will be sent to <a href="https://reporting-endpoint.glitch.me" target="_blank">https://reporting-endpoint.glitch.me</a>.<br/>
+      Open the page and wait for the reports to show up. Reload not needed.<br/>
+      To receive COOP reports, you need to turn on two flags using CHrome 86+.<br/>
+      <ul>
+        <li>chrome://flags#cross-origin-opener-policy-reporting</li>
+        <li>chrome://flags#cross-origin-opener-policy-access-reporting</li>
+      </ul>
+    </p>
     <div>
       <form>
         <h2>
-          1. Load this page with a COEP header.
+          Set HTTP headers for this page.
         </h2>
-        <label for="_coep">Cross Origin Embedder Policy</label>
-        <select id="_coep">
-          <option value="">--</option>
-          <option value="require-corp">require-corp</option>
-        </select><br>
-        <input type="text" id="_url" style="width:500px">
+        <div id="main_container"></div>
         <h2>
-          2. See how COEP affected a cross-origin image and a cross-origin iframe.
+          Set various headers for the cross-origin image.
         </h2>
-        <table class="left">
-          <tr><td>
-            <h2>
-              I am a cross-origin image
-            </h2>
-            <img id="image" src="https://third-party-test.glitch.me/check.svg" width="100" height="100">
-          </td></tr>
-        </table>
+        <div id="image_container"></div>
         <h2>
-          3. Load the cross-origin image with various CORP headers to see how they affect.
+          Set various headers for the cross-origin iframe.
         </h2>
-        <label for="corp1">Cross Origin Resource Policy</label>
-        <select id="corp1">
-          <option value="">--</option>
-          <option value="same-site">same-site</option>
-          <option value="same-origin">same-origin</option>
-          <option value="cross-origin">cross-origin</option>
-        </select><br>
-        <input type="text" id="image_url" style="width:500px">
-        <button id="reload_image">Reload the image</button>
-        <div style="clear:both"></div>
-        <table class="left">
-          <tr><td>
-            <h2>
-              I am a cross-origin iframe window
-            </h2>
-            <iframe id="iframe" src="https://third-party-test.glitch.me/iframe" width="420" height="240"></iframe>
-          </td></tr>
-        </table>
-        <h2>
-          4. Load the cross-origin iframe with various headers and see how they affect.
-        </h2>
-        <label for="coep2">Cross Origin Embedder Policy</label>
-        <select id="coep2">
-          <option value="">--</option>
-          <option value="require-corp">require-corp</option>
-        </select><br>
-        <label for="corp2">Cross Origin Resource Policy</label>
-        <select id="corp2">
-          <option value="">--</option>
-          <option value="same-site">same-site</option>
-          <option value="same-origin">same-origin</option>
-          <option value="cross-origin">cross-origin</option>
-        </select><br>
-        <input type="text" id="iframe_url" style="width:500px">
-        <button id="reload_iframe">Reload the iframe</button>
+        <div id="iframe_container"></div>
       </form>
       <mwc-snackbar id="toast"></mwc-snackbar>
     </div>
+    <script src="/client.js" type="module" defer></script>
   </body>
 </html>

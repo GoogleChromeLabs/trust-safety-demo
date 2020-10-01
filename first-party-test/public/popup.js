@@ -6,7 +6,11 @@ export class CrossOriginPopup {
     this.parent = parent;
     let _url = `${TP_BASE_URL}/popup?`;
 
-    let val = localStorage.getItem(`popup_coep`);
+    let val = localStorage.getItem(`popup_report`);
+    if (val) _url += `report-only&`;
+    this.reportOnly = val;
+
+    val = localStorage.getItem(`popup_coep`);
     if (val) _url += `coep=${val}&`;
     this.coep = val;
 
@@ -16,13 +20,15 @@ export class CrossOriginPopup {
     this.url = _url;
 
     window.addEventListener('message', e => {
-      alert('message received');
+      // alert('message received');
     });
 
     this.render();
   }
   render() {
     render(html`
+        <label for="popup_report">Report Only</label>
+        <input type="checkbox" id="popup_report" ?checked="${this.reportOnly}" @change="${this.change.bind(this)}"/><br/>
         <label for="popup_coep">Cross Origin Embedder Policy</label>
         <select id="popup_coep" @change="${this.change.bind(this)}">
           ${renderOptions(this.coep, ['--', 'require-corp'])}
@@ -41,14 +47,24 @@ export class CrossOriginPopup {
   }
   change(e) {
     let _url = `${TP_BASE_URL}/popup?`;
+
+    if (e.target.id == 'popup_report') this.reportOnly = e.target.checked;
+    if (this.reportOnly) {
+      localStorage.setItem(`popup_report`, 'true');
+      _url += `report-only&`;
+    } else {
+      localStorage.removeItem(`popup_report`);
+    }
+
     if (e.target.id == 'popup_coep') this.coep = e.target.value;
-    if (e.target.id == 'popup_coop') this.coop = e.target.value;
     if (this.coep) {
       _url += `coep=${encodeURIComponent(this.coep)}&`;
       localStorage.setItem(`popup_coep`, this.coep);
     } else {
       localStorage.removeItem(`popup_coep`);
     }
+
+    if (e.target.id == 'popup_coop') this.coop = e.target.value;
     if (this.coop) {
       _url += `coop=${encodeURIComponent(this.coop)}&`;
       localStorage.setItem(`popup_coop`, this.coop);

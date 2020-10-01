@@ -6,9 +6,9 @@ export class Main {
     this.parent = parent;
     let _url = new URL(location.href);
 
-    ['report', 'coep', 'coop', 'corp'].forEach(key => {
-      if (key == 'report' && _url.searchParams.has('report')) {
-        this.report = true;
+    ['report-only', 'coep', 'coop', 'corp'].forEach(key => {
+      if (key == 'report-only' && _url.searchParams.has('report-only')) {
+        this.reportOnly = true;
         return;
       }
       if (_url.searchParams.has(key)) {
@@ -22,8 +22,8 @@ export class Main {
   }
   render() {
     render(html`
-        <label for="main_report">Reporting</label>
-        <input type="checkbox" id="main_report" ?checked="${this.report}" @change="${this.change.bind(this)}"/><br/>
+        <label for="main_report">Report Only</label>
+        <input type="checkbox" id="main_report" ?checked="${this.reportOnly}" @change="${this.change.bind(this)}"/><br/>
         <label for="main_coep">Cross Origin Embedder Policy</label>
         <select id="main_coep" @change="${this.change.bind(this)}">
           ${renderOptions(this.coep, ['--', 'require-corp'])}
@@ -40,9 +40,9 @@ export class Main {
   }
   change(e) {
     let _url = `${location.origin}${location.pathname}?`;
-    if (e.target.id == 'main_report') this.report = e.target.checked;
-    if (this.report) {
-      _url += `report&`;
+    if (e.target.id == 'main_report') this.reportOnly = e.target.checked;
+    if (this.reportOnly) {
+      _url += `report-only&`;
     }
 
     if (e.target.id == 'main_coep') this.coep = e.target.value;

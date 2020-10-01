@@ -7,9 +7,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="origin-trial" content="{{origin_trial}}">
     <link rel="stylesheet" href="/style.css">
-    <script src="/client2.js" defer></script>
+    <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js" crossorigin></script>
+    <script src="https://unpkg.com/@material/mwc-button@0.15.0?module" type="module" async defer></script>
+    <script src="https://unpkg.com/@material/mwc-snackbar@0.15.0?module" type="module" async defer></script>
   </head>
   <body>
     <h1>
@@ -18,36 +19,28 @@
     <p>
       Works on Chrome 83+ or Firefox 76+.
     </p>
+    <p>
+      Reports will be sent to <a href="https://reporting-endpoint.glitch.me" target="_blank">https://reporting-endpoint.glitch.me</a>.<br/>
+      Open the page and wait for the reports to show up. Reload not needed.<br/>
+      To receive COOP reports, you need to turn on two flags using CHrome 86+.<br/>
+      <ul>
+        <li>chrome://flags#cross-origin-opener-policy-reporting</li>
+        <li>chrome://flags#cross-origin-opener-policy-access-reporting</li>
+      </ul>
+    </p>
     <div>
       <form>
         <h2>
-          1. Load this page with a COOP header.
+          Set HTTP headers for this page.
         </h2>
-        <label for="_coop">Cross Origin Opener Policy</label>
-        <select id="_coop">
-          <option value="">--</option>
-          <option value="same-origin">same-origin</option>
-          <option value="same-origin-allow-popups">same-origin-allow-popups</option>
-          <option value="unsafe-none">unsafe-none</option>
-        </select><br>
-        <input type="text" id="_url" style="width:500px">
+        <div id="main_container"></div>
         <h2>
-          2. Set a COOP header for cross-origin popup window.
+          Set various headers for the cross-origin popup window.
         </h2>
-        <label for="coop3">Cross Origin Opener Policy</label>
-        <select id="coop3">
-          <option value="">--</option>
-          <option value="same-origin">same-origin</option>
-          <option value="same-origin-allow-popups">same-origin-allow-popups</option>
-          <option value="unsafe-none">unsafe-none</option>
-        </select><br>
-        <h2>
-          3. Open the cross-origin popup and see if it will be in the same browsing context group.
-        </h2>
-        <input type="text" id="popup_url" style="width:500px">
-        <button id="open_popup">Open a popup</button>
+        <div id="popup_container"></div>
       </form>
       <mwc-snackbar id="toast"></mwc-snackbar>
     </div>
+    <script src="/client.js" type="module" defer></script>
   </body>
 </html>
