@@ -6,45 +6,48 @@ head
   link(rel='stylesheet' href='/styles.css')
   meta(http-equiv='origin-trial' content='AkrJ8jZqpab3zIxJWJim7eqa7E+xvBJc3D6MqLzNHPJ/smGMbswP8DFhdqXpwYviAdO8U5O4AUgBnkBhBGfu7wEAAACBeyJvcmlnaW4iOiJodHRwczovL3B1Ymxpc2hlci1kb3QtcGVhY29jay1kZW1vLTI4MzgyMi5udy5yLmFwcHNwb3QuY29tOjQ0MyIsImZlYXR1cmUiOiJDb252ZXJzaW9uTWVhc3VyZW1lbnQiLCJleHBpcnkiOjE2MDQ5MDMzMjV9')
 body
-  h1 Publisher website 📰 
-  h2 Article
-  article
-    | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
-    | Slugging catcher slide bench league, left fielder nubber. 
-    | Base cookie triple play blue hot dog relay rake starting pitcher inning.
+  main
+    h1 Publisher website 📰 
+    h2 Article
+    article
+      | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
+      | Slugging catcher slide bench league, left fielder nubber. 
+      | Base cookie triple play blue hot dog relay rake starting pitcher inning.
 
-  // Third-party adtech script that dynamically creates an iframe with an ad
-  script(src=adScriptUrl)
-  div.details
-    strong ℹ️ DEMO
-    p
-    strong On this page: 
-    | An authorized third-party script from 
-    span.actor-adtech adtech
-    |  loads an iframe on the 
-    span.actor-publisher publisher
-    | 's site.
-    |  This iframe includes an ad element that contains the attributes needed for the Event-Level Conversion Measurement API: 
-    ul
-      li
-        span.code impressiondata
-        |: the click ID
-      li
-        span.code impressionexpiry
-      li
-        span.code conversiondestination
-        |: an 
-        span.actor-advertiser advertiser
-        |  site
-      li
-        span.code reportingorigin
-        |: 
-        span.actor-adtech adtech
-        |'s server in this demo.
-    p 
-    strong Do:
-    ul
-      li Click the ad
-      li (Optional: open DevTools by pressing F12 to see these attributes)
+    // Third-party adtech script that dynamically creates an iframe with an ad
+    script(src=adScriptUrl)
+  details
+    summary
+      div.summary-text ℹ️ DEMO
+    div.content
+      p
+      strong On this page: 
+      | An authorized third-party script from 
+      span.actor-adtech adtech
+      |  loads an iframe on the 
+      span.actor-publisher publisher
+      | 's site.
+      |  This iframe includes an ad element that contains the attributes needed for the Event-Level Conversion Measurement API: 
+      ul
+        li
+          span.code impressiondata
+          |: the click ID
+        li
+          span.code impressionexpiry
+        li
+          span.code conversiondestination
+          |: an 
+          span.actor-advertiser advertiser
+          |  site
+        li
+          span.code reportingorigin
+          |: 
+          span.actor-adtech adtech
+          |'s server in this demo.
+      p 
+      strong Do:
+      ul
+        li Click the ad
+        li (Optional: open DevTools by pressing F12 to see these attributes)
 
 

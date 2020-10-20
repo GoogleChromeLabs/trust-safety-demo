@@ -35,18 +35,36 @@ article {
   background: black;
 }
 
-.details {
-  margin-top: 3rem;
-  background: #e9f0f7;
-  padding: 0.5rem;
+main {
+  height: 90vh;
+}
+
+details {
   line-height: 1rem;
-  color: #0d304a;
-  outline: none;
-  cursor: default;
+  color: #000000c7;
 }
 
 summary {
   outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.summary-text {
+  background: #000000c7;
+  color: #ffffff;
+  padding: 0.2rem 0.4rem;
+  margin-right: 0.4rem;
+  font-family: 'Lucida Console', Monaco, monospace;
+  letter-spacing: 0.06rem;
+}
+
+details .content {
+  border-left: solid 1px#000000c7;
+  padding: 0.5rem 1rem 0 1rem;
 }
 
 .actor-adtech,
