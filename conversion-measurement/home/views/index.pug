@@ -10,19 +10,20 @@ body
     ol
         li Make sure you're in Chrome, version 
             strong 86 
-            | or later (for example 
-            a(href='https://www.google.com/chrome/beta/' noreferrer noopener) Chrome Beta
-            | ). You can check what version of Chrome you're using by typing 
+            | or later. You can check what version of Chrome you're using by typing 
             span.select.code chrome://version
             |  in the URL bar.
-        li Some ad blocking browser extensions may block some of this demo's functionality. Deactivate ad-blocking extensions on the demo pages (but do 
-            strong not 
-            | use Incognito).
+        li Some ad blocking browser extensions may block some of this demo's functionality. Deactivate ad-blocking extensions on the demo pages.
+        li Don't use an Incognito or Guest profile.
         li Go to flags by typing or pasting 
             span.select.code chrome://flags 
             | in Chrome's URL bar. 
-            | Turn on the flag 
+            | Turn on the 
+            strong two 
+            | flags 
             span.select.code #conversion-measurement-api
+            |  and 
+            span.select.code #enable-experimental-web-platform-features
             |.
         li 
             strong Disable 
