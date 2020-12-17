@@ -1,0 +1,17 @@
+{
+  "name": "starter-parcel",
+  "version": "0.0.2",
+  "scripts": {
+    "build": "parcel build src/index.html",
+    "start": "parcel serve src/index.html --port $PORT"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "fingerprintjs2": "^2.1.0"
+  }
+}

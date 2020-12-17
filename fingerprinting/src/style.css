@@ -1,0 +1,36 @@
+body {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: bold;
+  margin: 2em;
+}
+
+h1 {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  font-style: italic;
+  color: #373fff;
+}
+
+#hash {
+  letter-spacing: 0.1rem;
+  font-size: 1.6rem;
+}
+
+.component {
+  display: flex;
+}
+
+.key {
+  opacity: 0.4;
+  width: 12rem;
+  margin-right: 1rem;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.value {
+  width: 12rem;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
