@@ -4,7 +4,8 @@
   "description": "User-Agent Client Hints is a new expansion to the Client Hints API.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "start:dev": "NODE_ENV=development PORT=8080 node server.js"
   },
   "dependencies": {
     "express": "^4.17.1",

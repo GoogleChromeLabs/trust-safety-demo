@@ -4,16 +4,15 @@
 <title>User-Agent 👀 Client Hints</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link id="favicon" rel="icon" href="https://cdn.glitch.com/195b7e72-ff57-4304-8ade-ebbb1cf2022d%2Feyes_1f440.png?v=1593419184811" type="image/x-icon" />
+<link id="favicon" rel="icon"
+  href="https://cdn.glitch.com/195b7e72-ff57-4304-8ade-ebbb1cf2022d%2Feyes_1f440.png?v=1593419184811"
+  type="image/x-icon" />
 
 <meta name="Description" content="User-Agent 👀 Client Hints" />
-<link rel="canonical" href="https://user-agent-client-hints.glitch.me/javascript.html" />
+<link rel="canonical"
+  href="https://user-agent-client-hints.glitch.me/javascript.html" />
 
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
   body {
     font-family: sans-serif;
     font-weight: 300;
@@ -22,8 +21,9 @@
     color: hsl(300, 24%, 30%);
   }
 
-
-  h1, h2, nav {
+  h1,
+  h2,
+  nav {
     font-size: 1.1rem;
     font-weight: 400;
     padding: 0.5rem;
@@ -35,18 +35,18 @@
     border-top: 1px hsl(300, 24%, 55%) solid;
   }
 
-  pre, div {
+  pre,
+  code {
     font-family: monospace;
     font-weight: 700;
     color: #444;
-    background: oldlace;
   }
 
   pre {
-    display: block;
     overflow: auto;
     padding: 0.8rem;
     margin: 0;
+    background: oldlace;
   }
 
   pre.input {
@@ -61,26 +61,11 @@
     color: hsl(300, 24%, 70%);
   }
 
-  label {
-    display: inline-block;
-    margin: 0.1rem;
-  }
-
-  fieldset {
-    border: 2px hsl(300, 24%, 55%) ridge;
-  }
-
-  div {
-    display: inline-block;
-    margin: 0.3rem 0.15rem 0.3rem 0.15rem;
-    padding: 0.3rem 0.6rem 0.3rem 0.1rem;
-  }
-
   a {
     color: hsl(300, 24%, 50%);
     font-weight: 500;
   }
-  
+
   footer {
     padding-left: 1rem;
   }
@@ -96,19 +81,27 @@
   <h2>Brands</h2>
   <pre class="input">console.log(navigator.userAgentData.brands);</pre>
   <pre class="brands" disabled>[…]</pre>
-  <h2>Mobile-ness</h2>
+  <h2>Mobile indicator</h2>
   <pre class="input">console.log(navigator.userAgentData.mobile);</pre>
   <pre class="mobile" disabled>[…]</pre>
-  <h2>Full User-Agent</h2>
+  <h2>Full User-Agent data</h2>
   <pre class="input">navigator.userAgentData
 .getHighEntropyValues(["architecture", "model", "platform", "platformVersion", "uaFullVersion"])
 .then(ua => { console.log(ua) });</pre>
   <pre class="high-entropy" disabled></pre>
+  <h2>[For comparison] User-Agent</h2>
+  <pre class="input">console.log(navigator.userAgent);</pre>
+  <pre class="user-agent" disabled>[…]</pre>
 </main>
 <footer>
   <p>*️⃣ Requires Chrome 84 Beta or equivalent.<br>
-     🚩 &nbsp;Enable the <tt>chrome://flags/#enable-experimental-web-platform-features</tt> flag.<br>
-     💻 <a href="https://glitch.com/edit/#!/user-agent-client-hints?path=public%2Fjavascript.html">See the code</a>.</p>
+    🚩 &nbsp;Enable the
+    <code>chrome://flags/#enable-experimental-web-platform-features</code>
+    flag.<br>
+    💻 <a
+      href="https://glitch.com/edit/#!/user-agent-client-hints?path=public%2Fjavascript.html">See
+      the code</a>.
+  </p>
 </footer>
 <script>
   "use strict";
@@ -124,4 +117,6 @@
     .then(ua => {
       highEntropyText.textContent = JSON.stringify(ua, null, "  ");
     });
+
+  document.querySelector('.user-agent').textContent = navigator.userAgent;
 </script>
