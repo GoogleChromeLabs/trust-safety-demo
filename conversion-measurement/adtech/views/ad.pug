@@ -10,14 +10,13 @@ body(style={"font-family": "sans-serif", "background": "#ffe2e3"})
 a#ad(href=href conversiondestination=conversiondestination impressiondata='' reportingorigin=reportingorigin impressionexpiry='864000000' target='_parent')
   img(width='180' src='/shoes07.png' alt='shoes 07')
 script.
-  const toHex = (value) => value.toString(16)
-  function getRandom64BitsIntegerAsHex() {
+  function getRandom64BitsInteger() {
     const randomInts = new Uint32Array(2);
     window.crypto.getRandomValues(randomInts)
-    return `${toHex(randomInts[0])}${toHex(randomInts[1])}`
+    return `${(randomInts[0])}${(randomInts[1])}`
   }
   const adLink = document.getElementById('ad')
   adLink.setAttribute(
     'impressiondata',
-    getRandom64BitsIntegerAsHex()
+    getRandom64BitsInteger()
   )
