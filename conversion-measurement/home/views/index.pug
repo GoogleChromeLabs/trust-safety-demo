@@ -6,25 +6,27 @@ head
   link(rel='stylesheet' href='/styles.css')
 body
     h1 ⚡️ Demo: Event-Level Conversion Measurement API
-    h2 Before you can run this demo
+
+    h2 Before you run this demo
+    div.important
+        | Read this ⤵️! The demo only works once you've gone through these setup steps ⤵️⤵️⤵️
     ol
         li Make sure you're in Chrome, version 
             strong 86 
             | or later. You can check what version of Chrome you're using by typing 
             span.select.code chrome://version
             |  in the URL bar.
-        li Some ad blocking browser extensions may block some of this demo's functionality. Deactivate ad-blocking extensions on the demo pages.
+        li Deactivate ad-blocking extensions on the demo pages. Some ad blocking browser extensions may block some of this demo's functionality. 
         li Don't use an Incognito or Guest profile.
-        li Go to flags by typing or pasting 
-            span.select.code chrome://flags 
-            | in Chrome's URL bar. 
-            | Turn on the 
+        li Turn on the 
             strong two 
             | flags 
             span.select.code #conversion-measurement-api
             |  and 
             span.select.code #enable-experimental-web-platform-features
-            |.
+            |. Go to flags by typing or pasting 
+            span.select.code chrome://flags 
+            | in Chrome's URL bar. 
         li 
             strong Disable 
             | third-party cookie 

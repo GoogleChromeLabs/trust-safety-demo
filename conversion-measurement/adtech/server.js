@@ -30,7 +30,7 @@ app.get('/ad-script', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad`
   res.send(
-    `console.log('✔️ Loaded adtech script'); document.write("<iframe src='${adUrl}' allow='conversion-measurement' width=190 height=200 scrolling=no frameborder=1 padding=0></iframe>")`
+    `console.info('✔️ Adtech script loaded'); document.write("<iframe src='${adUrl}' allow='conversion-measurement' width=190 height=200 scrolling=no frameborder=1 padding=0></iframe>")`
   )
 })
 
