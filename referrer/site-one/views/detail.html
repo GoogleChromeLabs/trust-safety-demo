@@ -50,11 +50,14 @@
     <div id="detected-policy" class="async policy">...</div>
     <br />
     <img src="/chrome-logo-xs.png" alt="chrome logo" width="12" />
-    Chrome is in the process of gradually changing its default policy. If you're
-    in Chrome and the displayed default policy is no-referrer-when-downgrade,
-    you can experiment with the new behaviour (strict-origin-when-cross-origin
-    by default) by enabling the flag at
-    <b class="flag">chrome://flags/#reduced-referrer-granularity</b>.
+    Chrome
+    <a
+      href="https://developers.google.com/web/updates/2020/07/referrer-policy-new-chrome-default"
+      target="_blank"
+      noopener
+      noreferrer
+      >has changed its default referrer-policy to no-referrer-when-downgrade</a
+    >.
     <h2>Pick a document-level referrer policy</h2>
     <div class="btn-group-policy">
       <button value="p0" class="selected" onclick="switchPolicy(event)">
