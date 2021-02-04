@@ -50,7 +50,7 @@ a:visited {
 video {
   margin: 1rem 0 0 0;
   width: 100%;
-  max-width: 24rem;
+  max-width: 44rem;
 }
 
 .show {
@@ -110,7 +110,8 @@ video {
   color: #00c535;
 }
 
-.error {
+.error,
+.important {
   color: red;
 }
 
