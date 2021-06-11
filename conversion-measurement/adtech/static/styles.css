@@ -13,6 +13,10 @@ body {
   background: #ffdede;
 }
 
+a {
+  display: block;
+}
+
 h1 {
   display: inline-block;
   background: #ff00003d;
