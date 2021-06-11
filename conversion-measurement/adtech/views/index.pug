@@ -10,11 +10,11 @@ body
     | Reports (
     span#reportCount 0
     | )
-  p *⚠️ This is not the conversion time. This is the time when adtech has received this report, displayed here to make it easier to know what reports you're looking at. The exact conversion time is visible in chrome://conversion-internals, but is not included in the report in order to preserve user privacy.
+  p *⚠️ This is not the conversion time. This is the time when the reporting endpoint has received this report, displayed here to make it easier to know what reports you're looking at. The exact conversion time is visible in chrome://conversion-internals, but is not included in the report in order to preserve user privacy.
   .row.header
     div Click ID ("Impression data")
     div Conversion data
     div Attribution
-    div Received by adtech on*
+    div Received by the reporting endpoint on*
   #reportList
   script(src='/reports-script.js')
