@@ -10,11 +10,14 @@ body
     | Reports (
     span#reportCount 0
     | )
-  p *⚠️ This is not the conversion time. This is the time when the reporting endpoint has received this report, displayed here to make it easier to know what reports you're looking at. The exact conversion time is visible in chrome://conversion-internals, but is not included in the report in order to preserve user privacy.
+  p *⚠️ This is not the conversion time (= attribution trigger time). This is the time when the reporting endpoint has received this report. This time is displayed here to make it easier to know what reports you're looking at. The exact conversion time (= attribution trigger time) is visible in chrome://conversion-internals, but is not included in the report in order to preserve user privacy.
   .row.header
-    div Click ID ("Impression data")
-    div Conversion data
-    div Attribution
+    div Attribution source event ID 
+      br
+      |= Click or View ID
+    div Attribution trigger data
+      br
+      |= Conversion data
     div Received by the reporting endpoint on*
   #reportList
   script(src='/reports-script.js')

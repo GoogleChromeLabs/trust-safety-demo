@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 const app = express()
+app.use(express.json())
 app.set('view engine', 'pug')
 const PORT = 3000
 
@@ -17,12 +18,12 @@ app.get('/', (req, res) => {
 
 app.get('/ad', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}/shoes07`
-  const conversionDestination = process.env.ADVERTISER_URL
-  const reportingOrigin = process.env.ADTECH_URL
+  const attributionDestination = process.env.ADVERTISER_URL
+  const attributionReportTo = process.env.ADTECH_URL
   res.render('ad', {
     href,
-    conversiondestination: conversionDestination,
-    reportingorigin: reportingOrigin
+    attributiondestination: attributionDestination,
+    attributionreportto: attributionReportTo
   })
 })
 
@@ -30,12 +31,12 @@ app.get('/ad-script', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad`
   res.send(
-    `console.info('✔️ Adtech script loaded'); document.write("<iframe src='${adUrl}' allow='conversion-measurement' width=190 height=200 scrolling=no frameborder=1 padding=0></iframe>")`
+    `console.info('✔️ Adtech script loaded'); document.write("<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=200 scrolling=no frameborder=1 padding=0></iframe>")`
   )
 })
 
 /* -------------------------------------------------------------------------- */
-/*                                 Conversion                                 */
+/*                     Attribution trigger (conversion)                       */
 /* -------------------------------------------------------------------------- */
 
 const conversionValues = {
@@ -44,20 +45,20 @@ const conversionValues = {
 }
 
 app.get('/conversion', (req, res) => {
-  const conversionData = conversionValues[req.query['conversion-type']]
+  const attributionTriggerData = conversionValues[req.query['conversion-type']]
   console.log(
     '\x1b[1;31m%s\x1b[0m',
-    `🚀 Adtech sends a conversion record request to the browser with conversion data = ${conversionData}`
+    `🚀 Adtech sends a conversion record request to the browser with conversion data = ${attributionTriggerData}`
   )
-  // adtech orders the browser to send a conversion report
+  // adtech orders the browser to schedule-send a report
   res.redirect(
     302,
-    `/.well-known/register-conversion?conversion-data=${conversionData}`
+    `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${attributionTriggerData}`
   )
 })
 
 /* -------------------------------------------------------------------------- */
-/*                             Conversion reports                             */
+/*                                 Reports                                    */
 /* -------------------------------------------------------------------------- */
 
 let reports = []
@@ -66,12 +67,13 @@ app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
 
-app.post('/*', (req, res) => {
-  const newReport = { ...req.query, date: new Date() }
+app.post('/*', async (req, res) => {
+  console.log('body', req.body)
+  const newReport = { ...req.body, date: new Date() }
   reports = [newReport, ...reports]
   console.log(
     '\x1b[1;31m%s\x1b[0m',
-    `🚀 Adtech has received a conversion report from the browser`
+    `🚀 Adtech has received a report from the browser`
   )
   res.sendStatus(200)
 })
