@@ -4,6 +4,11 @@
 
 [Live demo](https://goo.gle/sppi-devrel-eventlevel)
 
+## Fork and customize
+
+All URLs in this demo can be customized.
+Look for `.env.development` and `env.production` files in each subfolder and customize them as needed.
+
 ## Set and run locally
 
 ### Browser setup
