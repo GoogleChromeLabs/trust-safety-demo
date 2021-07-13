@@ -1,0 +1,46 @@
+{
+  "name": "webauthn-codelab",
+  "version": "0.0.1",
+  "description": "A simple Node app built on Express, instantly up and running.",
+  "main": "server.js",
+  "scripts": {
+    "build": "webpack -p",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@material/mwc-button": "^0.19.0",
+    "@material/mwc-fab": "^0.19.0",
+    "@material/mwc-textfield": "^0.19.0",
+    "@material/mwc-top-app-bar-fixed": "^0.19.0",
+    "@simplewebauthn/server": "^0.10.1",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "base64url": "^3.0.1",
+    "cookie-parser": "^1.4.5",
+    "css-loader": "^4.3.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.0.0",
+    "hbs": "^4.1.2",
+    "lowdb": "^1.0.0",
+    "node-fetch": "^2.6.1",
+    "sass": "^1.26.12",
+    "sass-loader": "^10.0.2",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "repository": {
+    "url": "https://github.com/googlecodelabs/fido2-codelab"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

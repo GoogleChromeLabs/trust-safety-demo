@@ -1,0 +1,105 @@
+<!--
+ Copyright 2021 Google Inc.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebAuthn with a security key Codelab</title>
+    <meta
+      name="description"
+      content="Codelab: 2FA with a security key and WebAuthn"
+    />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
+    </header>
+    <main class="content">
+      <a class="link-button right" href="/auth/signout">🚪Sign out</a>
+      <h2>
+        👤 Account
+      </h2>
+      <h3>
+        Username
+      </h3>
+      {{ username }}
+      <div class="flex-h-between">
+        <h3>
+          Two-factor authentication
+        </h3>
+        <button class="create" id="registerButton" raised>
+          ➕ Add a credential
+        </button>
+      </div>
+      <div id="credentials"></div>
+    </main>
+    <script type="module">
+      import {
+        _fetch,
+        registerCredential,
+        removeCredential,
+        renameCredential
+      } from "/auth.client.js";
+      import { getCredentialListHtml } from "/templates.js";
+      import { render } from "https://unpkg.com/lit-html@1.0.0/lit-html.js?module";
+
+      // Register credential
+      const register = async () => {
+        const name = window.prompt(
+          `Name of the new credential:`,
+          `my security key`
+        );
+        await registerCredential(name);
+        await updateCredentialList();
+      };
+
+      // Remove credential
+      const remove = async el => {
+        const credentialId = el.srcElement.dataset.credentialId;
+        await removeCredential(credentialId);
+        await updateCredentialList();
+      };
+
+      // Rename credential
+      const rename = async el => {
+        const { credentialId, credentialName: oldName } = el.srcElement.dataset;
+        const newName = window.prompt(`New name for credential "${oldName}":`);
+        await renameCredential(credentialId, newName);
+        await updateCredentialList();
+      };
+
+      // Update the list that displays credentials
+      const updateCredentialList = async () => {
+        const response = await _fetch("/auth/getKeys");
+        const credentials = response.credentials || [];
+        const credentialListHtml = getCredentialListHtml(
+          credentials,
+          remove,
+          rename
+        );
+        const list = document.querySelector("#credentials");
+        render(credentialListHtml, list);
+      };
+
+      // Set up the handler for the button that registers credentials
+      const registerButton = document.querySelector("#registerButton");
+      registerButton.addEventListener("click", register);
+      
+      // Initialize credential display list by updating it once at the beginning
+      updateCredentialList();
+    </script>
+  </body>
+</html>
