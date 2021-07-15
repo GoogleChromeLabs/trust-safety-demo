@@ -79,7 +79,7 @@ export const removeCredential = async credId => {
   return _fetch(`/auth/removeCredential?credId=${encodeURIComponent(credId)}`);
 };
 
-export const authenticate2fa = async (password) => {
+export const authenticate2fa = async () => {
   const optionsFromServer = await _fetch("/auth/2faOptions", {
     userVerification: "discouraged"
   });
@@ -92,6 +92,6 @@ export const authenticate2fa = async (password) => {
     publicKey: decodedOptions
   });
   const encodedCredential = encodeCredential(credential);
-  // Pass the password (first factor) to check it alongside the second factor
-  return await _fetch(`/auth/signin2fa`, {credential: encodedCredential, password} );
+  
+  return await _fetch(`/auth/signin2fa`, {credential: encodedCredential} );
 };

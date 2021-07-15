@@ -1,0 +1,66 @@
+<!--
+ Copyright 2021 Google Inc.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebAuthn with a security key Codelab</title>
+    <meta
+      name="description"
+      content="Codelab: 2FA with a security key and WebAuthn"
+    />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
+    </header>
+    <main class="content">
+      <h2>
+        ⏩🔑 Two-factor authentication
+      </h2>
+      <p>
+        When you're ready to authenticate, push the button below.
+        You're seeing this screen because you've set up two-factor
+        authentication for your account.
+      </p>
+      <button class="right" id="authenticateButton">
+        Use security key
+      </button>
+    </main>
+    <script type="module">
+      import { authenticate2fa } from "/auth.client.js";
+      const button = document.querySelector("#authenticateButton");
+      button.addEventListener("click", async (e) => {
+        // If second factor is missing (the user has 2fa set up), ask the user to authenticate with the second factor
+        try {
+          // Pass the password that will be checked alongside the second factor
+          const response2fa = await authenticate2fa();
+          const { authStatus: authStatus2fa } = response2fa;
+          if (authStatus2fa === "ok") {
+            // The user is properly authenticated => navigate to account
+            location.href = "/account";
+          } else {
+            throw new Error("Two-factor authentication failed");
+          }
+        } catch (e) {
+            // Alert the user that something went wrong
+            alert("Two-factor authentication failed", e);
+            console.log(e);
+        }
+      });
+    </script>
+  </body>
+</html>

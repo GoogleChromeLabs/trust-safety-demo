@@ -83,7 +83,7 @@
 
       // Update the list that displays credentials
       const updateCredentialList = async () => {
-        const response = await _fetch("/auth/getKeys");
+        const response = await _fetch("/auth/getCredentials");
         const credentials = response.credentials || [];
         const credentialListHtml = getCredentialListHtml(
           credentials,

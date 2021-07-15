@@ -96,7 +96,7 @@ const getOrigin = userAgent => {
 router.get("/resetDB", (req, res) => {
   db.set("users", []).write();
   const users = db.get("users").value();
-  res.json(users);
+  res.status(200).json(users);
 });
 
 function findUserByUsername(username) {
@@ -147,8 +147,8 @@ router.post("/start", (req, res) => {
 router.post("/signinBasic", (req, res) => {
   const { password, username } = req.body;
   if (!username || !/[a-zA-Z0-9-_]+/.test(username) || !password) {
-    res.status(400).send({
-      error: "❌ Please fill in both a username and a password."
+    res.status(400).json({
+      error: "Missing username or password"
     });
     return;
   } else {
@@ -168,22 +168,22 @@ router.post("/signinBasic", (req, res) => {
         .push(user)
         .write();
     }
-
     // Set the username in the auth session so that it can be passed to the main session
     req.session.username = username;
-
+    // Check if the password is correct
+    req.session.isPasswordCorrect = isPasswordCorrect(username, password);
     // If 2fa is not set up, complete the authentication
     const authType = getAuthType(user.credentials);
     if (authType === SINGLE_FACTOR) {
-      if (isPasswordCorrect(username, password)) {
+      if (req.session.isPasswordCorrect) {
         completeAuthentication(req, res);
       } else {
-        res.status(403).json({ message: `Wrong password`, authStatus: "nok" });
+        res.status(403).json({ message: "Wrong username or password", authStatus: "nok" });
       }
     // If 2fa is set up, ask for a second factor
     } else if (authType === TWO_FACTOR) {
       res.status(200).json({
-        message: `Basic signin completed, 2f missing`,
+        message: "Basic signin completed, 2f missing",
         authStatus: "2fmissing"
       });
     } else {
@@ -197,7 +197,7 @@ function completeAuthentication(req, res) {
   const usernameFromAuthSession = req.session.username;
   if (!usernameFromAuthSession) {
     res.status(500).json({
-      message: `The authentication can't be completed`
+      message: "No username found"
     });
     return;
   }
@@ -205,10 +205,11 @@ function completeAuthentication(req, res) {
   // Once the 'main' session is active, this means the user is fully signed in
   req.session.regenerate(function(err) {
     req.session.name = "main";
+    // Transfer the username from the old session
     req.session.username = usernameFromAuthSession;
   });
   req.session.save(function(err) {
-    res.status(200).json({ message: `Fully signed in`, authStatus: "ok" });
+    res.status(200).json({ message: "Fully signed in", authStatus: "ok" });
   });
 }
 
@@ -227,10 +228,15 @@ function completeAuthentication(req, res) {
  * }```
  **/
 router.post("/2faOptions", csrfCheck, async (req, res) => {
+  // Only check the password here, so that the frontend doesn't
+  // behave differently when the password is correct vs incorrect
+  if (!req.session.isPasswordCorrect) {
+    res.status(400).json({ error: "" });
+  }
   try {
     const user = findUserByUsername(req.session.username);
     if (!user) {
-      res.json({ error: "User not found" });
+      res.status(400).json({ error: "User not found" });
       return;
     }
     const credId = req.query.credId;
@@ -255,7 +261,7 @@ router.post("/2faOptions", csrfCheck, async (req, res) => {
     });
     req.session.challenge = options.challenge;
 
-    res.json(options);
+    res.status(200).json(options);
   } catch (e) {
     res.status(400).json({ error: e });
   }
@@ -278,11 +284,10 @@ router.post("/2faOptions", csrfCheck, async (req, res) => {
  **/
 router.post("/signin2fa", csrfCheck, async (req, res) => {
   const { body } = req;
-  const { credential: credentialFromClient, password } = body;
-  const expectedChallenge = req.session.challenge;
+  const { credential: credentialFromClient } = body;
   const expectedOrigin = getOrigin(req.get("User-Agent"));
   const expectedRPID = process.env.HOSTNAME;
-  const username = req.session.username;
+  const { username, isPasswordCorrect, challenge: expectedChallenge } = req.session;
 
   const user = findUserByUsername(username);
   let credentialFromServer = user.credentials.find(cred => cred.credId === credentialFromClient.id);
@@ -297,7 +302,7 @@ router.post("/signin2fa", csrfCheck, async (req, res) => {
     const { verified, authenticatorInfo } = verification;
     // Intentionally vague message, because an attacker should not
     // be able to determine that a password was correct via changing user messages
-    if (!credentialFromServer || !verified || !isPasswordCorrect(username, password))  {
+    if (!credentialFromServer || !verified || !isPasswordCorrect)  {
       throw new Error("Authenticating credential not found, or user verification failed, or something else went wrong");
     }
     credentialFromServer.prevCounter = authenticatorInfo.counter;
@@ -333,9 +338,9 @@ router.post("/signin2fa", csrfCheck, async (req, res) => {
  };
  ```
  **/
-router.post("/getKeys", csrfCheck, sessionCheck, (req, res) => {
+router.post("/getCredentials", csrfCheck, sessionCheck, (req, res) => {
   const user = findUserByUsername(req.session.username);
-  res.json(user || {});
+  res.status(200).json(user || {});
 });
 
 /**
@@ -350,7 +355,7 @@ router.post("/removeCredential", csrfCheck, sessionCheck, (req, res) => {
     return cred.credId !== credId;
   });
   updateCredentials(username, updatedCredentials);
-  res.json({});
+  res.status(200).json({});
 });
 
 /**
@@ -362,23 +367,18 @@ router.post("/removeCredential", csrfCheck, sessionCheck, (req, res) => {
  * Response: user as JSON
  **/
 router.post("/renameCredential", csrfCheck, sessionCheck, (req, res) => {
-  const credId = req.query.credId;
-  const newName = req.query.name;
+  const { credId, name: newName } = req.query;
 
   try {
     const username = req.session.username;
     const user = findUserByUsername(username);
     const { credentials } = user;
-
     const indexOfCredentialToUpdate = credentials.findIndex(
       el => el.credId === credId
     );
-
     const updatedCredentials = [...credentials];
     updatedCredentials[indexOfCredentialToUpdate].name = newName;
-
     updateCredentials(username, updatedCredentials);
-
     res.json(user);
   } catch (e) {
     res.status(400).send({ error: e.message });
@@ -530,7 +530,7 @@ router.post("/registerRequest", csrfCheck, sessionCheck, async (req, res) => {
       rpName: RP_NAME,
       rpID: process.env.HOSTNAME,
       userID: user.id,
-      userName: user.username,
+      userName: username,
       timeout: FIDO_TIMEOUT,
       // Prompt user for additional information about the authenticator
       attestationType: attestation,
@@ -546,7 +546,7 @@ router.post("/registerRequest", csrfCheck, sessionCheck, async (req, res) => {
     for (let param of params) {
       options.pubKeyCredParams.push({ type: "public-key", alg: param });
     }
-    res.json(options);
+    res.status(200).json(options);
   } catch (e) {
     res.status(400).send({ error: e });
   }

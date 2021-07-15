@@ -45,6 +45,10 @@ function isFullySignedIn(req) {
   return req.session.name === "main";
 }
 
+function isPartlySignedIn(req) {
+  return req.session.username;
+}
+
 app.use((req, res, next) => {
   if (process.env.PROJECT_DOMAIN) {
     process.env.HOSTNAME = `${process.env.PROJECT_DOMAIN}.glitch.me`;
@@ -90,6 +94,19 @@ app.get("/account", (req, res) => {
     return;
   }
   res.render("account.html", { username: req.session.username });
+});
+
+app.get("/secondFactor", (req, res) => {
+  if (!isPartlySignedIn(req)) {
+    // If user is not signed in, redirect to the index page with the login form.
+    res.redirect(302, "/");
+    return;
+  }
+  if (isFullySignedIn(req)) {
+    res.redirect(302, "/account");
+    return;
+  }
+  res.render("secondFactor.html");
 });
 
 app.use("/auth", auth);

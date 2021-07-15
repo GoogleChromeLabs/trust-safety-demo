@@ -58,7 +58,7 @@
         <input type="submit" class="button right" value="Next" />
       </form>
       <script type="module">
-        import { _fetch, authenticate2fa } from "/auth.client.js";
+        import { _fetch } from "/auth.client.js";
 
         // Listen to form submission
         const form = document.querySelector("#form");
@@ -69,7 +69,6 @@
           const userInput = {};
           const formData = new FormData(e.target);
           formData.forEach((v, k) => (userInput[k] = v));
-          const { password } = userInput;
 
           try {
             const response = await _fetch("/auth/signinBasic", userInput);
@@ -78,20 +77,8 @@
               // The user is properly authenticated => navigate to account
               location.href = "/account";
             } else if (authStatus === "2fmissing") {
-              // Second factor is missing (the user has 2fa set up), so we now authenticate2fa
-              try {
-                // Pass the password that will be checked alongside the second factor
-                const response2fa = await authenticate2fa(password);
-                const { authStatus: authStatus2fa } = response2fa;
-                if (authStatus2fa === "ok") {
-                  // The user is properly authenticated => navigate to account
-                  location.href = "/account";
-                } else {
-                  throw new Error("Two-factor authentication failed");
-                }
-              } catch (e) {
-                console.log(e);
-              }
+              // Navigate to the two-factor-auth page because two-factor-auth is set up for this user
+              location.href = "/secondFactor";
             }
           } catch (e) {
             // Empty the form for convenience
