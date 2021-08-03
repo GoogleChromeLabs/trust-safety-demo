@@ -84,9 +84,6 @@ export const authenticate2fa = async () => {
     userVerification: 'discouraged',
   });
   const decodedOptions = decodeServerOptions(optionsFromServer);
-  if (decodedOptions.allowCredentials.length === 0) {
-    throw new Error('No credential found for two-factor authentication');
-  }
   const credential = await navigator.credentials.get({
     publicKey: decodedOptions,
   });
