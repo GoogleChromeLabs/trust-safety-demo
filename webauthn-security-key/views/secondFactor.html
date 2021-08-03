@@ -28,37 +28,32 @@
       <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
     </header>
     <main class="content">
-      <h2>
-        ⏩🔑 Two-factor authentication
-      </h2>
+      <h2>⏩🔑 Two-factor authentication</h2>
       <p>
-        When you're ready to authenticate, push the button below.
-        You're seeing this screen because you've set up two-factor
-        authentication for your account.
+        When you're ready to authenticate, push the button below. You're seeing
+        this screen because you've set up two-factor authentication for your
+        account.
       </p>
-      <button class="right" id="authenticateButton">
-        Use security key
-      </button>
+      <button class="right" id="authenticateButton">Use security key</button>
     </main>
     <script type="module">
-      import { authenticate2fa } from "/auth.client.js";
-      const button = document.querySelector("#authenticateButton");
-      button.addEventListener("click", async (e) => {
+      import { authenticate2fa } from '/auth.client.js';
+      const button = document.querySelector('#authenticateButton');
+      button.addEventListener('click', async (e) => {
         // If second factor is missing (the user has 2fa set up), ask the user to authenticate with the second factor
         try {
           // Pass the password that will be checked alongside the second factor
           const response2fa = await authenticate2fa();
           const { authStatus: authStatus2fa } = response2fa;
-          if (authStatus2fa === "ok") {
+          if (authStatus2fa === 'ok') {
             // The user is properly authenticated => navigate to account
-            location.href = "/account";
+            location.href = '/account';
           } else {
-            throw new Error("Two-factor authentication failed");
+            throw new Error('Two-factor authentication failed');
           }
         } catch (e) {
-            // Alert the user that something went wrong
-            alert("Two-factor authentication failed", e);
-            console.log(e);
+          // Alert the user that something went wrong
+          alert(`Two-factor authentication failed. ${e}`);
         }
       });
     </script>

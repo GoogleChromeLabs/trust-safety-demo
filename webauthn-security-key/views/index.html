@@ -28,9 +28,7 @@
       <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
     </header>
     <main class="content">
-      <h2>
-        ⏩ Sign up or sign in
-      </h2>
+      <h2>⏩ Sign up or sign in</h2>
       <form id="form">
         <div class="flex-h">
           <div>
@@ -58,11 +56,11 @@
         <input type="submit" class="button right" value="Next" />
       </form>
       <script type="module">
-        import { _fetch } from "/auth.client.js";
+        import { _fetch } from '/auth.client.js';
 
         // Listen to form submission
-        const form = document.querySelector("#form");
-        form.addEventListener("submit", async e => {
+        const form = document.querySelector('#form');
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
 
           // Get form data
@@ -71,21 +69,27 @@
           formData.forEach((v, k) => (userInput[k] = v));
 
           try {
-            const response = await _fetch("/auth/signinBasic", userInput);
+            const response = await _fetch('/auth/signinBasic', userInput);
             const { authStatus } = response;
-            if (authStatus === "ok") {
+            if (authStatus === 'ok') {
               // The user is properly authenticated => navigate to account
-              location.href = "/account";
-            } else if (authStatus === "2fmissing") {
+              location.href = '/account';
+            } else if (authStatus === '2fmissing') {
               // Navigate to the two-factor-auth page because two-factor-auth is set up for this user
-              location.href = "/secondFactor";
+              location.href = '/secondFactor';
             }
           } catch (e) {
             // Empty the form for convenience
             form.reset();
             // Alert the user that something went wrong
-            alert("Sign-in failed", e);
-            console.log(e);
+            if (Array.isArray(e)) {
+              alert(
+                // `msg` not `message`, this is the key's name as per the express validator API
+                `Sign-in failed. ${e.map((err) => `${err.msg} (${err.param})`)}`
+              );
+            } else {
+              alert(`Sign-in failed. ${e}`);
+            }
           }
         });
       </script>

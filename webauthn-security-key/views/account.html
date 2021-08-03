@@ -28,18 +28,12 @@
       <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
     </header>
     <main class="content">
-      <a class="link-button right" href="/auth/signout">🚪Sign out</a>
-      <h2>
-        👤 Account
-      </h2>
-      <h3>
-        Username
-      </h3>
+      <a class="link-button right" href="/auth/signout">➡️Sign out</a>
+      <h2>👤 Account</h2>
+      <h3>Username</h3>
       {{ username }}
       <div class="flex-h-between">
-        <h3>
-          Two-factor authentication
-        </h3>
+        <h3>Two-factor authentication</h3>
         <button class="create" id="registerButton" raised>
           ➕ Add a credential
         </button>
@@ -51,10 +45,10 @@
         _fetch,
         registerCredential,
         removeCredential,
-        renameCredential
-      } from "/auth.client.js";
-      import { getCredentialListHtml } from "/templates.js";
-      import { render } from "https://unpkg.com/lit-html@1.0.0/lit-html.js?module";
+        renameCredential,
+      } from '/auth.client.js';
+      import { getCredentialListHtml } from '/templates.js';
+      import { render } from 'https://unpkg.com/lit-html@1.0.0/lit-html.js?module';
 
       // Register credential
       const register = async () => {
@@ -62,42 +56,74 @@
           `Name of the new credential:`,
           `my security key`
         );
-        await registerCredential(name);
+        try {
+          await registerCredential(name);
+        } catch (e) {
+          // Alert the user that something went wrong
+          if (Array.isArray(e)) {
+            alert(
+              // `msg` not `message`, this is the key's name as per the express validator API
+              `Registration failed. ${e.map(
+                (err) => `${err.msg} (${err.param})`
+              )}`
+            );
+          } else {
+            alert(`Registration failed. ${e}`);
+          }
+        }
+
         await updateCredentialList();
       };
 
       // Remove credential
-      const remove = async el => {
+      const remove = async (el) => {
         const credentialId = el.srcElement.dataset.credentialId;
         await removeCredential(credentialId);
         await updateCredentialList();
       };
 
       // Rename credential
-      const rename = async el => {
+      const rename = async (el) => {
         const { credentialId, credentialName: oldName } = el.srcElement.dataset;
         const newName = window.prompt(`New name for credential "${oldName}":`);
-        await renameCredential(credentialId, newName);
-        await updateCredentialList();
+        // Rename only if the user didn't cancel
+        if (newName) {
+          try {
+            await renameCredential(credentialId, newName);
+          } catch (e) {
+            // Alert the user that something went wrong
+            if (Array.isArray(e)) {
+              alert(
+                // `msg` not `message`, this is the key's name as per the express validator API
+                `Renaming failed. ${e.map(
+                  (err) => `${err.msg} (${err.param})`
+                )}`
+              );
+            } else {
+              alert(`Renaming failed. ${e}`);
+            }
+          }
+          await updateCredentialList();
+        }
       };
 
       // Update the list that displays credentials
       const updateCredentialList = async () => {
-        const response = await _fetch("/auth/getCredentials");
+        const response = await _fetch('/auth/getCredentials');
         const credentials = response.credentials || [];
         const credentialListHtml = getCredentialListHtml(
           credentials,
           remove,
           rename
         );
-        const list = document.querySelector("#credentials");
+        const list = document.querySelector('#credentials');
         render(credentialListHtml, list);
       };
 
       // Set up the handler for the button that registers credentials
-      const registerButton = document.querySelector("#registerButton");
-      registerButton.addEventListener("click", register);
-      
+      const registerButton = document.querySelector('#registerButton');
+      registerButton.addEventListener('click', register);
+
       // Initialize credential display list by updating it once at the beginning
       updateCredentialList();
     </script>

@@ -1,24 +1,24 @@
-import "https://cdn.jsdelivr.net/gh/herrjemand/Base64URL-ArrayBuffer@latest/lib/base64url-arraybuffer.js?module";
+import 'https://cdn.jsdelivr.net/gh/herrjemand/Base64URL-ArrayBuffer@latest/lib/base64url-arraybuffer.js?module';
 
-export const encodeCredential = credential => {
+export const encodeCredential = (credential) => {
   const encodedCredential = {};
   encodedCredential.id = credential.id;
   encodedCredential.rawId = base64url.encode(credential.rawId);
   encodedCredential.type = credential.type;
-  
+
   if (credential.response) {
     [
-      "clientDataJSON",
-      "authenticatorData",
-      "signature",
-      "userHandle",
-      "attestationObject"
-    ].forEach(property => {
+      'clientDataJSON',
+      'authenticatorData',
+      'signature',
+      'userHandle',
+      'attestationObject',
+    ].forEach((property) => {
       if (property) {
         const encodedProperty = base64url.encode(credential.response[property]);
         encodedCredential.response = {
           ...encodedCredential.response,
-          [property]: encodedProperty
+          [property]: encodedProperty,
         };
       }
     });
@@ -26,9 +26,9 @@ export const encodeCredential = credential => {
   return encodedCredential;
 };
 
-export const decodeServerOptions = encodedOptions => {
+export const decodeServerOptions = (encodedOptions) => {
   const decodedOptions = {
-    ...encodedOptions
+    ...encodedOptions,
   };
   if (decodedOptions.user) {
     decodedOptions.user.id = base64url.decode(encodedOptions.user.id);

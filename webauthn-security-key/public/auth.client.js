@@ -15,21 +15,21 @@
  * limitations under the License
  */
 
-import { decodeServerOptions, encodeCredential } from "./encoding.js";
+import { decodeServerOptions, encodeCredential } from './encoding.js';
 
-export const _fetch = async (path, payload = "") => {
+export const _fetch = async (path, payload = '') => {
   const headers = {
-    "X-Requested-With": "XMLHttpRequest"
+    'X-Requested-With': 'XMLHttpRequest',
   };
   if (payload && !(payload instanceof FormData)) {
-    headers["Content-Type"] = "application/json";
+    headers['Content-Type'] = 'application/json';
     payload = JSON.stringify(payload);
   }
   const res = await fetch(path, {
-    method: "POST",
-    credentials: "same-origin",
+    method: 'POST',
+    credentials: 'same-origin',
     headers: headers,
-    body: payload
+    body: payload,
   });
   if (res.status === 200) {
     // Server authentication succeeded
@@ -41,17 +41,17 @@ export const _fetch = async (path, payload = "") => {
   }
 };
 
-export const registerCredential = async name => {
+export const registerCredential = async (name) => {
   const credentialCreationOptionsFromServer = await _fetch(
-    "/auth/registerRequest",
+    '/auth/registerRequest',
     {
-      attestation: "none",
+      attestation: 'none',
       authenticatorSelection: {
         // Use "cross-platform" for roaming keys
-        authenticatorAttachment: "cross-platform",
-        userVerification: "discouraged",
-        requireResidentKey: "discouraged"
-      }
+        authenticatorAttachment: 'cross-platform',
+        userVerification: 'discouraged',
+        requireResidentKey: 'discouraged',
+      },
     }
   );
   const credentialCreationOptions = decodeServerOptions(
@@ -59,12 +59,12 @@ export const registerCredential = async name => {
   );
 
   const credential = await navigator.credentials.create({
-    publicKey: credentialCreationOptions
+    publicKey: credentialCreationOptions,
   });
   const encodedCredential = encodeCredential(credential);
   encodedCredential.name = name;
-  encodedCredential.transports = credential.response.getTransports()
-  return await _fetch("/auth/registerResponse", encodedCredential);
+  encodedCredential.transports = credential.response.getTransports();
+  return await _fetch('/auth/registerResponse', encodedCredential);
 };
 
 export const renameCredential = async (credId, newName) => {
@@ -75,23 +75,22 @@ export const renameCredential = async (credId, newName) => {
   );
 };
 
-export const removeCredential = async credId => {
+export const removeCredential = async (credId) => {
   return _fetch(`/auth/removeCredential?credId=${encodeURIComponent(credId)}`);
 };
 
 export const authenticate2fa = async () => {
-  const optionsFromServer = await _fetch("/auth/2faOptions", {
-    userVerification: "discouraged"
+  const optionsFromServer = await _fetch('/auth/2faOptions', {
+    userVerification: 'discouraged',
   });
   const decodedOptions = decodeServerOptions(optionsFromServer);
-  
   if (decodedOptions.allowCredentials.length === 0) {
-    throw new Error("No credential found for two-factor authentication");
+    throw new Error('No credential found for two-factor authentication');
   }
   const credential = await navigator.credentials.get({
-    publicKey: decodedOptions
+    publicKey: decodedOptions,
   });
   const encodedCredential = encodeCredential(credential);
-  
-  return await _fetch(`/auth/signin2fa`, {credential: encodedCredential} );
+
+  return await _fetch(`/auth/signin2fa`, { credential: encodedCredential });
 };
