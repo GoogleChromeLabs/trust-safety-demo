@@ -336,7 +336,7 @@ router.post('/authenticate-two-factor', csrfCheck, async (req, res) => {
     challenge: expectedChallenge,
   } = req.session;
   if (!username || !isPasswordCorrect) {
-    res.status(403).json({
+    res.status(401).json({
       error: `Authentication failed: ${GENERIC_AUTH_ERROR_MESSAGE}`,
     });
   }
@@ -345,7 +345,7 @@ router.post('/authenticate-two-factor', csrfCheck, async (req, res) => {
     (cred) => cred.credId === credentialFromClient.id
   );
   if (!credentialFromServer) {
-    res.status(403).json({
+    res.status(401).json({
       error: `Authentication failed: ${GENERIC_AUTH_ERROR_MESSAGE}`,
     });
   }
@@ -359,7 +359,7 @@ router.post('/authenticate-two-factor', csrfCheck, async (req, res) => {
     });
     const { verified, authenticatorInfo } = verification;
     if (!verified) {
-      res.status(403).json({
+      res.status(401).json({
         error: `Authentication failed: ${GENERIC_AUTH_ERROR_MESSAGE}`,
       });
     }
