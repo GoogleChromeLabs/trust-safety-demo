@@ -1,14 +1,18 @@
 <!--
- Copyright 2021 Google Inc.
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-      http://www.apache.org/licenses/LICENSE-2.0
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+ * @license
+ * Copyright 2021 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +20,7 @@
     <title>WebAuthn with a security key Codelab</title>
     <meta
       name="description"
-      content="Codelab: 2FA with a security key and WebAuthn"
+      content="Codelab: two-factor authentication with a security key and WebAuthn"
     />
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,7 +29,9 @@
   </head>
   <body>
     <header>
-      <div class="app-name">Codelab: 2FA with a security key and WebAuthn</div>
+      <div class="app-name">
+        Codelab: two-factor authentication with a security key and WebAuthn
+      </div>
     </header>
     <main class="content">
       <h2>⏩ Sign up or sign in</h2>
@@ -56,7 +62,7 @@
         <input type="submit" class="button right" value="Next" />
       </form>
       <script type="module">
-        import { _fetch } from '/auth.client.js';
+        import { _fetch, authStatuses } from '/auth.client.js';
 
         // Listen to form submission
         const form = document.querySelector('#form');
@@ -69,14 +75,18 @@
           formData.forEach((v, k) => (userInput[k] = v));
 
           try {
-            const response = await _fetch('/auth/signinBasic', userInput);
+            const response = await _fetch(
+              '/auth/initialize-authentication',
+              'POST',
+              userInput
+            );
             const { authStatus } = response;
-            if (authStatus === 'ok') {
+            if (authStatus === authStatuses.COMPLETE) {
               // The user is properly authenticated => navigate to account
               location.href = '/account';
-            } else if (authStatus === '2fmissing') {
+            } else if (authStatus === authStatuses.NEED_SECOND_FACTOR) {
               // Navigate to the two-factor-auth page because two-factor-auth is set up for this user
-              location.href = '/secondFactor';
+              location.href = '/second-factor';
             }
           } catch (e) {
             // Empty the form for convenience
@@ -84,11 +94,13 @@
             // Alert the user that something went wrong
             if (Array.isArray(e)) {
               alert(
-                // `msg` not `message`, this is the key's name as per the express validator API
-                `Sign-in failed. ${e.map((err) => `${err.msg} (${err.param})`)}`
+                // `msg` not `message`, since this is the key's name as per the express validator API
+                `Authentication failed. ${e.map(
+                  (err) => `${err.msg} (${err.param})`
+                )}`
               );
             } else {
-              alert(`Sign-in failed. ${e}`);
+              alert(`Authentication failed. ${e}`);
             }
           }
         });

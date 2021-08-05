@@ -1,6 +1,6 @@
 /*
  * @license
- * Copyright 2019 Google Inc. All rights reserved.
+ * Copyright 2021 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,12 @@
 
 import { decodeServerOptions, encodeCredential } from './encoding.js';
 
-export const _fetch = async (path, payload = '') => {
+const authStatuses = Object.freeze({
+  NEED_SECOND_FACTOR: 'needSecondFactor',
+  COMPLETE: 'complete',
+});
+
+async function _fetch(path, method, payload = '') {
   const headers = {
     'X-Requested-With': 'XMLHttpRequest',
   };
@@ -26,10 +31,10 @@ export const _fetch = async (path, payload = '') => {
     payload = JSON.stringify(payload);
   }
   const res = await fetch(path, {
-    method: 'POST',
+    method,
     credentials: 'same-origin',
     headers: headers,
-    body: payload,
+    ...(method !== 'GET' && { body: payload }),
   });
   if (res.status === 200) {
     // Server authentication succeeded
@@ -39,11 +44,12 @@ export const _fetch = async (path, payload = '') => {
     const result = await res.json();
     throw result.error;
   }
-};
+}
 
-export const registerCredential = async (name) => {
+async function registerCredential(name) {
   const credentialCreationOptionsFromServer = await _fetch(
-    '/auth/registerRequest',
+    '/auth/credential-options',
+    'POST',
     {
       attestation: 'none',
       authenticatorSelection: {
@@ -57,30 +63,33 @@ export const registerCredential = async (name) => {
   const credentialCreationOptions = decodeServerOptions(
     credentialCreationOptionsFromServer
   );
-
   const credential = await navigator.credentials.create({
     publicKey: credentialCreationOptions,
   });
   const encodedCredential = encodeCredential(credential);
   encodedCredential.name = name;
   encodedCredential.transports = credential.response.getTransports();
-  return await _fetch('/auth/registerResponse', encodedCredential);
-};
+  return await _fetch('/auth/credential', 'POST', encodedCredential);
+}
 
-export const renameCredential = async (credId, newName) => {
+async function renameCredential(credId, newName) {
   return _fetch(
-    `/auth/renameCredential?credId=${encodeURIComponent(
+    `/auth/credential?credId=${encodeURIComponent(
       credId
-    )}&name=${encodeURIComponent(newName)}`
+    )}&name=${encodeURIComponent(newName)}`,
+    'PUT'
   );
-};
+}
 
-export const removeCredential = async (credId) => {
-  return _fetch(`/auth/removeCredential?credId=${encodeURIComponent(credId)}`);
-};
+async function removeCredential(credId) {
+  return _fetch(
+    `/auth/credential?credId=${encodeURIComponent(credId)}`,
+    'DELETE'
+  );
+}
 
-export const authenticate2fa = async () => {
-  const optionsFromServer = await _fetch('/auth/2faOptions', {
+async function authenticateTwoFactor() {
+  const optionsFromServer = await _fetch('/auth/two-factor-options', 'POST', {
     userVerification: 'discouraged',
   });
   const decodedOptions = decodeServerOptions(optionsFromServer);
@@ -89,5 +98,16 @@ export const authenticate2fa = async () => {
   });
   const encodedCredential = encodeCredential(credential);
 
-  return await _fetch(`/auth/signin2fa`, { credential: encodedCredential });
+  return await _fetch('/auth/authenticate-two-factor', 'POST', {
+    credential: encodedCredential,
+  });
+}
+
+export {
+  authStatuses,
+  _fetch,
+  registerCredential,
+  renameCredential,
+  removeCredential,
+  authenticateTwoFactor,
 };

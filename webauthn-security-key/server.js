@@ -1,10 +1,13 @@
 /*
  * @license
- * Copyright 2019 Google Inc. All rights reserved.
+ * Copyright 2021 Google Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +20,12 @@ const session = require('express-session');
 const hbs = require('hbs');
 const auth = require('./libs/auth');
 const app = express();
+
+// Authentication statuses
+const authStatuses = Object.freeze({
+  NEED_SECOND_FACTOR: 'needSecondFactor',
+  COMPLETE: 'complete',
+});
 
 app.set('view engine', 'html');
 app.engine('html', hbs.__express);
@@ -40,12 +49,12 @@ app.use(
   })
 );
 
-function isFullySignedIn(req) {
+function isAuthenticationComplete(req) {
   return req.session.name === 'main';
 }
 
-function isPartlySignedIn(req) {
-  return req.session.username && req.session.isPasswordCorrect;
+function isAwaitingSecondFactor(req) {
+  return req.session.authStatus === authStatuses.NEED_SECOND_FACTOR;
 }
 
 app.use((req, res, next) => {
@@ -67,14 +76,14 @@ app.use((req, res, next) => {
 });
 
 app.get('/', async (req, res) => {
-  if (isFullySignedIn(req)) {
-    // If the user is signed in, redirect to the account page
+  if (isAuthenticationComplete(req)) {
+    // If the user is authenticated, redirect to the account page
     res.redirect(307, '/account');
     return;
   }
-  // If the user is not signed in, start a new "auth" session
+  // If the user is not authenticated, start a new "auth" session
   try {
-    // Start the intermediate session "auth", dedicated to authentication/login
+    // "auth" is an intermediate session dedicated to authentication/signing in
     req.session.name = 'auth';
     // "auth" expires after 3 minutes, this means the user has 3 minutes to authenticate
     const sessionLength = 3 * 60 * 1000;
@@ -82,30 +91,29 @@ app.get('/', async (req, res) => {
     // Render the index page
     res.render('index.html');
   } catch (e) {
-    console.log(e);
+    res.render(e);
   }
 });
 
 app.get('/account', (req, res) => {
-  if (!isFullySignedIn(req)) {
-    // If user is not fully signed in, redirect to the index page with the login form
+  if (!isAuthenticationComplete(req)) {
+    // If the user is not completely authenticated, redirect to the index page with the signin/signup form
     res.redirect(307, '/');
     return;
   }
   res.render('account.html', { username: req.session.username });
 });
 
-app.get('/secondFactor', (req, res) => {
-  if (!isPartlySignedIn(req)) {
-    // If user is not signed in, redirect to the index page with the login form.
+app.get('/second-factor', (req, res) => {
+  if (!isAwaitingSecondFactor(req)) {
     res.redirect(302, '/');
     return;
   }
-  if (isFullySignedIn(req)) {
+  if (isAuthenticationComplete(req)) {
     res.redirect(302, '/account');
     return;
   }
-  res.render('secondFactor.html');
+  res.render('second-factor.html');
 });
 
 app.use('/auth', auth);
