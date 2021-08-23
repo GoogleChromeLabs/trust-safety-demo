@@ -7,23 +7,32 @@ const PORT = 8082
 
 app.use(express.static('static'))
 
+app.get('/', (req, res) => {
+  res.render('home')
+})
+
 app.get('/shoes07', (req, res) => {
-  res.render('shoes07')
+  const conversionType = 'visit-product-page'
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
+  res.render('shoes07', { adtechRequestUrl })
+})
+
+app.get('/signup-newsletter', (req, res) => {
+  const conversionType = 'signup-newsletter'
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
+  res.render('signup-newsletter', { adtechRequestUrl })
 })
 
 app.get('/checkout', (req, res) => {
-  // pass the conversion type to adtech - but more data could be passed e.g. the model purchased
-  const conversionType = 'checkout'
+  const conversionType = 'checkout-completed'
   const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
-  const adtechServerUi = `${process.env.ADTECH_URL}`
-  res.render('checkout', { adtechRequestUrl, adtechServerUi })
+  res.render('checkout', { adtechRequestUrl })
 })
 
-app.get('/signup', (req, res) => {
-  const conversionType = 'signup'
+app.get('/add-to-cart', (req, res) => {
+  const conversionType = 'add-to-cart'
   const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
-  const adtechServerUi = `${process.env.ADTECH_URL}`
-  res.render('signup', { adtechRequestUrl, adtechServerUi })
+  res.render('add-to-cart', { adtechRequestUrl })
 })
 
 const listener = app.listen(process.env.PORT || PORT, () => {

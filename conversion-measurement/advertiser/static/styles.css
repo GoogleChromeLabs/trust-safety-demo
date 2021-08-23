@@ -13,6 +13,16 @@ body {
   background: #ffffd0;
 }
 
+header {
+  margin: 2rem 0 4rem 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
 h1 {
   display: inline-block;
   background: #fff59a;
@@ -42,18 +52,23 @@ h1 {
   justify-content: flex-end;
 }
 
-.button {
-  color: white;
-  background-color: black;
-  transition: background-color 0.2s ease-out;
-  text-decoration: none;
-  padding: 0.8rem 2rem;
-  border-radius: 7px;
+.actions > div {
+  margin-right: 1rem;
 }
 
-.button:hover {
-  background-color: #3f3f3f;
+a.button {
+  --link-color: rgb(0, 38, 255);
+  color: var(--link-color);
+  /* background-color: black;
+  transition: background-color 0.2s ease-out; */
+  text-decoration: none;
+  border-bottom: solid 1px var(--link-color);
+  /* padding: 0.4rem; */
 }
+
+/* .button:hover {
+  background-color: #3f3f3f;
+} */
 
 .center {
   display: flex;
@@ -62,12 +77,20 @@ h1 {
 }
 
 img {
-  margin: 2rem auto;
   display: block;
 }
 
 .pixel {
   background-color: red;
+}
+
+.pixel-name {
+  color: red;
+  font-size: 0.8rem;
+  font-family: 'Lucida Console', Monaco, monospace;
+  width: 10rem;
+  transform: translate(1rem, -1rem);
+  line-height: 0.8rem;
 }
 
 .center {

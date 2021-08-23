@@ -1,0 +1,32 @@
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title 👟 Advertiser
+    link(rel='stylesheet' href='/styles.css')
+  body
+    main
+        h1 Advertiser website 👟 
+        header
+            div.options
+                div
+                    input(type='checkbox' name='deduplicate' checked)
+                    | Deduplicate conversions
+                div
+                    input(type='checkbox' name='deduplicate' checked)
+                    | Prioritize `purchase` conversions
+            div.actions
+                div 
+                    a.button(href='/') Home
+                div 
+                    a.button(href='/shoes07') Visit product page
+                div 
+                    a.button(href='/add-to-cart') Add product to cart
+                div 
+                    a.button(href='/checkout') Complete checkout
+                div 
+                    a.button(href='/signup-newsletter') Sign up for special offers
+        block content
+    block foot
+      #footer
+        p Code: 

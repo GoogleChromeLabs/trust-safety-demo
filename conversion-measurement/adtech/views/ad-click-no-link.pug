@@ -1,0 +1,30 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Ad
+body(style={"font-family": "sans-serif", "font-size": "12px", "background": "#f6d7ff", "cursor": "pointer"})
+
+div Ad (click source with `window.open`)
+div#ad(href=href target='_blank')
+  span ID: 
+  span(id="adid")
+  img(width='180' src='/shoes07.png' alt='shoes 07')
+
+script.
+  // \!{}\ is the syntax for this template engine (pug) to access serer-defined variables in a script
+  const attributiondestination = !{JSON.stringify(attributiondestination)};
+  const attributionreportto = !{JSON.stringify(attributionreportto)};
+  const href = !{JSON.stringify(href)};
+  // define the source event ID
+  const attributionsourceeventid=`${Math.floor(Math.random() * 1000000000000000)}`;
+  // diplay the source event ID in the UI for demo purposes
+  const adIdEl = document.getElementById('adid');
+  adIdEl.innerText = attributionsourceeventid;
+  // set a click event handler with window.open
+  const adEl = document.getElementById('ad');
+  adEl.addEventListener("click", () => {
+    window.open(href, '_parent', `attributionsourceeventid=${attributionsourceeventid},attributiondestination=${attributiondestination},attributionreportto=${attributionreportto},attributionexpiry=864000000`)
+  });
+
+

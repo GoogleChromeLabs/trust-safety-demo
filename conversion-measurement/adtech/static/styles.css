@@ -10,7 +10,7 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
-  background: #ffdede;
+  background: #f6d7ff;
 }
 
 a {
@@ -19,7 +19,7 @@ a {
 
 h1 {
   display: inline-block;
-  background: #ff00003d;
+  background: #e4abf7;
   padding: 0.1rem 0.2rem;
   margin: 0;
 }
