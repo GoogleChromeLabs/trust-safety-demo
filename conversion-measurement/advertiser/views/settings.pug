@@ -1,0 +1,12 @@
+extends _layout.pug
+
+block content
+    h3 Demo settings
+    div.options
+    div
+        input(id='prio' type='checkbox' checked=prio)
+        | Prioritize checkout conversions 💰
+    div
+        input(id='dedup' type='checkbox' checked=dedup)
+        | Deduplicate conversions
+    script(src='/options.js')
