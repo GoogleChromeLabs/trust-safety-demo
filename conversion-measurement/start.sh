@@ -1,1 +1,1 @@
-(cd home && yarn start:dev) & (cd publisher && yarn start:dev) & (cd advertiser && yarn start:dev) & (cd adtech && yarn start:dev) & (cd other-publisher && yarn start:dev)
+(cd home && yarn start:dev) & (cd publisher && yarn start:dev) & (cd advertiser && yarn start:dev) & (cd adtech && yarn start:dev)
