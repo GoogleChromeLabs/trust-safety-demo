@@ -2,9 +2,6 @@ async function editSetting(e) {
   const prioCheckboxEl = document.getElementById('prio')
   const dedupCheckboxEl = document.getElementById('dedup')
 
-  console.log(prioCheckboxEl.checked)
-  console.log(dedupCheckboxEl.checked)
-
   const data = {
     dedup: dedupCheckboxEl.checked,
     prio: prioCheckboxEl.checked

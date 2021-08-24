@@ -113,4 +113,5 @@ a {
   color: var(--link-color);
   text-decoration: none;
   border-bottom: solid 1px var(--link-color);
+  font-size: 0.9rem;
 }

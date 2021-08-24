@@ -121,28 +121,12 @@ const conversionValuesClick = {
 
 app.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
-  console.log(conversionType)
   // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
   const clickTriggerData = conversionValuesClick[conversionType]
   // Define trigger data depending on the conversion type for views; it has to be 0 or 1 (1 bit only)
   const viewTriggerData = conversionType === CHECKOUT_COMPLETED ? 1 : 0
-
   const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
-  console.log('prioritizeCheckouts', prioritizeCheckouts)
-
-  // string to bool TODO encode?
-  // https://stackoverflow.com/questions/39599012/proper-way-to-parse-boolean-query-string-param-in-node-express
   const dedup = req.query['dedup'] === 'true'
-  console.log('dedup', dedup)
-
-  // make a purchase for orderID 123
-  // 'thanks' page
-  // server registers a conversion for this orderID with this value
-  // user reloads the 'thanks' page (same orderID)
-  // server receives a conversion request
-  // sees it's the same orderID
-  // deduplicate the conversion
-  // TODO reload settings page when the settings are edited!!
 
   const priority = prioritizeCheckouts
     ? conversionType === CHECKOUT_COMPLETED
@@ -150,25 +134,14 @@ app.get('/conversion', (req, res) => {
       : 0
     : 0
 
-  // console.log(
-  //   '\x1b[1;31m%s\x1b[0m',
-  //   `🚀 Adtech sends a conversion record request to the browser with conversion data = ${clickTriggerData}`
-  // )
   let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priority}`
 
   if (dedup) {
     const orderId = req.query['order-id']
     url = `${url}&dedup-key=${orderId}`
   }
-
-  // todo why not disappear after 3??
-  // TODO whe checkout is prio, which one goes away? - the last! checkout will override the latest
-
   // Adtech orders the browser to schedule-send a report
   res.redirect(302, url)
-  // TODO why is only trigger-data in the report and not even-source-trigger-data?
-  // TODO must see prio in the converion internals
-  // TODO what does conversion-side prio do to a view conversion?
 })
 
 /* -------------------------------------------------------------------------- */

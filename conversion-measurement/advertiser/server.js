@@ -8,22 +8,20 @@ app.set('view engine', 'pug')
 app.use(
   session({
     secret: '343ji43j4n3jn4jk3n',
-    // TODO gist https://stackoverflow.com/a/43097649
     saveUninitialized: true,
     resave: true
   })
 )
-// TODO gist for this!
+
 app.use(express.json())
 app.use(express.static('static'))
 
-// Run a "middleware" function on each request
+// Middleware run on each request
 app.use((req, res, next) => {
-  // Check if we've already initialised a session
-  if (!req.session.initialised) {
+  // Check if session is initialized
+  if (!req.session.initialized) {
     // Initialise our variables on the session object (that's persisted across requests by the same user
-    // TODO this is stored on the server -- the rest i.e. teh cookie ID, on the client!
-    req.session.initialised = true
+    req.session.initialized = true
     req.session.prio = true
     req.session.dedup = true
   }
@@ -46,7 +44,6 @@ app.post('/demo-settings', (req, res) => {
 })
 
 app.post('/new-order', (req, res) => {
-  console.log(req.session.orderId)
   req.session.orderId = Math.floor(Math.random() * 100000)
   res.redirect('checkout')
 })

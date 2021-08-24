@@ -12,12 +12,12 @@ a(id="ad" href=href attributiondestination=attributiondestination attributionsou
   img(width='180' src='/shoes07.png' alt='shoes 07')
 
 script.
-  // define the source event ID
+  // Define the source event ID
   const attributionsourceeventid=`${Math.floor(Math.random() * 1000000000000000)}`;
-  // set the source event ID
+  // Set the source event ID
   const adEl = document.getElementById('ad');
   adEl.setAttribute("attributionsourceeventid", attributionsourceeventid);
-  // diplay the source event ID in the UI for demo purposes
+  // Display the source event ID in the UI for demo purposes
   const adIdEl = document.getElementById('adid');
   adIdEl.innerText = attributionsourceeventid;
 
