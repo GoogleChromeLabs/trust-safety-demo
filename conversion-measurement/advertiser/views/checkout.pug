@@ -5,9 +5,9 @@ block content
     img.pixel(src=adtechRequestUrl height='12' width='12')
     div.pixel-name Pixel that tracks purchases (completed checkouts)
     div  Order ID: #{orderId}
-    button(onClick="newOrder()") 🔄 New order
+    button(onClick="generateNewOrder()") 🔄 New order
     script.
-        async function newOrder() {
+        async function generateNewOrder() {
             await fetch('/new-order', {
                 method: 'POST',
                 credentials: 'same-origin',

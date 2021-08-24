@@ -4,34 +4,48 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const app = express()
 app.set('view engine', 'pug')
 const PORT = 8081
+const demoHomeUrl = process.env.DEMO_HOME_URL
 
 app.use(express.static('static'))
 
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index', { demoHomeUrl })
 })
 
 app.get('/click-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-element`
-  res.render('article', { adScriptUrl, title: 'Track clicks via `a` element' })
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track clicks via `a` element',
+    demoHomeUrl
+  })
 })
 
 app.get('/click-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-js`
-  res.render('article', { adScriptUrl, title: 'Track clicks via JS' })
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track clicks via JS',
+    demoHomeUrl
+  })
 })
 
 app.get('/view-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-element`
   res.render('article', {
     adScriptUrl,
-    title: 'Track clicks and views via `a` element'
+    title: 'Track clicks and views via `a` element',
+    demoHomeUrl
   })
 })
 
 app.get('/view-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
-  res.render('article', { adScriptUrl, title: 'Track clicks and views via JS' })
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track clicks and views via JS',
+    demoHomeUrl
+  })
 })
 
 app.get('/click-and-view-with-prio', (req, res) => {
@@ -39,7 +53,8 @@ app.get('/click-and-view-with-prio', (req, res) => {
   res.render('article', {
     adScriptUrl,
     title:
-      'Track clicks and views via `a` element, with clicks prioritized over views'
+      'Track clicks and views via `a` element, with clicks prioritized over views',
+    demoHomeUrl
   })
 })
 

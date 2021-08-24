@@ -115,3 +115,11 @@ a {
   border-bottom: solid 1px var(--link-color);
   font-size: 0.9rem;
 }
+
+#footer {
+  background-color: rgba(0, 0, 0, 0.164);
+  padding: 0.4rem;
+  z-index: 1000;
+  text-align: center;
+  font-size: 0.9rem;
+}

@@ -48,11 +48,11 @@ app.post('/new-order', (req, res) => {
   res.redirect('checkout')
 })
 
-app.get('/shoes07', (req, res) => {
+app.get('/blue-shoes', (req, res) => {
   const conversionType = 'visit-product-page'
   const { prio, dedup } = req.session
   const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
-  res.render('shoes07', { adtechRequestUrl })
+  res.render('blue-shoes', { adtechRequestUrl })
 })
 
 app.get('/signup-newsletter', (req, res) => {

@@ -49,12 +49,6 @@ h1 {
   justify-content: space-between;
 }
 
-.button-wrapper {
-  width: 14rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
 a {
   --link-color: rgb(0, 38, 255);
   color: var(--link-color);
@@ -158,4 +152,12 @@ details .content {
 .code {
   font-size: var(--font-size-xs);
   font-family: 'Lucida Console', Monaco, monospace;
+}
+
+#footer {
+  background-color: rgba(0, 0, 0, 0.164);
+  padding: 0.4rem;
+  z-index: 1000;
+  text-align: center;
+  font-size: 0.9rem;
 }

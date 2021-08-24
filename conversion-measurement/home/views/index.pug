@@ -2,86 +2,39 @@ doctype html
 head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title ⚡️ Demo: Event-Level Conversion Measurement API
+  title 🏠 Demo: Attribution Reporting API (event-level reports)
   link(rel='stylesheet' href='/styles.css')
 body
-    h1 ⚡️ Demo: Event-Level Conversion Measurement API
+    h1 Demo: Attribution Reporting API 
+    | With event-level reports
 
-    h2 Before you run this demo
-    div.important
-        | Read this ⤵️! The demo only works once you've gone through these setup steps ⤵️⤵️⤵️
-    ol
-        li Make sure you're in Chrome, version 
-            strong 86 
-            | or later. You can check what version of Chrome you're using by typing 
-            span.select.code chrome://version
-            |  in the URL bar.
-        li Deactivate ad-blocking extensions on the demo pages. Some ad blocking browser extensions may block some of this demo's functionality. 
-        li Don't use an Incognito or Guest profile.
-        li Turn on the 
-            strong two 
-            | flags 
-            span.select.code #conversion-measurement-api
-            |  and 
-            span.select.code #enable-experimental-web-platform-features
-            |. Go to flags by typing or pasting 
-            span.select.code chrome://flags 
-            | in Chrome's URL bar. 
-        li 
-            strong Disable 
-            | third-party cookie 
-            strong blocking
-            |. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
-        li If you're running the demo locally (
-            strong 127.0.0.1
-            |), follow these 
-            a(href='https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#browser-setup' noopener) additional instructions
-            |.
     h2 Run the demo
-    | Open these in new tabs:
-    ul
-        li 
-            a(href=publisherUrl) Publisher website 📰 
-        li
-            span.select.code chrome://conversion-internals
-            |  (type or paste in Chrome's URL bar)
-        li
-            a(href=adtechUrl) Adtech server 🚀 
-    | And follow the steps indicated on each page. 
-    strong Demo screencast:
-    div.full
-        video(controls)
-            source(src='/demo-event-level-conversion-measurement-v1.mp4' type='video/mp4')
-            | Your browser does not support the video tag.
+    ol
+        li.important Set up your browser (TODO LINK TO ARTICLE)
+        li Open (TODO LINK) and (TODO LINK) in your browser
+        li Follow the screencast (TODO LINK)
+
+    h3
+        div 
+            a(href=publisherUrl target="_blank") Publisher
+        div 
+            a(href=advertiserUrl target="_blank") Advertiser
+        div 
+            a(href=adtechUrl target="_blank") Adtech - Reports UI
 
     h2 See the code
     a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
+
+    h2 Reuse and customize the code
+    div TODO LINK
+
+    h2 Ask questions / Share feedback 👋
+    | For questions and comments about this demo, start a new conversation in (TODO LINK TO MAILING LIST) or ping 
+    a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
+
     h2 Learn more
     ul
         li
-            a(href="https://web.dev/conversion-measurement" noreferrer noopener) Article
+            a(href="" noreferrer noopener) TODO LINK TO API guide
         li
             a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer 
-    h2 Ask questions / Share feedback
-    | 👋 Ping 
-    a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
-    |  for feedback / questions about this demo.
-    script.
-        const okEls = document.querySelectorAll(".ok")
-        const nokEls = document.querySelectorAll(".nok")
-        const canDemoRun = document.featurePolicy.features().includes('conversion-measurement')
-        if (canDemoRun) {
-            okEls.forEach(el => {
-                el.classList.add("show")
-            });
-            nokEls.forEach(el => {
-                el.classList.add("hide")
-            });
-        } else {
-            okEls.forEach(el => {
-                el.classList.add("hide")
-            });
-            nokEls.forEach(el => {
-                el.classList.add("show")
-            });
-        }

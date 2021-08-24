@@ -1,4 +1,4 @@
-# ⚡️ Event Conversion Measurement API: demo
+# Attribution Reporting API: demo
 
 ## Live demo
 
@@ -28,12 +28,14 @@ To do so, you can:
 - Click **Send All Reports** in `chrome://conversion-internals/` > **Pending Reports**.
 - Or activate the flag `chrome://flags/#conversion-measurement-debug-mode`, so that all reports are always sent **immediately**.
 
-## Setup and run
+## Setup and run locally
 
 - Run `sh ./init.sh`
 - Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server.
 - Open `127.0.0.1:8080` in Chrome Canary.
 - Follow the instructions in the UI.
+
+## Customize
 
 ## ⚠️ Gotcha
 
