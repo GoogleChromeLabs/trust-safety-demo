@@ -25,6 +25,19 @@ article {
   line-height: 1.8;
 }
 
+header {
+  margin: 2rem 0 4rem 0;
+}
+
+.actions {
+  display: flex;
+  margin: 1rem 0;
+}
+
+.actions > div {
+  margin-right: 1.2rem;
+}
+
 .select {
   user-select: all;
   cursor: default;
@@ -93,4 +106,11 @@ details .content {
 .code {
   font-size: var(--font-size-xs);
   font-family: 'Lucida Console', Monaco, monospace;
+}
+
+a {
+  --link-color: rgb(0, 38, 255);
+  color: var(--link-color);
+  text-decoration: none;
+  border-bottom: solid 1px var(--link-color);
 }
