@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 /* -------------------------------------------------------------------------- */
 
 app.get('/ad-click', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}/shoes07`
+  const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
   const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-click', {
@@ -28,7 +28,7 @@ app.get('/ad-click', (req, res) => {
 })
 
 app.get('/ad-click-no-link', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}/shoes07`
+  const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
   const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-click-no-link', {
@@ -39,7 +39,7 @@ app.get('/ad-click-no-link', (req, res) => {
 })
 
 app.get('/ad-view', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}/shoes07`
+  const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
   const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-view', {
@@ -50,7 +50,7 @@ app.get('/ad-view', (req, res) => {
 })
 
 app.get('/ad-click-view-prio', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}/shoes07`
+  const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
   const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-click-view-prio', {
@@ -102,64 +102,73 @@ app.get('/ad-script-click-and-view-with-prio', (req, res) => {
   res.send(`document.write("${adIframe}");`)
 })
 
-// app.get('/ad-script', (req, res) => {
-//   res.set('Content-Type', 'text/javascript')
-//   const adClickUrl = `${process.env.ADTECH_URL}/ad-click`
-//   const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-no-link`
-//   const adViewUrl = `${process.env.ADTECH_URL}/ad-view`
-//   const clickIframe = `<iframe src='${adClickUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-//   const clickNoLinkIframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-//   const viewIframe = `<iframe src='${adViewUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-//   // JS API for views
-//   const attributionDestination = process.env.ADVERTISER_URL
-//   const attributionReportTo = process.env.ADTECH_URL
-//   const call = `window.attributionReporting.registerAttributionSource({
-//     attributionSourceEventId: ${Math.floor(Math.random() * 1000000000000000)},
-//     attributionDestination: '${attributionDestination}',
-//     attributionReportTo: '${attributionReportTo}',
-//     attributionExpiry: '864000000'
-//   })`
-
-//   // ${call};
-
-//   res.send(
-//     `document.write("${clickIframe}");
-//     document.write("${clickNoLinkIframe}");
-//     document.write("${viewIframe}");
-//     console.info('✔️ Adtech script loaded');`
-//   )
-// })
-
 /* -------------------------------------------------------------------------- */
 /*                     Attribution trigger (conversion)                       */
 /* -------------------------------------------------------------------------- */
 
+const CHECKOUT_COMPLETED = 'checkout-completed'
+const ADD_TO_CART = 'add-to-cart'
+const VISIT_PRODUCT_PAGE = 'visit-product-page'
+const SIGNUP_NEWSLETTER = 'signup-newsletter'
+
 const conversionValuesClick = {
   // checkout = 1, so that the value is consistent across clicks and views (views must be 0 or 1)
-  'checkout-completed': 1,
-  'add-to-cart': 2,
-  'visit-product-page': 3,
-  'signup-newsletter': 4
+  [CHECKOUT_COMPLETED]: 1,
+  [ADD_TO_CART]: 2,
+  [VISIT_PRODUCT_PAGE]: 3,
+  [SIGNUP_NEWSLETTER]: 4
 }
 
 app.get('/conversion', (req, res) => {
-  const clickTriggerData = conversionValuesClick[req.query['conversion-type']]
-  console.log(clickTriggerData)
-  const viewTriggerData =
-    req.query['conversion-type'] === 'checkout-completed' ? 1 : 0
-  console.log(
-    '\x1b[1;31m%s\x1b[0m',
-    `🚀 Adtech sends a conversion record request to the browser with conversion data = ${clickTriggerData}`
-  )
-  // adtech orders the browser to schedule-send a report
-  res.redirect(
-    302,
-    `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=100`
-  )
-  // how to use event-source-trigger-data
-  // what's the point if it's not in the report?
-  // why is only trigger-data in the report and not even-source-trigger-data?
-  // how to use event-source-trigger-data, should I just always set it to one?
+  const conversionType = req.query['conversion-type']
+  console.log(conversionType)
+  // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
+  const clickTriggerData = conversionValuesClick[conversionType]
+  // Define trigger data depending on the conversion type for views; it has to be 0 or 1 (1 bit only)
+  const viewTriggerData = conversionType === CHECKOUT_COMPLETED ? 1 : 0
+
+  const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
+  console.log('prioritizeCheckouts', prioritizeCheckouts)
+
+  // string to bool TODO encode?
+  // https://stackoverflow.com/questions/39599012/proper-way-to-parse-boolean-query-string-param-in-node-express
+  const dedup = req.query['dedup'] === 'true'
+  console.log('dedup', dedup)
+
+  // make a purchase for orderID 123
+  // 'thanks' page
+  // server registers a conversion for this orderID with this value
+  // user reloads the 'thanks' page (same orderID)
+  // server receives a conversion request
+  // sees it's the same orderID
+  // deduplicate the conversion
+  // TODO reload settings page when the settings are edited!!
+
+  const priority = prioritizeCheckouts
+    ? conversionType === CHECKOUT_COMPLETED
+      ? 100
+      : 0
+    : 0
+
+  // console.log(
+  //   '\x1b[1;31m%s\x1b[0m',
+  //   `🚀 Adtech sends a conversion record request to the browser with conversion data = ${clickTriggerData}`
+  // )
+  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priority}`
+
+  if (dedup) {
+    const orderId = req.query['order-id']
+    url = `${url}&dedup-key=${orderId}`
+  }
+
+  // todo why not disappear after 3??
+  // TODO whe checkout is prio, which one goes away? - the last! checkout will override the latest
+
+  // Adtech orders the browser to schedule-send a report
+  res.redirect(302, url)
+  // TODO why is only trigger-data in the report and not even-source-trigger-data?
+  // TODO must see prio in the converion internals
+  // TODO what does conversion-side prio do to a view conversion?
 })
 
 /* -------------------------------------------------------------------------- */
