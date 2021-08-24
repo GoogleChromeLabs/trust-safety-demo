@@ -7,40 +7,34 @@ const PORT = 8081
 
 app.use(express.static('static'))
 
+app.get('/', (req, res) => {
+  res.render('index')
+})
+
 app.get('/click-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-element`
-  res.render('index', { adScriptUrl })
+  res.render('article', { adScriptUrl })
 })
 
 app.get('/click-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-js`
-  res.render('index', { adScriptUrl })
+  res.render('article', { adScriptUrl })
 })
 
 app.get('/view-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-element`
-  res.render('index', { adScriptUrl })
+  res.render('article', { adScriptUrl })
 })
 
 app.get('/view-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
-  res.render('index', { adScriptUrl })
+  res.render('article', { adScriptUrl })
 })
 
 app.get('/click-and-view-with-prio', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-and-view-with-prio`
-  res.render('index', { adScriptUrl })
+  res.render('article', { adScriptUrl })
 })
-
-// app.get('/', (req, res) => {
-//   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script`
-//   res.render('index', { adScriptUrl })
-// Measure clicks
-// Measure views
-// Measure clicks and views
-// With prios
-// With dedup
-// })
 
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
