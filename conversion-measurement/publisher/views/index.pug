@@ -1,52 +1,5 @@
-doctype html
-head
-  meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title 📰 Publisher
-  link(rel='stylesheet' href='/styles.css')
-body
-  main
-    h1 Publisher website 📰 
-    h2 Article
-    article
-      | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
-      | Slugging catcher slide bench league, left fielder nubber. 
-      | Base cookie triple play blue hot dog relay rake starting pitcher inning.
-    // Third-party adtech script that dynamically creates an iframe with an ad
-    script(src=adScriptUrl)
-    script(src="/demo-steps.js")
-  details
-    summary
-      div.summary-text ℹ️ HOW DOES THIS WORK?
-    div.content
-      p
-      strong On this page: 
-      | An authorized third-party script from 
-      span.actor-adtech adtech
-      |  loads an iframe on the 
-      span.actor-publisher publisher
-      | 's site.
-      |  This iframe includes an ad element that contains the attributes needed for the Event-Level Conversion Measurement API: 
-      ul
-        li
-          span.code attributionsourceeventid
-          |: the click ID
-        li
-          span.code attributionexpiry
-        li
-          span.code attributiondestination
-          |: an 
-          span.actor-advertiser advertiser
-          |  site
-        li
-          span.code attributionreportto
-          |: 
-          span.actor-adtech adtech
-          |'s server in this demo.
-      p 
-      strong Do:
-      ul
-        li Click the ad
-        li (Optional: open DevTools by pressing F12 to see these attributes)
+extends _layout.pug
+
+block content
 
 
