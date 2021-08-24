@@ -19,8 +19,11 @@ header {
 
 .actions {
   display: flex;
-  align-items: center;
   margin: 1rem 0;
+}
+
+.actions > div {
+  margin-right: 1.2rem;
 }
 
 h1 {
@@ -52,23 +55,17 @@ h1 {
   justify-content: flex-end;
 }
 
-.actions > div {
-  margin-right: 1rem;
-}
-
-a.button {
+a {
   --link-color: rgb(0, 38, 255);
   color: var(--link-color);
-  /* background-color: black;
-  transition: background-color 0.2s ease-out; */
   text-decoration: none;
   border-bottom: solid 1px var(--link-color);
-  /* padding: 0.4rem; */
 }
 
-/* .button:hover {
-  background-color: #3f3f3f;
-} */
+a#settings {
+  --link-color: rgb(234, 0, 255);
+  font-size: 0.9rem;
+}
 
 .center {
   display: flex;
