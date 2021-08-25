@@ -11,7 +11,7 @@
 Conversion measurement is automatically enabled for the origins of the deployed demo sites, via origin trial tokens.
 But when running the demo **locally**, the origin trial tokens won't be valid. You'll need to configure your browser to support conversion measurement instead.
 
-So, if you're running the demo locally (`127.0.0.1`):
+So, if you're running the demo locally (`127.0.0.1` or `localhost`):
 
 - Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the **two** flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
 - **Disable** third-party cookie **blocking**. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
@@ -32,14 +32,10 @@ To do so, you can:
 
 - Run `sh ./init.sh`
 - Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server.
-- Open `127.0.0.1:8080` in Chrome Canary.
+- Open `localhost:8080` in Chrome Canary.
 - Follow the instructions in the UI.
 
 ## Customize
-
-## ⚠️ Gotcha
-
-In local development, use and open `127.0.0.1` URLs, not `localhost`. Because conversions and reporting are origin-dependent and this code uses `127.0.0.1` (see `.env` files).
 
 ## About the API
 
