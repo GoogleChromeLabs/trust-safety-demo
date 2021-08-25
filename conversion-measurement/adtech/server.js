@@ -5,6 +5,10 @@ const app = express()
 app.use(express.json())
 app.set('view engine', 'pug')
 const PORT = 3000
+const demoHomeUrl = process.env.DEMO_HOME_URL
+const publisherUrl = process.env.PUBLISHER_URL
+const advertiserUrl = process.env.ADVERTISER_URL
+const adtechUrl = process.env.ADTECH_URL
 
 app.use(express.static('static'))
 
@@ -119,6 +123,16 @@ const conversionValuesClick = {
   [SIGNUP_NEWSLETTER]: 4
 }
 
+function getPriorityValue(conversionType, prioritizeCheckouts) {
+  if (!prioritizeCheckouts) {
+    // false: No conversion should be prioritizes specifically => always return a prio of 0
+    return 0
+  } else {
+    // true: Assign a prio of 100 to checkouts, and 0 to others
+    return conversionType === CHECKOUT_COMPLETED ? 100 : 0
+  }
+}
+
 app.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
   // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
@@ -126,17 +140,13 @@ app.get('/conversion', (req, res) => {
   // Define trigger data depending on the conversion type for views; it has to be 0 or 1 (1 bit only)
   const viewTriggerData = conversionType === CHECKOUT_COMPLETED ? 1 : 0
   const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
-  const dedup = req.query['dedup'] === 'true'
+  const useDeduplication = req.query['dedup'] === 'true'
 
-  const priority = prioritizeCheckouts
-    ? conversionType === CHECKOUT_COMPLETED
-      ? 100
-      : 0
-    : 0
+  const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
 
-  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priority}`
+  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priorityValue}`
 
-  if (dedup) {
+  if (useDeduplication) {
     const orderId = req.query['order-id']
     url = `${url}&dedup-key=${orderId}`
   }

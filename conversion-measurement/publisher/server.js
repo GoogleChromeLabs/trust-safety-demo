@@ -5,11 +5,14 @@ const app = express()
 app.set('view engine', 'pug')
 const PORT = 8081
 const demoHomeUrl = process.env.DEMO_HOME_URL
+const publisherUrl = process.env.PUBLISHER_URL
+const advertiserUrl = process.env.ADVERTISER_URL
+const adtechUrl = process.env.ADTECH_URL
 
 app.use(express.static('static'))
 
 app.get('/', (req, res) => {
-  res.render('index', { demoHomeUrl })
+  res.render('index', { demoHomeUrl, publisherUrl, advertiserUrl, adtechUrl })
 })
 
 app.get('/click-element', (req, res) => {
@@ -17,7 +20,10 @@ app.get('/click-element', (req, res) => {
   res.render('article', {
     adScriptUrl,
     title: 'Track clicks via `a` element',
-    demoHomeUrl
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
   })
 })
 
@@ -26,7 +32,10 @@ app.get('/click-js', (req, res) => {
   res.render('article', {
     adScriptUrl,
     title: 'Track clicks via JS',
-    demoHomeUrl
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
   })
 })
 
@@ -35,7 +44,10 @@ app.get('/view-element', (req, res) => {
   res.render('article', {
     adScriptUrl,
     title: 'Track clicks and views via `a` element',
-    demoHomeUrl
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
   })
 })
 
@@ -44,7 +56,10 @@ app.get('/view-js', (req, res) => {
   res.render('article', {
     adScriptUrl,
     title: 'Track clicks and views via JS',
-    demoHomeUrl
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
   })
 })
 
@@ -54,7 +69,10 @@ app.get('/click-and-view-with-prio', (req, res) => {
     adScriptUrl,
     title:
       'Track clicks and views via `a` element, with clicks prioritized over views',
-    demoHomeUrl
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
   })
 })
 

@@ -26,16 +26,21 @@ article {
 }
 
 header {
-  margin: 2rem 0 4rem 0;
+  margin: 2rem 0;
 }
 
 .actions {
   display: flex;
-  margin: 1rem 0;
+  padding: 1rem 0;
+  border-bottom: solid 1px grey;
 }
 
 .actions > div {
-  margin-right: 1.2rem;
+  margin-right: 2rem;
+}
+
+.actions > div > div {
+  margin: 0.6rem 0;
 }
 
 .select {
@@ -113,7 +118,6 @@ a {
   color: var(--link-color);
   text-decoration: none;
   border-bottom: solid 1px var(--link-color);
-  font-size: 0.9rem;
 }
 
 #footer {

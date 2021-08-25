@@ -4,19 +4,19 @@ block content
     h3 Demo settings
     div.options
     div
-        input(id='prio' type='checkbox' checked=prio)
+        input(id='priocheckbox' type='checkbox' checked=prio)
         | Prioritize checkout conversions 💰
     div
-        input(id='dedup' type='checkbox' checked=dedup)
+        input(id='dedupcheckbox' type='checkbox' checked=dedup)
         | Deduplicate conversions
     script.
         async function editSetting(e) {
-            const prioCheckboxEl = document.getElementById('prio')
-            const dedupCheckboxEl = document.getElementById('dedup')
+            const prioCheckboxEl = document.getElementById('priocheckbox')
+            const dedupCheckboxEl = document.getElementById('dedupcheckbox')
 
             const data = {
+                prio: prioCheckboxEl.checked,
                 dedup: dedupCheckboxEl.checked,
-                prio: prioCheckboxEl.checked
             }
             await fetch('/demo-settings', {
                 method: 'POST',
@@ -28,5 +28,5 @@ block content
             })
         }
 
-        document.getElementById('prio').addEventListener('change', editSetting)
-        document.getElementById('dedup').addEventListener('change', editSetting)
+        document.getElementById('priocheckbox').addEventListener('change', editSetting)
+        document.getElementById('dedupcheckbox').addEventListener('change', editSetting)

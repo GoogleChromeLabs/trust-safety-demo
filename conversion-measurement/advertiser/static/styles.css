@@ -14,16 +14,21 @@ body {
 }
 
 header {
-  margin: 2rem 0 4rem 0;
+  margin: 2rem 0;
 }
 
 .actions {
   display: flex;
-  margin: 1rem 0;
+  padding: 1rem 0;
+  border-bottom: solid 1px grey;
 }
 
 .actions > div {
-  margin-right: 1.2rem;
+  margin-right: 2rem;
+}
+
+.actions > div > div {
+  margin: 0.6rem 0;
 }
 
 h1 {
@@ -54,16 +59,19 @@ a {
   color: var(--link-color);
   text-decoration: none;
   border-bottom: solid 1px var(--link-color);
-  font-size: 0.9rem;
 }
+
 .trigger {
   font-size: 0.7rem;
   font-family: 'Lucida Console', Monaco, monospace;
 }
 
+#settings-wrapper {
+  transform: translateY(-5px);
+}
+
 a#settings {
   --link-color: rgb(234, 0, 255);
-  font-size: 0.9rem;
 }
 
 .center {

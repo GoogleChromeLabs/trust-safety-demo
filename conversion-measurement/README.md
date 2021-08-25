@@ -1,46 +1,18 @@
 # Attribution Reporting API: demo
 
-## Live demo
+## See the live demo
 
-[Live demo](https://goo.gle/sppi-devrel-eventlevel)
-
-## Set and run locally
-
-### Browser setup
-
-Conversion measurement is automatically enabled for the origins of the deployed demo sites, via origin trial tokens.
-But when running the demo **locally**, the origin trial tokens won't be valid. You'll need to configure your browser to support conversion measurement instead.
-
-So, if you're running the demo locally (`127.0.0.1` or `localhost`):
-
-- Go to flags by typing `chrome://flags` in Chrome's URL bar. Turn on the **two** flags `#enable-experimental-web-platform-features` and `#conversion-measurement-api`.
-- **Disable** third-party cookie **blocking**. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
-
-Whether or not the demo is running locally, you need Chrome version **86** or later (for example [Chrome Beta](https://www.google.com/chrome/beta/).
-You can check what version of Chrome you're using by typing `chrome://version` in the URL bar.
-
-### (Optional) Other useful debugging features
-
-You can see the conversion reports the browser has scheduled to send at `chrome://conversion-internals/` > **Pending Reports**.
-Reports are sent at scheduled times. But for debugging purposes, you may not want to wait for these scheduled times.
-To do so, you can:
-
-- Click **Send All Reports** in `chrome://conversion-internals/` > **Pending Reports**.
-- Or activate the flag `chrome://flags/#conversion-measurement-debug-mode`, so that all reports are always sent **immediately**.
+## >> [Live demo](https://goo.gle/sppi-devrel-eventlevel)
 
 ## Setup and run locally
 
-- Run `sh ./init.sh`
-- Run `sh ./start.sh` -> You should have 4 servers runnning: home, publisher, advertiser, adtech server.
-- Open `localhost:8080` in Chrome Canary.
-- Follow the instructions in the UI.
+1. Run `git clone https://github.com/GoogleChromeLabs/trust-safety-demo.git && cd trust-safety-demo/conversion-measurement`
+2. Run `sh ./init.sh`
+3. Run `sh ./start.sh`.
+4. You should now have multiple servers running: home, publisher, other publisher, advertiser, adtech server.
+5. Open `localhost:8080` in Chrome Canary.
+6. Follow the instructions in the UI. 🚨 In particular, make sure to follow the **Set up your browser** instructions and check out the screencast.
 
 ## Customize
 
-## About the API
-
-[API explainer](https://github.com/WICG/conversion-measurement-api)
-
-## Questions or issues?
-
-Ping [@maudnals](https://twitter.com/maudnals) or [@ChromiumDev](https://twitter.com/ChromiumDev) on Twitter.
+All URLs in this demo (publisher, advertiser, adtech) can be customized: look for `.env.development` and `env.production` files in each subfolder and customize them as needed.
