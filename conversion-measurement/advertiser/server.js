@@ -64,12 +64,7 @@ app.post('/demo-settings', (req, res) => {
 
 app.post('/new-order', (req, res) => {
   req.session.orderId = Math.floor(Math.random() * 100000)
-  res.redirect('checkout', {
-    demoHomeUrl,
-    publisherUrl,
-    advertiserUrl,
-    adtechUrl
-  })
+  res.redirect('checkout')
 })
 
 app.get('/blue-shoes', (req, res) => {
