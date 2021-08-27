@@ -147,8 +147,8 @@ app.get('/conversion', (req, res) => {
   let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priorityValue}`
 
   if (useDeduplication) {
-    const orderId = req.query['order-id']
-    url = `${url}&dedup-key=${orderId}`
+    const purchaseId = req.query['purchase-id']
+    url = `${url}&dedup-key=${purchaseId}`
   }
   // Adtech orders the browser to schedule-send a report
   res.redirect(302, url)

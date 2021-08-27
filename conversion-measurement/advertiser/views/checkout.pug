@@ -4,11 +4,11 @@ block content
     h3 Thanks for your purchase!
     img.pixel(src=adtechRequestUrl height='12' width='12')
     div.pixel-name Pixel that tracks purchases (completed checkouts)
-    div  Order ID: #{orderId}
-    button(onClick="generateNewOrder()") 🔄 New order
+    div  Order ID: #{purchaseId}
+    button(onClick="generateNewPurchase()") 🔄 New purchase (buy something else)
     script.
-        async function generateNewOrder() {
-            await fetch('/new-order', {
+        async function generateNewPurchase() {
+            await fetch('/new-purchase', {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {

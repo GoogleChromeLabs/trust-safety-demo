@@ -62,8 +62,8 @@ app.post('/demo-settings', (req, res) => {
   })
 })
 
-app.post('/new-order', (req, res) => {
-  req.session.orderId = Math.floor(Math.random() * 100000)
+app.post('/new-purchase', (req, res) => {
+  req.session.purchaseId = Math.floor(Math.random() * 100000)
   res.redirect('checkout')
 })
 
@@ -94,15 +94,15 @@ app.get('/signup-newsletter', (req, res) => {
 })
 
 app.get('/checkout', (req, res) => {
-  if (!req.session.orderId) {
-    req.session.orderId = Math.floor(Math.random() * 100000)
+  if (!req.session.purchaseId) {
+    req.session.purchaseId = Math.floor(Math.random() * 100000)
   }
   const conversionType = 'checkout-completed'
-  const { prio, dedup, orderId } = req.session
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}&order-id=${orderId}`
+  const { prio, dedup, purchaseId } = req.session
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}&purchase-id=${purchaseId}`
   res.render('checkout', {
     adtechRequestUrl,
-    orderId,
+    purchaseId,
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
