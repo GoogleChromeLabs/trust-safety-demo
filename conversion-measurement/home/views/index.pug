@@ -19,24 +19,11 @@ body
         li Deactivate ad-blocking extensions on the demo pages. Some ad blocking browser extensions may block some of this demo's functionality. 
         li Don't use an Incognito or Guest profile.
         li Turn on the 
-            strong two 
-            | flags 
-            span.select.code #conversion-measurement-api
-            |  and 
+            | flag 
             span.select.code #enable-experimental-web-platform-features
             |. Go to flags by typing or pasting 
             span.select.code chrome://flags 
             | in Chrome's URL bar. 
-        li 
-            strong Disable 
-            | third-party cookie 
-            strong blocking
-            |. In the long term, dedicated browser settings will be available to allow/block the API. Until then, third-party cookie blocking is used as the signal that users don't want to share data about their conversions—and hence that this API should be disabled.
-        li If you're running the demo locally (
-            strong 127.0.0.1
-            |), follow these 
-            a(href='https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#browser-setup' noopener) additional instructions
-            |.
     h2 Run the demo
     | Open these in new tabs:
     ul
