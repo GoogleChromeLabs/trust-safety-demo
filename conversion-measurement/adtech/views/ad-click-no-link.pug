@@ -18,13 +18,14 @@ script.
   const href = !{JSON.stringify(href)};
   // Define the source event ID
   const attributionsourceeventid=`${Math.floor(Math.random() * 1000000000000000)}`;
+  
   // Display the source event ID in the UI for demo purposes
   const adIdEl = document.getElementById('adid');
   adIdEl.innerText = attributionsourceeventid;
   // Set a click event handler with window.open
   const adEl = document.getElementById('ad');
   adEl.addEventListener("click", () => {
-    window.open(href, '_parent', `attributionsourceeventid=${attributionsourceeventid},attributiondestination=${attributiondestination},attributionreportto=${attributionreportto},attributionexpiry=864000000`)
+    window.open(href, '_blank', `attributionsourceeventid=${attributionsourceeventid},attributiondestination=${attributiondestination},attributionreportto=${attributionreportto},attributionexpiry=864000000`)
   });
 
 
