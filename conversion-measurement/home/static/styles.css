@@ -18,6 +18,11 @@ h1 {
   margin: 0;
 }
 
+.padded {
+  padding: 0 0.2rem;
+  margin: 0;
+}
+
 h2 {
   padding: 0;
   margin: 1.4rem 0 0.4rem 0;
