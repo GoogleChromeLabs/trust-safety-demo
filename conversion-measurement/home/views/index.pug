@@ -5,36 +5,49 @@ head
   title 🏠 Demo: Attribution Reporting API (event-level reports)
   link(rel='stylesheet' href='/styles.css')
 body
-    h1 Demo: Attribution Reporting API 
-    | With event-level reports
-
+    h1 Demo: Attribution Reporting API
+    div.padded With event-level reports
     h2 Run the demo
     ol
-        li.important Set up your browser (TODO LINK TO ARTICLE)
-        li Open (TODO LINK) and (TODO LINK) in your browser
-        li Follow the screencast (TODO LINK)
-
-    h3
-        div 
-            a(href=publisherUrl target="_blank") Publisher
-        div 
-            a(href=advertiserUrl target="_blank") Advertiser
-        div 
-            a(href=adtechUrl target="_blank") Adtech - Reports UI
+        li.important Set up your browser. 
+            a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide#browser-setup" noreferrer noopener) See how
+            |.
+        li In new tabs, open the 
+            a(href=publisherUrl target="_blank") Publisher site
+            |, the 
+            a(href=publisherUrl target="_blank") Adtech UI 
+            | (where reports will be displayed), and the Debugging UI via 
+            span.code.select chrome://conversion-internals
+            |.
+    h2 All links for this demo
+        h3
+            div 
+                a(href=publisherUrl target="_blank") Publisher
+            div 
+                a(href=advertiserUrl target="_blank") Advertiser
+            div 
+                a(href=adtechUrl target="_blank") Adtech - Reports UI
 
     h2 See the code
     a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
 
     h2 Reuse and customize the code
-    div TODO LINK
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener) Reuse and customize the code
 
     h2 Ask questions / Share feedback 👋
-    | For questions and comments about this demo, start a new conversation in (TODO LINK TO MAILING LIST) or ping 
+    | For questions and comments about this demo, start a new conversation in the 
+    a(href="https://groups.google.com/u/0/a/chromium.org/g/attribution-reporting-api-dev" noreferrer noopener) developer mailing list
+    |  or ping 
     a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
+    |  on Twitter.
 
     h2 Learn more
-    ul
-        li
-            a(href="" noreferrer noopener) TODO LINK TO API guide
-        li
-            a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer 
+    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-introduction/" noreferrer noopener) What is the Attribution Reporting API with event-level reports?
+    br
+    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide/" noreferrer noopener) Using the Attribution Reporting API with event-level reports
+
+
+
+    
+
+    
