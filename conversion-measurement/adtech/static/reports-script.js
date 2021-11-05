@@ -13,7 +13,7 @@ function updateUi(reports) {
     const { date } = report
     const time = new Date(date).toLocaleTimeString()
     const day = new Date(date).toDateString()
-    return `<div><div>${report['source_event_id']}</div><div>${report['trigger_data']}</div><div>${time} ${day}</div></div>`
+    return `<div><div>${report['source_event_id']}</div><div>${report['trigger_data']}</div><div>${report['attribution_destination']}</div><div>${time} ${day}</div></div>`
   })
   reportListEl.innerHTML = reportsHTML.reduce((acc, c) => `${acc}${c}`, '')
 }

@@ -39,43 +39,6 @@ app.get('/click-js', (req, res) => {
   })
 })
 
-app.get('/view-element', (req, res) => {
-  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-element`
-  res.render('article', {
-    adScriptUrl,
-    title: 'Track clicks and views via `a` element',
-    demoHomeUrl,
-    publisherUrl,
-    advertiserUrl,
-    adtechUrl
-  })
-})
-
-app.get('/view-js', (req, res) => {
-  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
-  res.render('article', {
-    adScriptUrl,
-    title: 'Track clicks and views via JS',
-    demoHomeUrl,
-    publisherUrl,
-    advertiserUrl,
-    adtechUrl
-  })
-})
-
-app.get('/click-and-view-with-prio', (req, res) => {
-  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-and-view-with-prio`
-  res.render('article', {
-    adScriptUrl,
-    title:
-      'Track clicks and views via `a` element, with clicks prioritized over views',
-    demoHomeUrl,
-    publisherUrl,
-    advertiserUrl,
-    adtechUrl
-  })
-})
-
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
     '\x1b[1;32m%s\x1b[0m',

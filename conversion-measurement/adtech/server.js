@@ -42,28 +42,6 @@ app.get('/ad-click-no-link', (req, res) => {
   })
 })
 
-app.get('/ad-view', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}`
-  const attributionDestination = process.env.ADVERTISER_URL
-  const attributionReportTo = process.env.ADTECH_URL
-  res.render('ad-view', {
-    href,
-    attributiondestination: attributionDestination,
-    attributionreportto: attributionReportTo
-  })
-})
-
-app.get('/ad-click-view-prio', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}`
-  const attributionDestination = process.env.ADVERTISER_URL
-  const attributionReportTo = process.env.ADTECH_URL
-  res.render('ad-click-view-prio', {
-    href,
-    attributiondestination: attributionDestination,
-    attributionreportto: attributionReportTo
-  })
-})
-
 app.get('/ad-script-click-element', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adClickUrl = `${process.env.ADTECH_URL}/ad-click`
@@ -78,34 +56,6 @@ app.get('/ad-script-click-js', (req, res) => {
   res.send(`document.write("${iframe}");`)
 })
 
-app.get('/ad-script-view-element', (req, res) => {
-  res.set('Content-Type', 'text/javascript')
-  const adViewUrl = `${process.env.ADTECH_URL}/ad-view`
-  const viewIframe = `<iframe src='${adViewUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-  res.send(`document.write("${viewIframe}");`)
-})
-
-app.get('/ad-script-view-js', (req, res) => {
-  res.set('Content-Type', 'text/javascript')
-  const attributionDestination = process.env.ADVERTISER_URL
-  const attributionReportTo = process.env.ADTECH_URL
-  // JS API for views
-  const call = `window.attributionReporting.registerAttributionSource({
-    attributionSourceEventId: ${Math.floor(Math.random() * 1000000000000000)},
-    attributionDestination: '${attributionDestination}',
-    attributionReportTo: '${attributionReportTo}',
-    attributionExpiry: '864000000'
-  })`
-  res.send(`${call};`)
-})
-
-app.get('/ad-script-click-and-view-with-prio', (req, res) => {
-  res.set('Content-Type', 'text/javascript')
-  const adPrioUrl = `${process.env.ADTECH_URL}/ad-click-view-prio`
-  const adIframe = `<iframe src='${adPrioUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-  res.send(`document.write("${adIframe}");`)
-})
-
 /* -------------------------------------------------------------------------- */
 /*                     Attribution trigger (conversion)                       */
 /* -------------------------------------------------------------------------- */
@@ -116,7 +66,6 @@ const VISIT_PRODUCT_PAGE = 'visit-product-page'
 const SIGNUP_NEWSLETTER = 'signup-newsletter'
 
 const conversionValuesClick = {
-  // checkout = 1, so that the value is consistent across clicks and views (views must be 0 or 1)
   [CHECKOUT_COMPLETED]: 1,
   [ADD_TO_CART]: 2,
   [VISIT_PRODUCT_PAGE]: 3,
@@ -137,14 +86,12 @@ app.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
   // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
   const clickTriggerData = conversionValuesClick[conversionType]
-  // Define trigger data depending on the conversion type for views; it has to be 0 or 1 (1 bit only)
-  const viewTriggerData = conversionType === CHECKOUT_COMPLETED ? 1 : 0
   const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
   const useDeduplication = req.query['dedup'] === 'true'
 
   const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
 
-  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&event-source-trigger-data=${viewTriggerData}&priority=${priorityValue}`
+  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&priority=${priorityValue}`
 
   if (useDeduplication) {
     const purchaseId = req.query['purchase-id']
