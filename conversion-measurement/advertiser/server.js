@@ -26,8 +26,8 @@ app.use((req, res, next) => {
   if (!req.session.initialized) {
     // Initialize variables on the session object (persisted across requests made by the same user)
     req.session.initialized = true
-    req.session.prio = true
-    req.session.dedup = true
+    req.session.prio = false
+    req.session.dedup = false
   }
   next()
 })
