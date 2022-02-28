@@ -1,29 +1,126 @@
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
+const session = require('express-session')
+const PORT = 8082
+const demoHomeUrl = process.env.DEMO_HOME_URL
+const publisherUrl = process.env.PUBLISHER_URL
+const advertiserUrl = process.env.ADVERTISER_URL
+const adtechUrl = process.env.ADTECH_URL
 
 const app = express()
 app.set('view engine', 'pug')
-const PORT = 8082
+app.use(
+  session({
+    secret: '343ji43j4n3jn4jk3n',
+    saveUninitialized: true,
+    resave: true
+  })
+)
 
+app.use(express.json())
 app.use(express.static('static'))
 
-app.get('/shoes07', (req, res) => {
-  res.render('shoes07')
+// Middleware run on each request
+app.use((req, res, next) => {
+  // Check if session is initialized
+  if (!req.session.initialized) {
+    // Initialize variables on the session object (persisted across requests made by the same user)
+    req.session.initialized = true
+    req.session.prio = false
+    req.session.dedup = false
+  }
+  next()
+})
+
+app.get('/', (req, res) => {
+  res.render('home', { demoHomeUrl, publisherUrl, advertiserUrl, adtechUrl })
+})
+
+app.get('/settings', (req, res) => {
+  const { prio, dedup } = req.session
+  res.render('settings', {
+    prio,
+    dedup,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
+app.post('/demo-settings', (req, res) => {
+  req.session.prio = req.body.prio
+  req.session.dedup = req.body.dedup
+  const { prio, dedup } = req.session
+  res.render('settings', {
+    prio,
+    dedup,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
+app.post('/new-purchase', (req, res) => {
+  req.session.purchaseId = Math.floor(Math.random() * 100000)
+  res.redirect('checkout')
+})
+
+app.get('/blue-shoes', (req, res) => {
+  const conversionType = 'visit-product-page'
+  const { prio, dedup } = req.session
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  res.render('blue-shoes', {
+    adtechRequestUrl,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
+app.get('/signup-newsletter', (req, res) => {
+  const conversionType = 'signup-newsletter'
+  const { prio, dedup } = req.session
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  res.render('signup-newsletter', {
+    adtechRequestUrl,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
 })
 
 app.get('/checkout', (req, res) => {
-  // pass the conversion type to adtech - but more data could be passed e.g. the model purchased
-  const conversionType = 'checkout'
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
-  const adtechServerUi = `${process.env.ADTECH_URL}`
-  res.render('checkout', { adtechRequestUrl, adtechServerUi })
+  if (!req.session.purchaseId) {
+    req.session.purchaseId = Math.floor(Math.random() * 100000)
+  }
+  const conversionType = 'checkout-completed'
+  const { prio, dedup, purchaseId } = req.session
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}&purchase-id=${purchaseId}`
+  res.render('checkout', {
+    adtechRequestUrl,
+    purchaseId,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
 })
 
-app.get('/signup', (req, res) => {
-  const conversionType = 'signup'
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}`
-  const adtechServerUi = `${process.env.ADTECH_URL}`
-  res.render('signup', { adtechRequestUrl, adtechServerUi })
+app.get('/add-to-cart', (req, res) => {
+  const conversionType = 'add-to-cart'
+  const { prio, dedup } = req.session
+  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  res.render('add-to-cart', {
+    adtechRequestUrl,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
 })
 
 const listener = app.listen(process.env.PORT || PORT, () => {

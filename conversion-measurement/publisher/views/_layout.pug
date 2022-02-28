@@ -1,0 +1,34 @@
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title 📰 Publisher
+    link(rel='stylesheet' href='/styles.css')
+  body
+    main
+        h1 Publisher site 📰  
+        header
+            div.actions
+                div 
+                    a(href='/') Home
+                div
+                    strong Track clicks:
+                    div 
+                        a(href='/click-element') Via an `a` element (anchor)
+                    div 
+                        a(href='/click-js') Via JS
+        block content
+    block foot
+        #footer
+            div 
+                a(href=demoHomeUrl) Demo homepage 
+                | ・
+                span Publisher site
+                | ・
+                a(href=advertiserUrl) Advertiser site
+                | ・
+                a(href=adtechUrl) Adtech site
+            div
+                a(href="https://goo.gle/sppi-devrel-eventlevel") Deployed demo
+                | ・
+                a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement") Code

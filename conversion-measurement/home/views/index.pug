@@ -2,73 +2,57 @@ doctype html
 head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title ⚡️ Demo: Event-Level Conversion Measurement API
+  title 🏠 Demo: Attribution Reporting API (event-level reports)
   link(rel='stylesheet' href='/styles.css')
 body
-    h1 ⚡️ Demo: Event-Level Conversion Measurement API
-
-    h2 Before you run this demo
-    div.important
-        | Read this ⤵️ The demo only works once you've gone through these setup steps. This demo isn't using Origin Trial tokens but relies on local flags instead.
-    ol
-        li Make sure you're in Chrome, version 
-            strong 86 
-            | or later. You can check what version of Chrome you're using by typing 
-            span.select.code chrome://version
-            |  in the URL bar.
-        li Deactivate ad-blocking extensions on the demo pages. Some ad blocking browser extensions may block some of this demo's functionality. 
-        li Don't use an Incognito or Guest profile.
-        li Turn on the 
-            | flag 
-            span.select.code #enable-experimental-web-platform-features
-            |. Go to flags by typing or pasting 
-            span.select.code chrome://flags 
-            | in Chrome's URL bar. 
+    h1 Demo: Attribution Reporting API
+    div.padded With event-level reports
     h2 Run the demo
-    | Open these in new tabs:
-    ul
-        li 
-            a(href=publisherUrl) Publisher website 📰 
-        li
-            span.select.code chrome://conversion-internals
-            |  (type or paste in Chrome's URL bar)
-        li
-            a(href=adtechUrl) Adtech server 🚀 
-    | And follow the steps indicated on each page. 
-    strong Demo screencast:
+    ol
+        li.important Set up your browser. 
+            a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide#browser-setup" noreferrer noopener) See how
+            |.
+        li In new tabs, open the 
+            a(href=publisherUrl target="_blank") Publisher site
+            |, the 
+            a(href=publisherUrl target="_blank") Adtech UI 
+            | (where reports will be displayed), and the Debugging UI via 
+            span.code.select chrome://conversion-internals
+            |.
+    h2 Demo screencast
     div.full
         video(controls)
-            source(src='/demo-event-level-conversion-measurement-v1.mp4' type='video/mp4')
+            source(src='/demo-attribution-reporting-v2.mp4' type='video/mp4')
             | Your browser does not support the video tag.
+    h2 All links for this demo
+        h3
+            div 
+                a(href=publisherUrl target="_blank") Publisher
+            div 
+                a(href=advertiserUrl target="_blank") Advertiser
+            div 
+                a(href=adtechUrl target="_blank") Adtech - Reports UI
 
     h2 See the code
     a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
-    h2 Learn more
-    ul
-        li
-            a(href="https://web.dev/conversion-measurement" noreferrer noopener) Article
-        li
-            a(href="https://github.com/WICG/conversion-measurement-api" noreferrer noopener) API explainer 
-    h2 Ask questions / Share feedback
-    | 👋 Ping 
+
+    h2 Reuse and customize the code
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener) Reuse and customize the code
+
+    h2 Ask questions / Share feedback 👋
+    | For questions and comments about this demo, start a new conversation in the 
+    a(href="https://groups.google.com/u/0/a/chromium.org/g/attribution-reporting-api-dev" noreferrer noopener) developer mailing list
+    |  or ping 
     a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
-    |  for feedback / questions about this demo.
-    script.
-        const okEls = document.querySelectorAll(".ok")
-        const nokEls = document.querySelectorAll(".nok")
-        const canDemoRun = document.featurePolicy.features().includes('conversion-measurement')
-        if (canDemoRun) {
-            okEls.forEach(el => {
-                el.classList.add("show")
-            });
-            nokEls.forEach(el => {
-                el.classList.add("hide")
-            });
-        } else {
-            okEls.forEach(el => {
-                el.classList.add("hide")
-            });
-            nokEls.forEach(el => {
-                el.classList.add("show")
-            });
-        }
+    |  on Twitter.
+
+    h2 Learn more
+    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-introduction/" noreferrer noopener) What is the Attribution Reporting API with event-level reports?
+    br
+    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide/" noreferrer noopener) Using the Attribution Reporting API with event-level reports
+
+
+
+    
+
+    

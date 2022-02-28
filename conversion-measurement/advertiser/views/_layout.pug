@@ -1,0 +1,44 @@
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title 👟 Advertiser
+    link(rel='stylesheet' href='/styles.css')
+  body
+    main
+        h1 Advertiser website 👟 
+        header
+            div.actions
+                div 
+                    a(href='/') Home
+                div#settings-wrapper 
+                    a#settings(href='/settings') Demo Settings ⚙️ 
+                div
+                    strong Convert:
+                    div 
+                        a(href='/blue-shoes') Visit product page 
+                        div.trigger trigger data=3
+                    div 
+                        a(href='/add-to-cart') Add product to cart
+                        div.trigger trigger data=2
+                    div 
+                        a(href='/checkout') Complete checkout 💰
+                        div.trigger trigger data=1
+                    div 
+                        a(href='/signup-newsletter') Sign up for special offers
+                        div.trigger trigger data=4
+        block content
+    block foot
+        #footer
+            div 
+                a(href=demoHomeUrl) Demo homepage 
+                | ・
+                a(href=publisherUrl) Publisher site
+                | ・
+                span Advertiser site
+                | ・
+                a(href=adtechUrl) Adtech site
+            div
+                a(href="https://goo.gle/sppi-devrel-eventlevel") Deployed demo
+                | ・
+                a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement") Code

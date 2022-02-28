@@ -13,6 +13,24 @@ body {
   background: #ffffd0;
 }
 
+header {
+  margin: 2rem 0;
+}
+
+.actions {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: solid 1px grey;
+}
+
+.actions > div {
+  margin-right: 2rem;
+}
+
+.actions > div > div {
+  margin: 0.6rem 0;
+}
+
 h1 {
   display: inline-block;
   background: #fff59a;
@@ -36,23 +54,24 @@ h1 {
   justify-content: space-between;
 }
 
-.button-wrapper {
-  width: 14rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.button {
-  color: white;
-  background-color: black;
-  transition: background-color 0.2s ease-out;
+a {
+  --link-color: rgb(0, 38, 255);
+  color: var(--link-color);
   text-decoration: none;
-  padding: 0.8rem 2rem;
-  border-radius: 7px;
+  border-bottom: solid 1px var(--link-color);
 }
 
-.button:hover {
-  background-color: #3f3f3f;
+.trigger {
+  font-size: 0.7rem;
+  font-family: 'Lucida Console', Monaco, monospace;
+}
+
+#settings-wrapper {
+  transform: translateY(-5px);
+}
+
+a#settings {
+  --link-color: rgb(234, 0, 255);
 }
 
 .center {
@@ -62,12 +81,20 @@ h1 {
 }
 
 img {
-  margin: 2rem auto;
   display: block;
 }
 
 .pixel {
   background-color: red;
+}
+
+.pixel-name {
+  color: red;
+  font-size: 0.8rem;
+  font-family: 'Lucida Console', Monaco, monospace;
+  width: 10rem;
+  transform: translate(1rem, -1rem);
+  line-height: 0.8rem;
 }
 
 .center {
@@ -133,4 +160,12 @@ details .content {
 .code {
   font-size: var(--font-size-xs);
   font-family: 'Lucida Console', Monaco, monospace;
+}
+
+#footer {
+  background-color: rgba(0, 0, 0, 0.164);
+  padding: 0.4rem;
+  z-index: 1000;
+  text-align: center;
+  font-size: 0.9rem;
 }

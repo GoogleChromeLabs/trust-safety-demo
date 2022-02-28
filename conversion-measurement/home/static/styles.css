@@ -18,9 +18,14 @@ h1 {
   margin: 0;
 }
 
+.padded {
+  padding: 0 0.2rem;
+  margin: 0;
+}
+
 h2 {
   padding: 0;
-  margin: 1.2rem 0 0.2rem 0;
+  margin: 1.4rem 0 0.4rem 0;
   font-size: 1.2rem;
 }
 
@@ -50,7 +55,7 @@ a:visited {
 video {
   margin: 1rem 0 0 0;
   width: 100%;
-  max-width: 44rem;
+  max-width: 24rem;
 }
 
 .show {

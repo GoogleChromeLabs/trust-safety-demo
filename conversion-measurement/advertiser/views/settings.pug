@@ -1,0 +1,32 @@
+extends _layout.pug
+
+block content
+    h3 Demo settings
+    div.options
+    div
+        input(id='priocheckbox' type='checkbox' checked=prio)
+        | Prioritize checkout conversions 💰
+    div
+        input(id='dedupcheckbox' type='checkbox' checked=dedup)
+        | Deduplicate conversions
+    script.
+        async function editSetting(e) {
+            const prioCheckboxEl = document.getElementById('priocheckbox')
+            const dedupCheckboxEl = document.getElementById('dedupcheckbox')
+
+            const data = {
+                prio: prioCheckboxEl.checked,
+                dedup: dedupCheckboxEl.checked,
+            }
+            await fetch('/demo-settings', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        }
+
+        document.getElementById('priocheckbox').addEventListener('change', editSetting)
+        document.getElementById('dedupcheckbox').addEventListener('change', editSetting)
