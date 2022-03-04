@@ -9,15 +9,30 @@ body
     div.padded With event-level reports
     h2 Run the demo
     ol
-        li.important Set up your browser. 
-            a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide#browser-setup" noreferrer noopener) See how
-            |.
+        li
+          span.important Set up your browser. 
+          ul
+            li Use Chrome version 94 or later. You can check what version of Chrome you're using by typing 
+              span.code.select chrome://version 
+              | in the URL bar.
+            li Open 
+              span.code.select chrome://flags 
+              | and turn on the flag 
+              span.code.select enable-experimental-web-platform-features
+              |.
+            li Don't use Incognito or Guest mode. The API is disabled on these profiles.
+            li Ensure that the Privacy Sandbox APIs are enabled at 
+              span.code.select chrome://settings/privacySandbox
+              |.
+            li Deactivate ad-blocking extensions on the pages where you need to test the API (or create a fresh user profile without extensions). Some ad-blocking browser extensions may block some of the API's functionality if script names contain the term "ad".
+            // a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide#browser-setup" noreferrer noopener) See how
+            // |.
         li In new tabs, open the 
             a(href=publisherUrl target="_blank") Publisher site
             |, the 
-            a(href=publisherUrl target="_blank") Adtech UI 
+            a(href=adtechUrl target="_blank") Adtech UI 
             | (where reports will be displayed), and the Debugging UI via 
-            span.code.select chrome://conversion-internals
+            span.code.select chrome://attribution-internals
             |.
     h2 Demo screencast
     div.full
