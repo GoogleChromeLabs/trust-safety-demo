@@ -20,6 +20,20 @@ app.get('/', (req, res) => {
 /*                                 Ad serving                                 */
 /* -------------------------------------------------------------------------- */
 
+app.get('/register-source', (req, res) => {
+  console.log('register-source')
+  const attributionDestination = process.env.ADVERTISER_URL
+  res.set(
+    'Attribution-Reporting-Register-Source',
+    JSON.stringify({
+      source_event_id: `${Math.floor(Math.random() * 1000000000000000)}`,
+      destination: attributionDestination,
+      expiry: '604800000'
+    })
+  )
+  res.status(200).send('OK')
+})
+
 app.get('/ad-click', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
@@ -74,7 +88,7 @@ const conversionValuesClick = {
 
 function getPriorityValue(conversionType, prioritizeCheckouts) {
   if (!prioritizeCheckouts) {
-    // false: No conversion should be prioritizes specifically => always return a prio of 0
+    // false: No conversion should be prioritized specifically => always return a prio of 0
     return 0
   } else {
     // true: Assign a prio of 100 to checkouts, and 0 to others
@@ -83,22 +97,27 @@ function getPriorityValue(conversionType, prioritizeCheckouts) {
 }
 
 app.get('/conversion', (req, res) => {
-  const conversionType = req.query['conversion-type']
-  // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
-  const clickTriggerData = conversionValuesClick[conversionType]
-  const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
-  const useDeduplication = req.query['dedup'] === 'true'
-
-  const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
-
-  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&priority=${priorityValue}`
-
-  if (useDeduplication) {
-    const purchaseId = req.query['purchase-id']
-    url = `${url}&dedup-key=${purchaseId}`
-  }
-  // Adtech orders the browser to schedule-send a report
-  res.redirect(302, url)
+  // const conversionType = req.query['conversion-type']
+  // // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
+  // const clickTriggerData = conversionValuesClick[conversionType]
+  // const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
+  // const useDeduplication = req.query['dedup'] === 'true'
+  // const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
+  // let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&priority=${priorityValue}`
+  // if (useDeduplication) {
+  //   const purchaseId = req.query['purchase-id']
+  //   url = `${url}&dedup-key=${purchaseId}`
+  // }
+  // // Adtech orders the browser to schedule-send a report
+  // res.redirect(302, url)
+  console.log('trigger')
+  res.set(
+    'Attribution-Reporting-Register-Event-Trigger',
+    JSON.stringify({
+      trigger_data: 2
+    })
+  )
+  res.status(200).send('OK')
 })
 
 /* -------------------------------------------------------------------------- */
@@ -111,16 +130,19 @@ app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
 
-app.post('/*', async (req, res) => {
-  console.log('body', req.body)
-  const newReport = { ...req.body, date: new Date() }
-  reports = [newReport, ...reports]
-  console.log(
-    '\x1b[1;31m%s\x1b[0m',
-    `🚀 Adtech has received a report from the browser`
-  )
-  res.sendStatus(200)
-})
+app.post(
+  '/.well-known/attribution-reporting/report-event-attribution',
+  async (req, res) => {
+    console.log('body', req.body)
+    const newReport = { ...req.body, date: new Date() }
+    reports = [newReport, ...reports]
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received a report from the browser`
+    )
+    res.sendStatus(200)
+  }
+)
 
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
