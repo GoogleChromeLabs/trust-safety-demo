@@ -21,12 +21,14 @@ app.get('/', (req, res) => {
 /* -------------------------------------------------------------------------- */
 
 app.get('/register-source', (req, res) => {
-  console.log('register-source')
+  // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
   const attributionDestination = process.env.ADVERTISER_URL
+  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+  const sourceEventId = Math.floor(Math.random() * 1000000000000000)
   res.set(
     'Attribution-Reporting-Register-Source',
     JSON.stringify({
-      source_event_id: `${Math.floor(Math.random() * 1000000000000000)}`,
+      source_event_id: `${sourceEventId}`,
       destination: attributionDestination,
       expiry: '604800000'
     })
@@ -110,12 +112,14 @@ app.get('/conversion', (req, res) => {
   // }
   // // Adtech orders the browser to schedule-send a report
   // res.redirect(302, url)
-  console.log('trigger')
+  // console.log('trigger')
   res.set(
     'Attribution-Reporting-Register-Event-Trigger',
-    JSON.stringify({
-      trigger_data: 2
-    })
+    JSON.stringify([
+      {
+        trigger_data: '1'
+      }
+    ])
   )
   res.status(200).send('OK')
 })
