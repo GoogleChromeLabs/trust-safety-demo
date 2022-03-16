@@ -31,11 +31,11 @@ app.get('/ad-click', (req, res) => {
   })
 })
 
-app.get('/ad-click-no-link', (req, res) => {
+app.get('/ad-click-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   const attributionDestination = process.env.ADVERTISER_URL
   const attributionReportTo = process.env.ADTECH_URL
-  res.render('ad-click-no-link', {
+  res.render('ad-click-js', {
     href,
     attributiondestination: attributionDestination,
     attributionreportto: attributionReportTo
@@ -51,7 +51,7 @@ app.get('/ad-script-click-element', (req, res) => {
 
 app.get('/ad-script-click-js', (req, res) => {
   res.set('Content-Type', 'text/javascript')
-  const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-no-link`
+  const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-js`
   const iframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
