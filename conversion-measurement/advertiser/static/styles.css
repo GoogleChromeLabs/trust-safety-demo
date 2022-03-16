@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body {
@@ -62,14 +62,9 @@ a {
 }
 
 .trigger {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   font-family: 'Lucida Console', Monaco, monospace;
 }
-
-#settings-wrapper {
-  transform: translateY(-5px);
-}
-
 a#settings {
   --link-color: rgb(234, 0, 255);
 }

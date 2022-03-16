@@ -2,54 +2,64 @@ doctype html
 head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title 🏠 Demo: Attribution Reporting API (event-level reports)
+  title 🏠 Demo: Attribution Reporting API
   link(rel='stylesheet' href='/styles.css')
 body
     h1 Demo: Attribution Reporting API
-    div.padded With event-level reports
+    h2 Set up your browser
+        h3 Browser requirements
+        ul
+            li Use Chrome version 101 or later. Type 
+              span.code.select chrome://version 
+              | in the URL bar to see your browser version.
+            li Don't use Incognito or Guest mode, because the API is disabled on these profiles.
+            li Don't block third-party cookies. 
+            li Ensure that the Privacy Sandbox APIs are not disabled at 
+              span.code.select chrome://settings/privacySandbox
+              |.
+            li Deactivate ad-blocking extensions on the pages where you need to test the API (or create a fresh user profile without extensions). Ad-blocking browser extensions may block some of the API's functionality if script names contain the term "ad".
+        h3 Setup (requires browser restart)
+        ul
+            li Open  
+                span.code.select chrome://flags
+                |.
+            li Turn on the flag 
+                span.code.select enable-experimental-web-platform-features
+                |.
+            li Restart your browser.
     h2 Run the demo
+    p An advertiser uses an adtech provider to run their ads on different publisher sites. Here is a common flow  shown in this demo:
     ol
-        li.important Set up your browser. 
-            a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide#browser-setup" noreferrer noopener) See how
-            |.
-        li In new tabs, open the 
-            a(href=publisherUrl target="_blank") Publisher site
-            |, the 
-            a(href=publisherUrl target="_blank") Adtech UI 
-            | (where reports will be displayed), and the Debugging UI via 
+        li You visit a 
+            a(href=publisherUrl target="_blank") publisher site
+            |  and view and/or click an ad on that site. Because this ad is configured with special attribution parameters, a source event is registered. Observe that either anchor elements or JavaScript calls can be used to generate a source event.
+        li Later on, you visit the 
+            a(href=advertiserUrl target="_blank") advertiser site
+            | ⏤the site for which you've viewed and/or clicked an ad at Step 1. 
+        li On the advertiser site, you can visit a product page, add a product to your cart, make a purchase... 
+        li As you do so, the adtech will be informed. It may decide that your actions are conversions, and hence will trigger different attributions, with different trigger data values, for your different engagements on the advertiser's site.
+        li Because the adtech has triggered attributions, attribution reports are generated and stored in your browser (on your device). Open 
             span.code.select chrome://attribution-internals
-            |.
+            | to see the reports.
+        li The reports are configured to be sent to the adtech provider configured at Step 1 (which must be the same origin as the adtech mentioned at Step 4 and 5).
     h2 Demo screencast
     div.full
         video(controls)
             source(src='/demo-attribution-reporting-v2.mp4' type='video/mp4')
             | Your browser does not support the video tag.
-    h2 All links for this demo
-        h3
-            div 
-                a(href=publisherUrl target="_blank") Publisher
-            div 
-                a(href=advertiserUrl target="_blank") Advertiser
-            div 
-                a(href=adtechUrl target="_blank") Adtech - Reports UI
 
     h2 See the code
-    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener) Code for this demo
-
-    h2 Reuse and customize the code
-    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener) Reuse and customize the code
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener target="_blank") Code for this demo
+    |, that you can 
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener target="_blank") reuse and customize
+    |.
 
     h2 Ask questions / Share feedback 👋
     | For questions and comments about this demo, start a new conversation in the 
-    a(href="https://groups.google.com/u/0/a/chromium.org/g/attribution-reporting-api-dev" noreferrer noopener) developer mailing list
+    a(href="https://groups.google.com/u/0/a/chromium.org/g/attribution-reporting-api-dev" noreferrer noopener target="_blank") developer mailing list
     |  or ping 
-    a(href="https://twitter.com/maudnals" noreferrer noopener) @maudnals
+    a(href="https://twitter.com/maudnals" noreferrer noopener target="_blank") @maudnals
     |  on Twitter.
-
-    h2 Learn more
-    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-introduction/" noreferrer noopener) What is the Attribution Reporting API with event-level reports?
-    br
-    a(href="https://developer.chrome.com/docs/privacy-sandbox/attribution-reporting-event-guide/" noreferrer noopener) Using the Attribution Reporting API with event-level reports
 
 
 
