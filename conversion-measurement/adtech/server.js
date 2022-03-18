@@ -88,12 +88,16 @@ const conversionValuesClick = {
   [SIGNUP_NEWSLETTER]: 4
 }
 
-function getPriorityValue(conversionType, prioritizeCheckouts) {
-  if (!prioritizeCheckouts) {
+function getTriggerData(conversionType) {
+  return conversionValues[conversionType]
+}
+
+function getPriority(conversionType, usePriorities) {
+  if (!usePriorities) {
     // false: No conversion should be prioritized specifically => always return a prio of 0
     return 0
   } else {
-    // true: Assign a prio of 100 to checkouts, and 0 to others
+    // Assign a priority of 100 to checkouts, and of 0 to other conversion types
     return conversionType === CHECKOUT_COMPLETED ? 100 : 0
   }
 }
