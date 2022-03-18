@@ -106,7 +106,10 @@ const ADD_TO_CART = 'add-to-cart'
 const VISIT_PRODUCT_PAGE = 'visit-product-page'
 const SIGNUP_NEWSLETTER = 'signup-newsletter'
 
-const conversionValuesClick = {
+const conversionValues = {
+  // checkout = 1, so that the value is consistent across clicks and views
+  // trigger data for views (event sources) must be 0 or 1 (1 bit)
+  // trigger data for clicks (event sources) must be a value between 0 and 7 (3 bits)
   [CHECKOUT_COMPLETED]: 1,
   [ADD_TO_CART]: 2,
   [VISIT_PRODUCT_PAGE]: 3,
