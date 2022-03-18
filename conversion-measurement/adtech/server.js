@@ -25,12 +25,14 @@ app.get('/register-source', (req, res) => {
   const attributionDestination = process.env.ADVERTISER_URL
   // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
+  res.set('Set-Cookie', 'ar_debug=1; SameSite=None; Secure; HttpOnly')
   res.set(
     'Attribution-Reporting-Register-Source',
     JSON.stringify({
       source_event_id: `${sourceEventId}`,
       destination: attributionDestination,
-      expiry: '604800000'
+      expiry: '604800',
+      debug_key: '123'
     })
   )
   res.status(200).send('OK')
@@ -140,6 +142,8 @@ app.get('/conversion', (req, res) => {
   const deduplicationKey = req.query['purchase-id']
   const useDeduplication = req.query['dedup'] === 'true' && deduplicationKey
 
+  res.set('Attribution-Reporting-Trigger-Debug-Key', '456')
+
   // Instruct the browser to schedule-send a report
   res.set(
     'Attribution-Reporting-Register-Event-Trigger',
@@ -147,6 +151,7 @@ app.get('/conversion', (req, res) => {
     JSON.stringify([
       {
         trigger_data: `${triggerData}`,
+        debug_key: '123',
         // if priorities are on, specify the priority
         ...(usePriorities && { priority: `${priority}` }),
         // if deduplication is on, specify the deduplication-key
@@ -168,9 +173,23 @@ app.get('/reports', (req, res) => {
 })
 
 app.post(
+  '/.well-known/attribution-reporting/debug/report-event-attribution ',
+  async (req, res) => {
+    console.log('DEBUG REPORT - body:', req.body)
+    const newReport = { ...req.body, date: new Date() }
+    reports = [newReport, ...reports]
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received a debug report from the browser`
+    )
+    res.sendStatus(200)
+  }
+)
+
+app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
   async (req, res) => {
-    console.log('body', req.body)
+    console.log('REGULAR REPORT - body:', req.body)
     const newReport = { ...req.body, date: new Date() }
     reports = [newReport, ...reports]
     console.log(
