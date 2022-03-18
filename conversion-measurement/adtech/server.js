@@ -99,29 +99,30 @@ function getPriorityValue(conversionType, prioritizeCheckouts) {
 }
 
 app.get('/conversion', (req, res) => {
-  // const conversionType = req.query['conversion-type']
-  // // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
-  // const clickTriggerData = conversionValuesClick[conversionType]
-  // const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
-  // const useDeduplication = req.query['dedup'] === 'true'
-  // const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
-  // let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&priority=${priorityValue}`
-  // if (useDeduplication) {
-  //   const purchaseId = req.query['purchase-id']
-  //   url = `${url}&dedup-key=${purchaseId}`
-  // }
-  // // Adtech orders the browser to schedule-send a report
-  // res.redirect(302, url)
-  // console.log('trigger')
+  const conversionType = req.query['conversion-type']
+  const triggerData = getTriggerData(conversionType)
+
+  const usePriorities = req.query['prio-checkout'] === 'true'
+  const priority = getPriority(conversionType, usePriorities)
+
+  const deduplicationKey = req.query['purchase-id']
+  const useDeduplication = req.query['dedup'] === 'true' && deduplicationKey
+
+  // Instruct the browser to schedule-send a report
   res.set(
     'Attribution-Reporting-Register-Event-Trigger',
+    // ⚠️ Note the enclosing []!
     JSON.stringify([
       {
-        trigger_data: '1'
+        trigger_data: `${triggerData}`,
+        // if priorities are on, specify the priority
+        ...(usePriorities && { priority: `${priority}` }),
+        // if deduplication is on, specify the deduplication-key
+        ...(useDeduplication && { 'deduplication-key': deduplicationKey })
       }
     ])
   )
-  res.status(200).send('OK')
+  res.sendStatus(200)
 })
 
 /* -------------------------------------------------------------------------- */
