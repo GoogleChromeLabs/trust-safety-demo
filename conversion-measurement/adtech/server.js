@@ -173,7 +173,7 @@ app.get('/reports', (req, res) => {
 })
 
 app.post(
-  '/.well-known/attribution-reporting/debug/report-event-attribution ',
+  '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
     console.log('DEBUG REPORT - body:', req.body)
     const newReport = { ...req.body, date: new Date() }
