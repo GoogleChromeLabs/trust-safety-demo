@@ -39,6 +39,18 @@ app.get('/click-js', (req, res) => {
   })
 })
 
+app.get('/view-element-img', (req, res) => {
+  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-img`
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track views via `img` elements',
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
     '\x1b[1;32m%s\x1b[0m',
