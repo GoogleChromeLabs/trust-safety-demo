@@ -38,24 +38,49 @@ app.get('/register-source', (req, res) => {
 
 app.get('/ad-click', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
-  const attributionDestination = process.env.ADVERTISER_URL
-  const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-click', {
     href,
-    attributiondestination: attributionDestination,
-    attributionreportto: attributionReportTo
+    attributionsrc: `${adtechUrl}/register-source`
   })
 })
 
 app.get('/ad-click-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
-  const attributionDestination = process.env.ADVERTISER_URL
-  const attributionReportTo = process.env.ADTECH_URL
   res.render('ad-click-js', {
     href,
-    attributiondestination: attributionDestination,
-    attributionreportto: attributionReportTo
+    attributionsrc: `${adtechUrl}/register-source`
   })
+})
+
+app.get('/ad-view-anchor', (req, res) => {
+  const href = `${process.env.ADVERTISER_URL}`
+  res.render('ad-view-anchor', {
+    href,
+    attributionsrc: `${adtechUrl}/register-source`
+  })
+})
+
+app.get('/ad-view-img', (req, res) => {
+  const href = `${process.env.ADVERTISER_URL}`
+  res.render('ad-view-img', {
+    href,
+    attributionsrc: `${adtechUrl}/register-source`
+  })
+})
+
+app.get('/ad-view-js', (req, res) => {
+  const href = `${process.env.ADVERTISER_URL}`
+  res.render('ad-view-js', {
+    href,
+    attributionsrc: `${adtechUrl}/register-source`
+  })
+})
+
+app.get('/ad-script-view-img', (req, res) => {
+  res.set('Content-Type', 'text/javascript')
+  const adClickUrl = `${process.env.ADTECH_URL}/ad-view-img`
+  const iframe = `<iframe src='${adClickUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  res.send(`document.write("${iframe}");`)
 })
 
 app.get('/ad-script-click-element', (req, res) => {
