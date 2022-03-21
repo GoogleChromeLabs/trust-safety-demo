@@ -137,7 +137,8 @@ app.get('/conversion', (req, res) => {
   const priority = getPriority(conversionType, usePriorities)
 
   const deduplicationKey = req.query['purchase-id']
-  const useDeduplication = req.query['dedup'] === 'true' && deduplicationKey
+  // Use deduplication only if it's on in the app settings and if a deduplication key is presents
+  const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
   res.set('Attribution-Reporting-Trigger-Debug-Key', '456')
 
@@ -151,8 +152,8 @@ app.get('/conversion', (req, res) => {
         debug_key: '123',
         // if priorities are on, specify the priority
         ...(usePriorities && { priority: `${priority}` }),
-        // if deduplication is on, specify the deduplication-key
-        ...(useDeduplication && { 'deduplication-key': deduplicationKey })
+        // if deduplication is on, specify the deduplication key
+        ...(useDeduplication && { deduplication_key: deduplicationKey })
       }
     ])
   )
