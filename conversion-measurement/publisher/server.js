@@ -19,7 +19,7 @@ app.get('/click-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-element`
   res.render('article', {
     adScriptUrl,
-    title: 'Track clicks via `a` element',
+    title: 'Track clicks via an `a` element',
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
