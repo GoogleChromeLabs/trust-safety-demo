@@ -54,18 +54,9 @@ app.get('/ad-click-js', (req, res) => {
   })
 })
 
-app.get('/ad-view-anchor', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}`
-  res.render('ad-view-anchor', {
-    href,
-    attributionsrc: `${adtechUrl}/register-source`
-  })
-})
-
 app.get('/ad-view-img', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-view-img', {
-    href,
     attributionsrc: `${adtechUrl}/register-source`
   })
 })
@@ -73,15 +64,21 @@ app.get('/ad-view-img', (req, res) => {
 app.get('/ad-view-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-view-js', {
-    href,
     attributionsrc: `${adtechUrl}/register-source`
   })
 })
 
 app.get('/ad-script-view-img', (req, res) => {
   res.set('Content-Type', 'text/javascript')
-  const adClickUrl = `${process.env.ADTECH_URL}/ad-view-img`
-  const iframe = `<iframe src='${adClickUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  const adUrl = `${process.env.ADTECH_URL}/ad-view-img`
+  const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  res.send(`document.write("${iframe}");`)
+})
+
+app.get('/ad-script-view-js', (req, res) => {
+  res.set('Content-Type', 'text/javascript')
+  const adUrl = `${process.env.ADTECH_URL}/ad-view-js`
+  const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
