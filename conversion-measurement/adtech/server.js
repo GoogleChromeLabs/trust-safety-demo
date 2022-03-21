@@ -149,7 +149,7 @@ function getTriggerData(conversionType) {
 
 function getPriority(conversionType, usePriorities) {
   if (!usePriorities) {
-    // false: No conversion should be prioritized specifically => always return a prio of 0
+    // No conversion should be prioritized specifically => always return a priority of 0
     return 0
   } else {
     // Assign a priority of 100 to checkouts, and of 0 to other conversion types
