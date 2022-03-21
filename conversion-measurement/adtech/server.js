@@ -173,7 +173,7 @@ app.get('/reports', (req, res) => {
 app.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
-    console.log('DEBUG REPORT - body:', req.body)
+    console.log('DEBUG REPORT RECEIVED:', req.body)
     const newReport = { ...req.body, date: new Date() }
     reports = [newReport, ...reports]
     console.log(
@@ -187,7 +187,7 @@ app.post(
 app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
   async (req, res) => {
-    console.log('REGULAR REPORT - body:', req.body)
+    console.log('REGULAR REPORT RECEIVED:', req.body)
     const newReport = { ...req.body, date: new Date() }
     reports = [newReport, ...reports]
     console.log(
