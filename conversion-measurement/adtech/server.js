@@ -1,8 +1,11 @@
 const express = require('express')
+const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
+
 app.set('view engine', 'pug')
 const PORT = 3000
 const demoHomeUrl = process.env.DEMO_HOME_URL
@@ -17,6 +20,30 @@ app.get('/', (req, res) => {
 })
 
 /* -------------------------------------------------------------------------- */
+/*                               Debugging setup                              */
+/* -------------------------------------------------------------------------- */
+
+app.use(function (req, res, next) {
+  // Optional: set a regular measurement 3P cookie
+  const legacyMeasurementCookie = req.cookies['measure']
+  if (legacyMeasurementCookie === undefined) {
+    const cookieValue = Math.floor(Math.random() * 1000000000000000)
+    res.set(
+      'Set-Cookie',
+      `measure=${cookieValue}; SameSite=None; Secure; HttpOnly`
+    )
+  }
+
+  // Set the Attribution Reporting debug cookie, if not already set
+  const debugCookie = req.cookies['ar_debug']
+  if (debugCookie === undefined) {
+    console.log('No debug cookie set. Setting it now.')
+    res.set('Set-Cookie', 'ar_debug=1; SameSite=None; Secure; HttpOnly')
+  }
+  next()
+})
+
+/* -------------------------------------------------------------------------- */
 /*                                 Ad serving                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -25,14 +52,16 @@ app.get('/register-source', (req, res) => {
   const attributionDestination = process.env.ADVERTISER_URL
   // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
-  res.set('Set-Cookie', 'ar_debug=1; SameSite=None; Secure; HttpOnly')
+  const legacyMeasurementCookie = req.cookies['measure']
   res.set(
     'Attribution-Reporting-Register-Source',
     JSON.stringify({
       source_event_id: `${sourceEventId}`,
       destination: attributionDestination,
       expiry: '604800',
-      debug_key: '123'
+      // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+      // This is a simplist approach fr demo purposes. In a real system, you would still make this key a unique ID, but you may map it key to additional source-time information you think will be relevant for you to debug.
+      debug_key: `${legacyMeasurementCookie}`
     })
   )
   res.status(200).send('OK')
@@ -140,7 +169,13 @@ app.get('/conversion', (req, res) => {
   // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
-  res.set('Attribution-Reporting-Trigger-Debug-Key', '456')
+  const legacyMeasurementCookie = req.cookies['measure']
+  // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+  // This is a simplist approach fr demo purposes. In a real system, you would still make this key a unique ID, but you may map it key to additional trigger-time information you think will be relevant for you to debug.
+  res.set(
+    'Attribution-Reporting-Trigger-Debug-Key',
+    `${legacyMeasurementCookie}`
+  )
 
   // Instruct the browser to schedule-send a report
   res.set(
