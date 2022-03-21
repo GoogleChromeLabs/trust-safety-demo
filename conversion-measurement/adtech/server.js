@@ -34,10 +34,9 @@ app.use(function (req, res, next) {
     )
   }
 
-  // Set the Attribution Reporting debug cookie, if not already set
+  // Set the Attribution Reporting debug cookie
   const debugCookie = req.cookies['ar_debug']
   if (debugCookie === undefined) {
-    console.log('No debug cookie set. Setting it now.')
     res.set('Set-Cookie', 'ar_debug=1; SameSite=None; Secure; HttpOnly')
   }
   next()
