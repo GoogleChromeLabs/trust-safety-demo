@@ -200,24 +200,11 @@ app.get('/conversion', (req, res) => {
 /* -------------------------------------------------------------------------- */
 
 let reports = []
+let debuggingReports = []
 
 app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
-
-app.post(
-  '/.well-known/attribution-reporting/debug/report-event-attribution',
-  async (req, res) => {
-    console.log('DEBUG REPORT RECEIVED:', req.body)
-    const newReport = { ...req.body, date: new Date() }
-    reports = [newReport, ...reports]
-    console.log(
-      '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a debug report from the browser`
-    )
-    res.sendStatus(200)
-  }
-)
 
 app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
@@ -228,6 +215,20 @@ app.post(
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a report from the browser`
+    )
+    res.sendStatus(200)
+  }
+)
+
+app.post(
+  '/.well-known/attribution-reporting/debug/report-event-attribution',
+  async (req, res) => {
+    console.log('DEBUG REPORT RECEIVED:', req.body)
+    const newReport = { ...req.body, date: new Date() }
+    debuggingReports = [newReport, ...debuggingReports]
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received a debug report from the browser`
     )
     res.sendStatus(200)
   }
