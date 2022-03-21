@@ -72,30 +72,35 @@ const conversionValuesClick = {
   [SIGNUP_NEWSLETTER]: 4
 }
 
-function getPriorityValue(conversionType, prioritizeCheckouts) {
-  if (!prioritizeCheckouts) {
-    // false: No conversion should be prioritizes specifically => always return a prio of 0
+function getTriggerData(conversionType) {
+  return conversionValues[conversionType]
+}
+
+function getPriority(conversionType, usePriorities) {
+  if (!usePriorities) {
+    // No conversion should be prioritized specifically => always return a priority of 0
     return 0
   } else {
-    // true: Assign a prio of 100 to checkouts, and 0 to others
+    // Assign a priority of 100 to checkouts, and of 0 to other conversion types
     return conversionType === CHECKOUT_COMPLETED ? 100 : 0
   }
 }
 
 app.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
-  // Define trigger data depending on the conversion type; it can be between 0 and 7 (3 bits)
-  const clickTriggerData = conversionValuesClick[conversionType]
-  const prioritizeCheckouts = req.query['prio-checkout'] === 'true'
-  const useDeduplication = req.query['dedup'] === 'true'
+  const triggerData = getTriggerData(conversionType)
 
-  const priorityValue = getPriorityValue(conversionType, prioritizeCheckouts)
+  const usePriorities = req.query['prio-checkout'] === 'true'
+  const priority = getPriority(conversionType, usePriorities)
 
-  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${clickTriggerData}&priority=${priorityValue}`
+  const deduplicationKey = req.query['purchase-id']
+  // Use deduplication only if it's on in the app settings and if a deduplication key is presents
+  const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
+
+  let url = `/.well-known/attribution-reporting/trigger-attribution?trigger-data=${triggerData}&priority=${priority}`
 
   if (useDeduplication) {
-    const purchaseId = req.query['purchase-id']
-    url = `${url}&dedup-key=${purchaseId}`
+    url = `${url}&dedup-key=${deduplicationKey}`
   }
   // Adtech orders the browser to schedule-send a report
   res.redirect(302, url)
