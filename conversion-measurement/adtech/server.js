@@ -165,6 +165,7 @@ app.get('/conversion', (req, res) => {
   const usePriorities = req.query['prio-checkout'] === 'true'
   const priority = getPriority(conversionType, usePriorities)
 
+  // Use the purchase ID as a deduplication key, since we only want to count purchases with the same ID once
   const deduplicationKey = req.query['purchase-id']
   // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
