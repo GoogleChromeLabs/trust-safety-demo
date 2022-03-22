@@ -39,6 +39,30 @@ app.get('/click-js', (req, res) => {
   })
 })
 
+app.get('/view-element-img', (req, res) => {
+  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-img`
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track views via an `img` element',
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
+app.get('/view-js', (req, res) => {
+  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
+  res.render('article', {
+    adScriptUrl,
+    title: 'Track views via JS',
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
 const listener = app.listen(process.env.PORT || PORT, () => {
   console.log(
     '\x1b[1;32m%s\x1b[0m',

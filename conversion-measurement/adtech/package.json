@@ -15,6 +15,7 @@
   "bugs": {},
   "homepage": "https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pug": "^3.0.0"
