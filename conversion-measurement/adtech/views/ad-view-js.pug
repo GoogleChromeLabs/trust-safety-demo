@@ -10,7 +10,7 @@ div#ad(href=href target='_blank')
   img(width='180' src='/blue-shoes.png' alt='blue shoes')
   
 script.
-  // \!{}\ is the syntax for this template engine (pug) to access serer-defined variables in a script
+  // \!{}\ is the syntax for this template engine (pug) to access server-defined variables in a script
   const attributionsrc = !{JSON.stringify(attributionsrc)};
   // Instruct the browser to initiate source registration
   window.attributionReporting.registerSource(attributionsrc);
