@@ -59,7 +59,7 @@ app.get('/register-source', (req, res) => {
       destination: attributionDestination,
       expiry: '604800',
       // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-      // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it key to additional source-time information that you deem useful for debugging or performance comparison.
+      // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
       debug_key: `${legacyMeasurementCookie}`
     })
   )
@@ -172,7 +172,7 @@ app.get('/conversion', (req, res) => {
 
   const legacyMeasurementCookie = req.cookies['measure']
   // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it key to additional trigger-time information that you deem useful for debugging or performance comparison.
+  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   res.set(
     'Attribution-Reporting-Trigger-Debug-Key',
     `${legacyMeasurementCookie}`
