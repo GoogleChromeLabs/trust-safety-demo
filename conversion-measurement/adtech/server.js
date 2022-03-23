@@ -16,9 +16,7 @@ const adtechUrl = process.env.ADTECH_URL
 app.use(express.static('static'))
 
 app.get('/', (req, res) => {
-  res.render('index', {
-    demoHomeUrl
-  })
+  res.render('index')
 })
 
 /* -------------------------------------------------------------------------- */
