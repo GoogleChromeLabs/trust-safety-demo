@@ -185,7 +185,6 @@ app.get('/conversion', (req, res) => {
     JSON.stringify([
       {
         trigger_data: `${triggerData}`,
-        debug_key: '123',
         // if priorities are on, specify the priority
         ...(usePriorities && { priority: `${priority}` }),
         // if deduplication is on, specify the deduplication key
