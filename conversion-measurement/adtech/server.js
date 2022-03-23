@@ -63,6 +63,19 @@ app.get('/register-source', (req, res) => {
       debug_key: `${legacyMeasurementCookie}`
     })
   )
+  res.set(
+    'Attribution-Reporting-Register-Aggregatable-Source',
+    JSON.stringify([
+      {
+        // Generates a "0x159" key piece (low order bits of the key) named
+        // "campaignCounts"
+        id: 'campaignCounts',
+        // Campaign 345 (out of 511)
+        // 345 to hex is 0x159
+        key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
+      }
+    ])
+  )
   res.status(200).send('OK')
 })
 
@@ -193,6 +206,29 @@ app.get('/conversion', (req, res) => {
       }
     ])
   )
+
+  res.set(
+    'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
+    JSON.stringify([
+      // Each dict independently adds pieces to multiple source keys.
+      {
+        // Conversion type purchase = 2 at a 9 bit offset, i.e. 2 << 9.
+        // A 9 bit offset is needed because there are 511 possible campaigns, which
+        // will take up 9 bits in the resulting key.
+        key_piece: '0x400',
+        // Apply this key piece to:
+        source_keys: ['campaignCounts']
+      }
+    ])
+  )
+
+  res.set(
+    'Attribution-Reporting-Register-Aggregatable-Values',
+    JSON.stringify({
+      campaignCounts: 32768
+    })
+  )
+
   res.sendStatus(200)
 })
 
@@ -200,19 +236,21 @@ app.get('/conversion', (req, res) => {
 /*                                 Reports                                    */
 /* -------------------------------------------------------------------------- */
 
-let reports = []
+let eventReports = []
+let aggregateReports = []
 let debuggingReports = []
 
 app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
 
+// Event-level reports
 app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
   async (req, res) => {
-    console.log('REGULAR REPORT RECEIVED:', req.body)
+    console.log('REGULAR REPORT RECEIVED (event-level):', req.body)
     const newReport = { ...req.body, date: new Date() }
-    reports = [newReport, ...reports]
+    eventReports = [newReport, ...eventReports]
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a report from the browser`
@@ -221,6 +259,22 @@ app.post(
   }
 )
 
+// Aggregatable reports
+app.post(
+  '.well-known/attribution-reporting/report-aggregate-attribution',
+  async (req, res) => {
+    console.log('REGULAR REPORT RECEIVED (aggregate):', req.body)
+    const newReport = { ...req.body, date: new Date() }
+    aggregateReports = [newReport, ...aggregateReports]
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received a report from the browser`
+    )
+    res.sendStatus(200)
+  }
+)
+
+// Debug reports (both event-level and aggregate)
 app.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
