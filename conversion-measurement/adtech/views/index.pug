@@ -6,19 +6,5 @@ head
   link(rel='stylesheet' href='/styles.css')
 body
   h1 Adtech server 🚀 
-  h2
-    | Reports (
-    span#reportCount 0
-    | )
-  p *⚠️ This is not the conversion time (= attribution trigger time). This is the time when the reporting endpoint has received this report. This time is displayed here to make it easier to know what reports you're looking at. The exact conversion time (= attribution trigger time) is visible in chrome://attribution-internals, but is not included in the report in order to preserve user privacy.
-  .row.header
-    div Attribution source event ID 
-      br
-      |= Click or View ID
-    div Attribution trigger data
-      br
-      |= Conversion data
-    div Attribution destination
-    div Received by the reporting endpoint on*
-  #reportList
-  script(src='/reports-script.js')
+  p
+  div Nothing happens in this server frontend, but this is where reports could be displayed. Open chrome://attribution-internals to see the reports that were generated in your browser.

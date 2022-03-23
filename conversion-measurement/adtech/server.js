@@ -46,43 +46,6 @@ app.use(function (req, res, next) {
 /*                                 Ad serving                                 */
 /* -------------------------------------------------------------------------- */
 
-app.get('/register-source', (req, res) => {
-  // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
-  const attributionDestination = process.env.ADVERTISER_URL
-  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
-  const sourceEventId = Math.floor(Math.random() * 1000000000000000)
-  const legacyMeasurementCookie = req.cookies['measure']
-  res.set(
-    'Attribution-Reporting-Register-Source',
-    JSON.stringify({
-      source_event_id: `${sourceEventId}`,
-      destination: attributionDestination,
-      // Optional: expiry of 7 days (default is 30)
-      expiry: '604800',
-      // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-      // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
-      debug_key: `${legacyMeasurementCookie}`,
-      filter_data: {
-        conversion_product_type: ['category_1']
-      }
-    })
-  )
-  res.set(
-    'Attribution-Reporting-Register-Aggregatable-Source',
-    JSON.stringify([
-      {
-        // Generates a "0x159" key piece (low order bits of the key) named
-        // "campaignCounts"
-        id: 'campaignCounts',
-        // Campaign 345 (out of 511)
-        // 345 to hex is 0x159
-        key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
-      }
-    ])
-  )
-  res.status(200).send('OK')
-})
-
 app.get('/ad-click', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-click', {
@@ -139,6 +102,47 @@ app.get('/ad-script-click-js', (req, res) => {
   const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-js`
   const iframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
+})
+
+/* -------------------------------------------------------------------------- */
+/*                  Source registration (ad click or view)                    */
+/* -------------------------------------------------------------------------- */
+
+app.get('/register-source', (req, res) => {
+  // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
+  const attributionDestination = process.env.ADVERTISER_URL
+  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+  const sourceEventId = Math.floor(Math.random() * 1000000000000000)
+  const legacyMeasurementCookie = req.cookies['measure']
+  res.set(
+    'Attribution-Reporting-Register-Source',
+    JSON.stringify({
+      source_event_id: `${sourceEventId}`,
+      destination: attributionDestination,
+      // Optional: expiry of 7 days (default is 30)
+      expiry: '604800',
+      // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+      // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
+      debug_key: `${legacyMeasurementCookie}`,
+      filter_data: {
+        conversion_product_type: ['category_1']
+      }
+    })
+  )
+  res.set(
+    'Attribution-Reporting-Register-Aggregatable-Source',
+    JSON.stringify([
+      {
+        // Generates a "0x159" key piece (low order bits of the key) named
+        // "campaignCounts"
+        id: 'campaignCounts',
+        // Campaign 345 (out of 511)
+        // 345 to hex is 0x159
+        key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
+      }
+    ])
+  )
+  res.status(200).send('OK')
 })
 
 /* -------------------------------------------------------------------------- */
@@ -250,10 +254,6 @@ app.get('/conversion', (req, res) => {
 /*                                 Reports                                    */
 /* -------------------------------------------------------------------------- */
 
-let eventReports = []
-let aggregateReports = []
-let debuggingReports = []
-
 app.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
@@ -263,8 +263,6 @@ app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
   async (req, res) => {
     console.log('REGULAR REPORT RECEIVED (event-level):', req.body)
-    const newReport = { ...req.body, date: new Date() }
-    eventReports = [newReport, ...eventReports]
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a report from the browser`
@@ -278,8 +276,6 @@ app.post(
   '.well-known/attribution-reporting/report-aggregate-attribution',
   async (req, res) => {
     console.log('REGULAR REPORT RECEIVED (aggregate):', req.body)
-    const newReport = { ...req.body, date: new Date() }
-    aggregateReports = [newReport, ...aggregateReports]
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a report from the browser`
@@ -293,8 +289,6 @@ app.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
     console.log('DEBUG REPORT RECEIVED:', req.body)
-    const newReport = { ...req.body, date: new Date() }
-    debuggingReports = [newReport, ...debuggingReports]
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a debug report from the browser`
