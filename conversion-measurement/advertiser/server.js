@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const session = require('express-session')
+
 const PORT = 8082
 const demoHomeUrl = process.env.DEMO_HOME_URL
 const publisherUrl = process.env.PUBLISHER_URL
@@ -68,9 +69,17 @@ app.post('/new-purchase', (req, res) => {
 })
 
 app.get('/blue-shoes', (req, res) => {
-  const conversionType = 'visit-product-page'
   const { prio, dedup } = req.session
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  const searchParams = new URLSearchParams({
+    'conversion-type': 'visit-product-page',
+    'product-category': 'category_1',
+    'prio-checkout': prio,
+    dedup: dedup
+  })
+
+  const adtechRequestUrl = `${
+    process.env.ADTECH_URL
+  }/conversion?${searchParams.toString()}`
   res.render('blue-shoes', {
     adtechRequestUrl,
     demoHomeUrl,
@@ -81,9 +90,18 @@ app.get('/blue-shoes', (req, res) => {
 })
 
 app.get('/signup-newsletter', (req, res) => {
-  const conversionType = 'signup-newsletter'
   const { prio, dedup } = req.session
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  const searchParams = new URLSearchParams({
+    'conversion-type': 'signup-newsletter',
+    'product-category': 'category_1',
+    'prio-checkout': prio,
+    dedup: dedup
+  })
+
+  const adtechRequestUrl = `${
+    process.env.ADTECH_URL
+  }/conversion?${searchParams.toString()}`
+
   res.render('signup-newsletter', {
     adtechRequestUrl,
     demoHomeUrl,
@@ -99,7 +117,19 @@ app.get('/checkout', (req, res) => {
   }
   const conversionType = 'checkout-completed'
   const { prio, dedup, purchaseId } = req.session
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}&purchase-id=${purchaseId}`
+
+  const searchParams = new URLSearchParams({
+    'conversion-type': 'signup-newsletter',
+    'product-category': 'category_1',
+    'prio-checkout': prio,
+    dedup: dedup,
+    'purchase-id': purchaseId
+  })
+
+  const adtechRequestUrl = `${
+    process.env.ADTECH_URL
+  }/conversion?${searchParams.toString()}`
+
   res.render('checkout', {
     adtechRequestUrl,
     purchaseId,
@@ -111,10 +141,41 @@ app.get('/checkout', (req, res) => {
 })
 
 app.get('/add-to-cart', (req, res) => {
-  const conversionType = 'add-to-cart'
   const { prio, dedup } = req.session
-  const adtechRequestUrl = `${process.env.ADTECH_URL}/conversion?conversion-type=${conversionType}&prio-checkout=${prio}&dedup=${dedup}`
+  const searchParams = new URLSearchParams({
+    'conversion-type': 'add-to-cart',
+    'product-category': 'category_1',
+    'prio-checkout': prio,
+    dedup: dedup
+  })
+
+  const adtechRequestUrl = `${
+    process.env.ADTECH_URL
+  }/conversion?${searchParams.toString()}`
+
   res.render('add-to-cart', {
+    adtechRequestUrl,
+    demoHomeUrl,
+    publisherUrl,
+    advertiserUrl,
+    adtechUrl
+  })
+})
+
+app.get('/t-shirt', (req, res) => {
+  const { prio, dedup } = req.session
+  const searchParams = new URLSearchParams({
+    'conversion-type': 'visit-product-page',
+    'product-category': 'category_2',
+    'prio-checkout': prio,
+    dedup: dedup
+  })
+
+  const adtechRequestUrl = `${
+    process.env.ADTECH_URL
+  }/conversion?${searchParams.toString()}`
+
+  res.render('t-shirt', {
     adtechRequestUrl,
     demoHomeUrl,
     publisherUrl,

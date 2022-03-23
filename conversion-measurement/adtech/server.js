@@ -57,10 +57,14 @@ app.get('/register-source', (req, res) => {
     JSON.stringify({
       source_event_id: `${sourceEventId}`,
       destination: attributionDestination,
+      // Optional: expiry of 7 days (default is 30)
       expiry: '604800',
       // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
       // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
-      debug_key: `${legacyMeasurementCookie}`
+      debug_key: `${legacyMeasurementCookie}`,
+      filter_data: {
+        conversion_product_type: ['category_1']
+      }
     })
   )
   res.set(
@@ -173,6 +177,7 @@ function getPriority(conversionType, usePriorities) {
 
 app.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
+  const productCategory = req.query['product-category']
   const triggerData = getTriggerData(conversionType)
 
   const usePriorities = req.query['prio-checkout'] === 'true'
@@ -183,15 +188,16 @@ app.get('/conversion', (req, res) => {
   // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
-  const legacyMeasurementCookie = req.cookies['measure']
-  // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
+  // Set filters
   res.set(
-    'Attribution-Reporting-Trigger-Debug-Key',
-    `${legacyMeasurementCookie}`
+    'Attribution-Reporting-Filters',
+    JSON.stringify({
+      // Because conversion_product_type has been set to category_1 in the header Attribution-Reporting-Register-Source, any incoming conversion whose productCategory does not match category_1 will be filtered out i.e. will not generate a report.
+      conversion_product_type: [productCategory]
+    })
   )
 
-  // Instruct the browser to schedule-send a report
+  // Event-level report: instruct the browser to schedule-send a report
   res.set(
     'Attribution-Reporting-Register-Event-Trigger',
     // ⚠️ Note the enclosing []!
@@ -206,6 +212,7 @@ app.get('/conversion', (req, res) => {
     ])
   )
 
+  // Aggregatable report: instruct the browser to schedule-send a report
   res.set(
     'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
     JSON.stringify([
@@ -220,12 +227,20 @@ app.get('/conversion', (req, res) => {
       }
     ])
   )
-
   res.set(
     'Attribution-Reporting-Register-Aggregatable-Values',
     JSON.stringify({
       campaignCounts: 32768
     })
+  )
+
+  // Debug report (common to event-level and aggregate)
+  const legacyMeasurementCookie = req.cookies['measure']
+  // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
+  res.set(
+    'Attribution-Reporting-Trigger-Debug-Key',
+    `${legacyMeasurementCookie}`
   )
 
   res.sendStatus(200)

@@ -164,3 +164,8 @@ details .content {
   text-align: center;
   font-size: 0.9rem;
 }
+
+input[type='checkbox'] {
+  cursor: pointer;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
