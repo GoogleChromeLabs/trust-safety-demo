@@ -81,6 +81,10 @@ video {
   font-family: 'Lucida Console', Monaco, monospace;
 }
 
+code {
+  font-family: 'Lucida Console', Monaco, monospace;
+}
+
 .do {
   font-size: var(--font-size-s);
   background: whitesmoke;

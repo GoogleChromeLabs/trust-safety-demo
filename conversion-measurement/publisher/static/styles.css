@@ -1,23 +1,70 @@
 html {
   font-size: 16px;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   font-family: sans-serif;
+  padding: 0;
+  margin: 0;
   --max-width: 50rem;
   --font-size-s: 0.9rem;
   --font-size-xs: 0.8rem;
+  --link-color: rgb(0, 38, 255);
+  --link-color-dark: rgb(0 25 169);
+  --link-color-x-light: rgb(0 38 255 / 24%);
+}
+
+.main {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
-  background-color: #d0ffe1;
+}
+
+.mainContentWrapper {
+  animation-fill-mode: forwards;
+  animation: appear 0.8s;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#notSupportedBanner {
+  display: block;
+  background: #ff0000da;
+  color: white;
+  padding: 0.4rem;
+  width: 100%;
+  text-align: center;
+  font-size: var(--font-size-s);
+}
+
+.toast-close {
+  padding: 0 5px;
+  font-size: 1rem;
+  position: absolute;
+  top: 2px;
+  right: 2px;
 }
 
 h1 {
-  display: inline-block;
-  background: #00c5334d;
   padding: 0.1rem 0.2rem;
   margin: 0;
+  text-align: center;
+  font-size: 2.8rem;
+}
+
+h1,
+h2,
+article {
+  font-family: 'DM Serif Display', serif;
 }
 
 article {
@@ -25,22 +72,33 @@ article {
   line-height: 1.8;
 }
 
-header {
-  margin: 2rem 0;
+code {
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-size: var(--font-size-xs);
+  background-color: #0000000f;
+  padding: 0.1rem;
 }
 
-.actions {
+.menu {
   display: flex;
-  padding: 1rem 0;
-  border-bottom: solid 1px grey;
+  margin: 2rem 0 0 0;
+  padding: 1rem 0 0;
+  border-top: solid 1px #00000082;
+  justify-content: center;
 }
 
-.actions > div {
-  margin-right: 2rem;
+.menu > div {
+  margin-right: 1.8rem;
+  max-width: 11rem;
 }
 
-.actions > div > div {
+.menu > div > div {
   margin: 0.6rem 0;
+}
+
+.menu a {
+  padding: 0.2rem;
+  text-decoration: none;
 }
 
 .select {
@@ -48,75 +106,27 @@ header {
   cursor: default;
 }
 
+header {
+  border-bottom: solid 1px #0000004f;
+  background-color: #d0ffe1;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 ::selection {
   color: white;
   background: black;
 }
 
-main {
-  height: 90vh;
-}
-
-details {
-  line-height: 1rem;
-  color: #000000c7;
-}
-
-summary {
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-}
-
-.summary-text {
-  background: #000000c7;
-  color: #ffffff;
-  padding: 0.2rem 0.4rem;
-  margin-right: 0.4rem;
-  font-family: 'Lucida Console', Monaco, monospace;
-  letter-spacing: 0.06rem;
-}
-
-details .content {
-  border-left: solid 1px#000000c7;
-  padding: 0.5rem 1rem 0 1rem;
-}
-
-.actor-adtech,
-.actor-publisher,
-.actor-advertiser,
-.actor-browser {
-  padding: 0 2px;
-}
-
-.actor-adtech {
-  background-color: #ff00003d;
-}
-
-.actor-publisher {
-  background-color: #00c5334d;
-}
-
-.actor-advertiser {
-  background-color: #fff59a;
-}
-
-.actor-browser {
-  background-color: #0050ff38;
-}
-
-.code {
-  font-size: var(--font-size-xs);
-  font-family: 'Lucida Console', Monaco, monospace;
-}
-
 a {
-  --link-color: rgb(0, 38, 255);
   color: var(--link-color);
-  text-decoration: none;
+  transition: color 0.2s linear, background-color 0.2s linear,
+    border 0.2s linear;
+}
+
+nav a:hover,
+nav a.current {
+  color: var(--link-color);
+  background: var(--link-color-x-light);
   border-bottom: solid 1px var(--link-color);
 }
 
@@ -126,4 +136,7 @@ a {
   z-index: 1000;
   text-align: center;
   font-size: 0.9rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

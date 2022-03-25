@@ -1,13 +1,47 @@
 extends _layout.pug
 
 block content
-  h2 News article
-  article
-    | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
-    | Slugging catcher slide bench league, left fielder nubber. 
-    | Base cookie triple play blue hot dog relay rake starting pitcher inning.
-  h3 #{title}
-  // Third-party adtech script that dynamically creates an iframe with an ad
-  script(src=adScriptUrl)
+  div.main
+    h2 News article
+    article
+        | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
+        | Slugging catcher slide bench league, left fielder nubber. 
+        | Base cookie triple play blue hot dog relay rake starting pitcher inning.
+    // Third-party adtech script that dynamically creates an iframe with an ad
+    script(src=adScriptUrl)
+    script.
+      // \!{}\ is the syntax for this template engine (pug) to access server-defined variables in a script
+      //- const adScriptUrl = !{JSON.stringify(attributionsrc)};
+      if (document.featurePolicy.allowsFeature('attribution-reporting')) {
+        const adScriptUrl = !{JSON.stringify(adScriptUrl)};
+        let eventType = ""
+        if (adScriptUrl.includes("view")) {
+          textStart = `A source event for this ad view has been registered in your browser`
+        } else if (adScriptUrl.includes("click")) {
+          textStart = `Click on the ad. Once you do, a source event for this ad will be registered in your browser`
+        }
+        const advertiserUrl = !{JSON.stringify(advertiserUrl)};
+        Toastify({
+          text: `${textStart}. \n You can see source events stored in your browser in chrome://attribution-internals. \n Next, visit ${advertiserUrl} (the advertiser site for this source event), and convert. \n This will generate an attribution report for this source event.`,
+          destination: advertiserUrl,
+          newWindow: true,
+          duration: -1, // infinity
+          close: true,
+          gravity: "bottom",
+          position: "center",
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          offset: {
+            y: 60
+          },
+          style: {
+            background: "#000000d6",
+            cursor: "pointer",
+            fontFamily: "'Lucida Console', Monaco, monospace",
+            fontSize: ".8rem",
+            boxShadow: "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;",
+            borderRadius: "6px"
+          },
+        }).showToast();
+      }
 
 

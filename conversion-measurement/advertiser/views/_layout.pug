@@ -4,32 +4,49 @@ html
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title 👟 Advertiser
     link(rel='stylesheet' href='/styles.css')
+    link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css')
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js")
+    style.
+        @import url('https://fonts.googleapis.com/css2?family=Mohave:ital,wght@1,500&display=swap');
   body
-    main
-        h1 Advertiser site 👟 
-        header
-            div.actions
-                div 
-                    a(href='/') Home
-                div 
-                    a#settings(href='/settings') Demo Settings ⚙️ 
-                div
-                    strong Convert:
+    div#notSupportedBanner(style="display:none") The Attribution Reporting API is not enabled on this page. This is probably due to your browser setup. Follow the 
+        a(href=demoHomeUrl) browser setup instructions
+        |.
+    header
+        div.main
+            h1 👟 Advertiser site
+            div#menuWrapper
+                nav.menu
                     div 
-                        a(href='/blue-shoes') Visit product page: shoes 
-                        div.trigger trigger data=3
+                        a(href='/') Home
                     div 
-                        a(href='/add-to-cart') Add product to cart
-                        div.trigger trigger data=2
-                    div 
-                        a(href='/checkout') Complete checkout 💰
-                        div.trigger trigger data=1
-                    div 
-                        a(href='/signup-newsletter') Sign up for special offers
-                        div.trigger trigger data=4
-                    div 
-                        a(href='/t-shirt') Visit product page: T-Shirt 
-                        div.trigger trigger data=3
+                        a#settings(href='/settings') Demo Settings ⚙️ 
+                    div
+                        strong Convert:
+                        div.conversion-list
+                            div
+                                div 
+                                    a(href='/blue-shoes') Visit product page: shoes 
+                                    div.trigger
+                                        code trigger_data=3
+                                div 
+                                    a(href='/add-to-cart') Add product to cart
+                                    div.trigger
+                                        code trigger_data=2
+                                div 
+                                    a(href='/checkout' class='checkout') Complete checkout 💰
+                                    div.trigger
+                                        code trigger_data=1
+                            div
+                                div 
+                                    a(href='/signup-newsletter') Sign up for special offers
+                                    div.trigger
+                                        code trigger_data=4
+                                div 
+                                    a(href='/t-shirt') Visit product page: T-Shirt 
+                                    div.trigger
+                                        code trigger_data=3
+    div.main.mainContentWrapper
         block content
     block foot
         #footer
@@ -45,3 +62,4 @@ html
                 a(href="https://goo.gle/sppi-devrel-eventlevel" target="_blank") Deployed demo
                 | ・
                 a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" target="_blank") Code
+    script(type="text/javascript" src="/script.js")
