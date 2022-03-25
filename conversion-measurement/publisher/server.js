@@ -19,7 +19,6 @@ app.get('/click-element', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-element`
   res.render('article', {
     adScriptUrl,
-    title: 'Track clicks via an `a` element',
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
@@ -31,7 +30,6 @@ app.get('/click-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-click-js`
   res.render('article', {
     adScriptUrl,
-    title: 'Track clicks via JS',
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
@@ -43,7 +41,6 @@ app.get('/view-element-img', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-img`
   res.render('article', {
     adScriptUrl,
-    title: 'Track views via an `img` element',
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
@@ -55,7 +52,6 @@ app.get('/view-js', (req, res) => {
   const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
   res.render('article', {
     adScriptUrl,
-    title: 'Track views via JS',
     demoHomeUrl,
     publisherUrl,
     advertiserUrl,
