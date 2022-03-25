@@ -1,41 +1,108 @@
 html {
   font-size: 16px;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   font-family: sans-serif;
+  padding: 0;
+  margin: 0;
   --max-width: 50rem;
   --font-size-s: 0.9rem;
   --font-size-xs: 0.8rem;
+  --link-color: rgb(0, 38, 255);
+  --link-color-dark: rgb(0 25 169);
+  --link-color-x-light: rgb(0 38 255 / 24%);
+}
+
+.main {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
-  background: #ffffd0;
 }
 
-header {
-  margin: 2rem 0;
+.mainContentWrapper {
+  animation-fill-mode: forwards;
+  animation: appear 0.8s;
 }
 
-.actions {
-  display: flex;
-  padding: 1rem 0;
-  border-bottom: solid 1px grey;
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.actions > div {
-  margin-right: 2rem;
+#notSupportedBanner {
+  display: block;
+  background: #ff0000da;
+  color: white;
+  padding: 0.4rem;
+  width: 100%;
+  text-align: center;
+  font-size: var(--font-size-s);
 }
 
-.actions > div > div {
-  margin: 0.6rem 0;
+.toast-close {
+  padding: 0 5px;
+  font-size: 1rem;
+  position: absolute;
+  top: 2px;
+  right: 2px;
 }
 
 h1 {
-  display: inline-block;
-  background: #fff59a;
   padding: 0.1rem 0.2rem;
   margin: 0;
+  text-align: center;
+  font-size: 2.8rem;
+}
+
+h1,
+h2,
+h3,
+article {
+  font-family: 'Mohave', sans-serif;
+}
+
+article {
+  margin: 2rem 0;
+  line-height: 1.8;
+}
+
+code {
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-size: var(--font-size-xs);
+  background-color: #0000000f;
+  padding: 0.1rem;
+}
+
+.menu {
+  display: flex;
+  margin: 2rem 0 0 0;
+  padding: 1rem 0 0;
+  border-top: solid 1px #00000082;
+  justify-content: center;
+}
+
+.menu > div {
+  margin-right: 1.8rem;
+}
+
+.conversion-list {
+  display: flex;
+}
+
+.conversion-list > div > div {
+  margin: 0.6rem 1rem 0.6rem 0;
+}
+
+.menu a {
+  padding: 0.2rem;
+  text-decoration: none;
 }
 
 .select {
@@ -43,44 +110,44 @@ h1 {
   cursor: default;
 }
 
+header {
+  border-bottom: solid 1px #0000004f;
+  background-color: #fff6b2;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 ::selection {
   color: white;
   background: black;
 }
 
-.flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+a {
+  color: var(--link-color);
+  transition: color 0.2s linear, background-color 0.2s linear,
+    border 0.2s linear;
 }
 
-a {
-  --link-color: rgb(0, 38, 255);
+nav a:hover,
+nav a.current {
   color: var(--link-color);
-  text-decoration: none;
+  background: var(--link-color-x-light);
   border-bottom: solid 1px var(--link-color);
 }
 
-code {
-  font-family: 'Lucida Console', Monaco, monospace;
+#footer {
+  background-color: rgba(0, 0, 0, 0.164);
+  padding: 0.4rem;
+  z-index: 1000;
+  text-align: center;
+  font-size: 0.9rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-.trigger {
-  font-size: var(--font-size-xs);
-  font-family: 'Lucida Console', Monaco, monospace;
-}
-a#settings {
-  --link-color: rgb(234, 0, 255);
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-img {
-  display: block;
+input[type='checkbox'] {
+  cursor: pointer;
+  margin: 0.5rem 0.5rem 0.5rem 0;
 }
 
 .pixel {
@@ -91,57 +158,31 @@ img {
   color: red;
   font-size: 0.8rem;
   font-family: 'Lucida Console', Monaco, monospace;
-  width: 10rem;
+  width: 15rem;
   transform: translate(1rem, -1rem);
   line-height: 0.8rem;
 }
 
-.center {
-  margin: 0 auto;
+.product-img-wrapper {
   text-align: center;
 }
 
-main {
-  height: 90vh;
+.product {
+  display: flex;
+  justify-content: space-between;
+  max-width: 30rem;
 }
 
-.actor-adtech,
-.actor-publisher,
-.actor-advertiser,
-.actor-browser {
-  padding: 0 2px;
-}
-
-.actor-adtech {
-  background-color: #ff00003d;
-}
-
-.actor-publisher {
-  background-color: #00c5334d;
-}
-
-.actor-advertiser {
-  background-color: #fff59a;
-}
-
-.actor-browser {
-  background-color: #0050ff38;
-}
-
-.code {
-  font-size: var(--font-size-xs);
-  font-family: 'Lucida Console', Monaco, monospace;
-}
-
-#footer {
-  background-color: rgba(0, 0, 0, 0.164);
-  padding: 0.4rem;
-  z-index: 1000;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-input[type='checkbox'] {
+button {
   cursor: pointer;
-  margin: 0.5rem 0.5rem 0.5rem 0;
+  margin: 0.5rem 0;
+}
+
+.trigger {
+  margin: 0.3rem 0 0 0;
+}
+
+.checkout {
+  --link-color: rgb(255, 0, 221);
+  --link-color-x-light: rgba(255, 0, 170, 0.164);
 }

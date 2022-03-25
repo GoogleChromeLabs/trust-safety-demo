@@ -1,7 +1,16 @@
 extends _layout.pug
 
 block content
-    h3 Blue Shoes™️
-    img.pixel(height='12' width='12' attributionsrc=adtechRequestUrl)
-    div.pixel-name Pixel that tracks product page visits
-    img(class="center" width='200' height='187' src='/blue-shoes.jpg' alt='blueshoes')
+    h3 Blue Shoes
+    div.product 
+        div.product-description 
+            div Upper material: Textile/synthetics
+            div Lining: Textile
+            div Sport: Running
+            div Shoe tip: Round
+        div.product-img-wrapper
+            img(width='200' height='187' src='/blue-shoes.jpg' alt='blueshoes')
+    div
+        img.pixel(height='12' width='12' attributionsrc=adtechRequestUrl)
+        div.pixel-name Pixel that tracks product page visits
+    script(src="./toast.js")

@@ -4,34 +4,37 @@ html
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title 📰 Publisher
     link(rel='stylesheet' href='/styles.css')
+    link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css')
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js")
+    style.
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
   body
-    main
-        h1 Publisher site 📰  
-        h2 News article
-        article
-            | Baseball ipsum dolor sit amet cellar rubber win hack tossed. 
-            | Slugging catcher slide bench league, left fielder nubber. 
-            | Base cookie triple play blue hot dog relay rake starting pitcher inning.
-        div#ads
-        header
+    div#notSupportedBanner(style="display:none") The Attribution Reporting API is not enabled on this page. This is probably due to your browser setup. Follow the 
+        a(href=demoHomeUrl) browser setup instructions
+        |.
+    header
+        div.main
+            h1 📰 Publisher site 
+            div#menuWrapper
                 nav.menu
-                div 
+                    div
                         a(href='/') No ad
-                div
+                    div
                         strong With an ad that can register clicks:
-                    div 
+                        div 
                             a(href='/click-element') HTML element 
                                 code a
-                    div 
+                        div 
                             a(href='/click-js') JS
-                div
+                    div
                         strong With an ad that can register views:
-                    div 
+                        div 
                             a(href='/view-element-img') HTML element 
                                 code img
 
-                    div 
+                        div 
                             a(href='/view-js') JS
+    div.main.mainContentWrapper
         block content
     block foot
         #footer
@@ -47,3 +50,4 @@ html
                 a(href="https://goo.gle/sppi-devrel-eventlevel" target="_blank") Deployed demo
                 | ・
                 a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" target="_blank") Code
+    script(type="text/javascript" src="/script.js")
