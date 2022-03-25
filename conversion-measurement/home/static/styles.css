@@ -10,11 +10,9 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
-  cursor: default;
 }
 
 h1 {
-  padding: 0.1rem 0.2rem;
   margin: 0;
 }
 
@@ -47,10 +45,6 @@ a,
 a:visited {
   color: #003aff;
 }
-
-/* .full {
-  width: 100%;
-} */
 
 video {
   margin: 1rem 0 0 0;
@@ -92,29 +86,6 @@ code {
   margin: 0.4rem 0 1.2rem 0;
 }
 
-.actor-adtech,
-.actor-publisher,
-.actor-advertiser,
-.actor-browser {
-  padding: 0 2px;
-}
-
-.actor-adtech {
-  background-color: #ff00003d;
-}
-
-.actor-publisher {
-  background-color: #00c5334d;
-}
-
-.actor-advertiser {
-  background-color: #fff59a;
-}
-
-.actor-browser {
-  background-color: #0050ff38;
-}
-
 .success {
   color: #00c535;
 }
@@ -126,4 +97,8 @@ code {
 
 .xs {
   transform: scale(0.8);
+}
+
+.version {
+  color: #8b8b8b;
 }
