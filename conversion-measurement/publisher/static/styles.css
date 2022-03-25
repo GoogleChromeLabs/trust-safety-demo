@@ -57,66 +57,10 @@ main {
   height: 90vh;
 }
 
-details {
-  line-height: 1rem;
-  color: #000000c7;
-}
-
-summary {
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-}
-
-.summary-text {
-  background: #000000c7;
-  color: #ffffff;
-  padding: 0.2rem 0.4rem;
-  margin-right: 0.4rem;
-  font-family: 'Lucida Console', Monaco, monospace;
-  letter-spacing: 0.06rem;
-}
-
-details .content {
-  border-left: solid 1px#000000c7;
-  padding: 0.5rem 1rem 0 1rem;
-}
-
-.actor-adtech,
-.actor-publisher,
-.actor-advertiser,
-.actor-browser {
-  padding: 0 2px;
-}
-
-.actor-adtech {
-  background-color: #ff00003d;
-}
-
-.actor-publisher {
-  background-color: #00c5334d;
-}
-
-.actor-advertiser {
-  background-color: #fff59a;
-}
-
-.actor-browser {
-  background-color: #0050ff38;
-}
-
-.code {
-  font-size: var(--font-size-xs);
-  font-family: 'Lucida Console', Monaco, monospace;
-}
-
-a {
-  --link-color: rgb(0, 38, 255);
+nav a:hover,
+nav a.current {
   color: var(--link-color);
-  text-decoration: none;
+  background: var(--link-color-x-light);
   border-bottom: solid 1px var(--link-color);
 }
 
