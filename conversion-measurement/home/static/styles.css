@@ -7,18 +7,15 @@ body {
   --max-width: 50rem;
   --font-size-s: 0.9rem;
   --font-size-xs: 0.8rem;
+  --link-color: rgb(0, 38, 255);
+  --link-color-x-light: rgb(0 38 255 / 24%);
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
 }
 
 h1 {
-  margin: 0;
-}
-
-.padded {
-  padding: 0 0.2rem;
-  margin: 0;
+  text-align: center;
 }
 
 h2 {
@@ -52,14 +49,6 @@ video {
   max-width: 24rem;
 }
 
-.show {
-  display: inline-block;
-}
-
-.hide {
-  display: none;
-}
-
 .select {
   user-select: all;
   cursor: default;
@@ -70,35 +59,20 @@ video {
   background: black;
 }
 
-.code {
+.code,
+code {
   font-size: var(--font-size-xs);
   font-family: 'Lucida Console', Monaco, monospace;
 }
 
-code {
-  font-family: 'Lucida Console', Monaco, monospace;
-}
-
-.do {
-  font-size: var(--font-size-s);
-  background: whitesmoke;
-  padding: 0.2rem;
-  margin: 0.4rem 0 1.2rem 0;
-}
-
-.success {
-  color: #00c535;
-}
-
-.error,
-.important {
-  color: red;
-}
-
-.xs {
-  transform: scale(0.8);
-}
-
 .version {
   color: #8b8b8b;
+  text-align: center;
+}
+
+#feedback {
+  padding: 0.5rem;
+  border-radius: 6px;
+  background-color: var(--link-color-x-light);
+  color: var(--link-color);
 }
