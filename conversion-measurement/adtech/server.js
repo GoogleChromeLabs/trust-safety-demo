@@ -123,7 +123,7 @@ app.get('/register-source', (req, res) => {
       expiry: '604800',
       // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
       // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
-      debug_key: `${legacyMeasurementCookie}`,
+      debug_key: legacyMeasurementCookie,
       filter_data: {
         conversion_product_type: ['category_1']
       }
