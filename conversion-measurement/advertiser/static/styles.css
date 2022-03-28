@@ -19,7 +19,7 @@ body {
 .main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem 2.5rem;
 }
 
 .mainContentWrapper {
@@ -163,14 +163,14 @@ input[type='checkbox'] {
   line-height: 0.8rem;
 }
 
-.product-img-wrapper {
-  text-align: center;
+.product-description {
+  margin: 1rem 0;
 }
 
 .product {
   display: flex;
   justify-content: space-between;
-  max-width: 30rem;
+  max-width: 40rem;
 }
 
 button {

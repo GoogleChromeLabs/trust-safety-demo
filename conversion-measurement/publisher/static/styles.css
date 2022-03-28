@@ -19,7 +19,7 @@ body {
 .main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem 2.5rem;
 }
 
 .mainContentWrapper {

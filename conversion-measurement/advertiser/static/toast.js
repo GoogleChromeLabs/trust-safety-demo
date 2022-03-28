@@ -4,7 +4,7 @@ if (document.featurePolicy.allowsFeature('attribution-reporting')) {
     duration: -1, // infinity
     close: true,
     gravity: 'bottom',
-    position: 'center',
+    position: 'right',
     stopOnFocus: true, // Prevents dismissing of toast on hover
     offset: {
       y: 60
