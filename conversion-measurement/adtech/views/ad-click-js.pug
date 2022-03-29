@@ -3,8 +3,23 @@ head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   title Ad
-body(style={"font-family": "sans-serif", "background": "#f6d7ff", "cursor": "pointer"})
+body(style={"font-family": "sans-serif", "background": "#f6d7ff"})
 
-div Not supported at the moment
-
-
+div (JS method will be called on click)
+  p
+  div(id="ad" style="cursor:pointer; text-decoration:underline;") Click me
+  
+script.
+  // \!{}\ is the syntax for this template engine (pug) to access server-defined variables in a script
+  const attributionsrc = !{JSON.stringify(attributionsrc)};
+  const href = !{JSON.stringify(href)};
+  
+  const ad = document.getElementById("ad");
+  ad.addEventListener("click", () => {
+    // Instruct the browser to initiate source registration
+    window.open(
+    href,
+    "_blank",
+    `attributionsrc=${attributionsrc}`);
+  });
+  
