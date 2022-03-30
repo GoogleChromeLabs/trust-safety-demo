@@ -20,5 +20,4 @@ Look for `.env.development` and `.env.production` files in each subfolder and cu
 
 ## Questions or issues?
 
-Ping [@maudnals](https://twitter.com/maudnals) or [@ChromiumDev](https://twitter.com/ChromiumDev) on Twitter.
 Join the [developer mailing list](https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev) and ask your question there.
