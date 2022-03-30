@@ -16,7 +16,7 @@
 ## Fork and customize
 
 All URLs in this demo (publisher, advertiser, adtech) can be customized.
-Look for `.env.development` and `env.production` files in each subfolder and customize them as needed.
+Look for `.env.development` and `.env.production` files in each subfolder and customize them as needed.
 
 ## Questions or issues?
 
