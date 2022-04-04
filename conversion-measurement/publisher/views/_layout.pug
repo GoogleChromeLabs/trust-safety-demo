@@ -17,23 +17,25 @@ html
             h1 📰 Publisher site 
             div#menuWrapper
                 nav.menu
-                    div
-                        a(href='/') No ad
-                    div
-                        strong With an ad that can register clicks:
-                        div 
-                            a(href='/click-element') HTML element 
-                                code a
-                        div 
-                            a(href='/click-js') JS
-                    div
-                        strong With an ad that can register views:
-                        div 
-                            a(href='/view-element-img') HTML element 
-                                code img
-
-                        div 
-                            a(href='/view-js') JS
+                    div 
+                        strong You have the choice how the ad is included in the article below:
+                        div.ads-list 
+                            div 
+                                |Ad that registers clicks:
+                                |<br><br> with 
+                                a(href='/click-element') HTML element 
+                                    code a
+                                |<br>with
+                                a(href='/click-js') JS  
+                            div 
+                                |Ad that registers views:
+                                |<br><br>with
+                                a(href='/view-element-img') HTML element 
+                                    code img 
+                                |<br>with
+                                a(href='/view-js') JS
+                            div
+                                a(href='/') Remove the ad
     div.main.mainContentWrapper
         block content
     block foot

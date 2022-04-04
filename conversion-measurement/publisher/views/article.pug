@@ -16,22 +16,23 @@ block content
         const adScriptUrl = !{JSON.stringify(adScriptUrl)};
         let eventType = ""
         if (adScriptUrl.includes("view")) {
-          textStart = `A source event for this ad view has been registered in your browser`
+          textStart = `<hint> \n A source event for this ad view has been registered in your browser.\n`
         } else if (adScriptUrl.includes("click")) {
-          textStart = `Click on the ad. Once you do, a source event for this ad will be registered in your browser`
+          textStart = `<hint> \n Click on the ad. \n \n Once you do, a source event for this ad will be registered in your browser.`
         }
         const advertiserUrl = !{JSON.stringify(advertiserUrl)};
         Toastify({
-          text: `${textStart}. \n You can see source events stored in your browser in chrome://attribution-internals. \n Next, visit ${advertiserUrl} (the advertiser site for this source event), and convert. \n This will generate an attribution report for this source event.`,
+          text: `${textStart} \n You can see source events stored in your browser in chrome://attribution-internals. \n Next, visit ${advertiserUrl} (the advertiser site for this source event), and convert. \n This will generate an attribution report for this source event. \n </hint>`,
           destination: advertiserUrl,
           newWindow: true,
           duration: -1, // infinity
           close: true,
-          gravity: "bottom",
+          gravity: "top",
           position: "right",
           stopOnFocus: true, // Prevents dismissing of toast on hover
           offset: {
-            y: 60
+            y: 300,
+            x: 40
           },
           style: {
             background: "#000000d6",
