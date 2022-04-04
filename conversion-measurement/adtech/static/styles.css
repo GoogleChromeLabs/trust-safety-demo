@@ -1,7 +1,3 @@
-html {
-  font-size: 14px;
-}
-
 body {
   font-family: sans-serif;
   --max-width: 60rem;
@@ -23,20 +19,20 @@ h1 {
   margin: 0;
 }
 
-#reportList > div,
+#reportList>div,
 .row {
   display: flex;
   justify-content: space-between;
 }
 
-#reportList > div > div,
-.header > div {
+#reportList>div>div,
+.header>div {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-#reportList > div > div {
+#reportList>div>div {
   padding: 0.4rem;
 }
 
