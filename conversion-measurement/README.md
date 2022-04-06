@@ -10,7 +10,7 @@
 1. Make sure you have [node.js](https://nodejs.org/en/download/) and [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) installed.
 1. Run `sh ./init.sh` to download and install all dependencies.
 1. Run `sh ./start.sh` to startup several local node apps.
-1. You now have multiple servers running: home(:8080), publisher(:8081), advertiser(:8082), adtech(:3000) server.
+1. You now have multiple servers running: home(:8080), publisher(:8081), advertiser(:8082), adtech(:8084) server.
 1. Open [localhost:8080](http://localhost:8080) in Chrome.
 1. Follow the instructions in the UI. 🚨 In particular, make sure to follow the **Set up your browser** instructions.
 

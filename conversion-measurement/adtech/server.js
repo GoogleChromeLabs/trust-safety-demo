@@ -7,7 +7,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.set('view engine', 'pug')
-const PORT = 3000
+const PORT = 8084
 const demoHomeUrl = process.env.DEMO_HOME_URL
 const publisherUrl = process.env.PUBLISHER_URL
 const advertiserUrl = process.env.ADVERTISER_URL
