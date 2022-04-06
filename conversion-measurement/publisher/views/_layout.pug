@@ -18,24 +18,25 @@ html
             div#menuWrapper
                 nav.menu
                     div 
-                        strong You have the choice how the ad is included in the article below:
+                        div.ads-list-instructions 
+                            strong Choose how the ad should be included in the article:
                         div.ads-list 
                             div 
                                 |Ad that registers clicks:
-                                |<br><br> with 
+                                |<br><br> with an 
                                 a(href='/click-element') HTML element 
                                     code a
-                                |<br>with
+                                |<br>with 
                                 a(href='/click-js') JS  
                             div 
                                 |Ad that registers views:
-                                |<br><br>with
+                                |<br><br>with an 
                                 a(href='/view-element-img') HTML element 
                                     code img 
-                                |<br>with
+                                |<br>with 
                                 a(href='/view-js') JS
                             div
-                                a(href='/') Remove the ad
+                                a(href='/') No ad
     div.main.mainContentWrapper
         block content
     block foot
