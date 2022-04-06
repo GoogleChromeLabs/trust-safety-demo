@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
@@ -23,7 +39,7 @@ app.get('/', (req, res) => {
 /*                               Debugging setup                              */
 /* -------------------------------------------------------------------------- */
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   // Optional: set a regular measurement 3P cookie
   const legacyMeasurementCookie = req.cookies['measure']
   if (legacyMeasurementCookie === undefined) {
@@ -111,7 +127,7 @@ app.get('/ad-script-click-js', (req, res) => {
 app.get('/register-source', (req, res) => {
   // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
   const attributionDestination = process.env.ADVERTISER_URL
-  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+    // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
   const legacyMeasurementCookie = req.cookies['measure']
   res.set(
@@ -131,16 +147,14 @@ app.get('/register-source', (req, res) => {
   )
   res.set(
     'Attribution-Reporting-Register-Aggregatable-Source',
-    JSON.stringify([
-      {
-        // Generates a "0x159" key piece (low order bits of the key) named
-        // "campaignCounts"
-        id: 'campaignCounts',
-        // Campaign 345 (out of 511)
-        // 345 to hex is 0x159
-        key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
-      }
-    ])
+    JSON.stringify([{
+      // Generates a "0x159" key piece (low order bits of the key) named
+      // "campaignCounts"
+      id: 'campaignCounts',
+      // Campaign 345 (out of 511)
+      // 345 to hex is 0x159
+      key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
+    }])
   )
   res.status(200).send('OK')
 })
@@ -189,7 +203,7 @@ app.get('/conversion', (req, res) => {
 
   // Use the purchase ID as a deduplication key, since we only want to count purchases with the same ID once
   const deduplicationKey = req.query['purchase-id']
-  // Use deduplication only if it's on in the app settings and if a deduplication key is presents
+    // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
   // Set filters
@@ -205,15 +219,13 @@ app.get('/conversion', (req, res) => {
   res.set(
     'Attribution-Reporting-Register-Event-Trigger',
     // ⚠️ Note the enclosing []!
-    JSON.stringify([
-      {
-        trigger_data: `${triggerData}`,
-        // if priorities are on, specify the priority
-        ...(usePriorities && { priority: `${priority}` }),
-        // if deduplication is on, specify the deduplication key
-        ...(useDeduplication && { deduplication_key: deduplicationKey })
-      }
-    ])
+    JSON.stringify([{
+      trigger_data: `${triggerData}`,
+      // if priorities are on, specify the priority
+      ...(usePriorities && { priority: `${priority}` }),
+      // if deduplication is on, specify the deduplication key
+      ...(useDeduplication && { deduplication_key: deduplicationKey })
+    }])
   )
 
   // Aggregatable report: instruct the browser to schedule-send a report
@@ -240,8 +252,8 @@ app.get('/conversion', (req, res) => {
 
   // Debug report (common to event-level and aggregate)
   const legacyMeasurementCookie = req.cookies['measure']
-  // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
+    // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+    // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   res.set(
     'Attribution-Reporting-Trigger-Debug-Key',
     `${legacyMeasurementCookie}`
@@ -261,7 +273,7 @@ app.get('/reports', (req, res) => {
 // Event-level reports
 app.post(
   '/.well-known/attribution-reporting/report-event-attribution',
-  async (req, res) => {
+  async(req, res) => {
     console.log('REGULAR REPORT RECEIVED (event-level):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
@@ -274,7 +286,7 @@ app.post(
 // Aggregatable reports
 app.post(
   '.well-known/attribution-reporting/report-aggregate-attribution',
-  async (req, res) => {
+  async(req, res) => {
     console.log('REGULAR REPORT RECEIVED (aggregate):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
@@ -284,11 +296,24 @@ app.post(
   }
 )
 
-// Debug reports (both event-level and aggregate)
+// Event-level Debug reports
 app.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
-  async (req, res) => {
-    console.log('DEBUG REPORT RECEIVED:', req.body)
+  async(req, res) => {
+    console.log('DEBUG REPORT RECEIVED (event-level):', req.body)
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received a debug report from the browser`
+    )
+    res.sendStatus(200)
+  }
+)
+
+// Aggregatable Debug reports
+app.post(
+  '/.well-known/attribution-reporting/debug/report-aggregate-attribution',
+  async(req, res) => {
+    console.log('DEBUG REPORT RECEIVED (aggregate):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received a debug report from the browser`
