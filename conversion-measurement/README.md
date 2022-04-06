@@ -2,7 +2,7 @@
 
 ## See the live demo
 
-## >> [Live demo](https://goo.gle/sppi-devrel-eventlevel)
+## >> [Live demo](https://goo.gle/attribution-reporting-demo)
 
 ## Set and run locally
 
