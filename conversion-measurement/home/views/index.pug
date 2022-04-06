@@ -20,8 +20,8 @@ body
         h3 Browser requirements
         ul
             li Use the latest 
-                a(href="https://www.google.com/chrome/canary/" noreferrer noopener target="_blank") Chrome Canary
-                |. As of March 2022, some features in this API are only available in Canary, the experimental version of Chrome.
+                a(href="https://www.google.com/chrome/canary/" noreferrer noopener target="_blank") Chrome Canary or Dev
+                |.
             li Don't use Incognito or Guest mode, because the API is disabled on these profiles.
             li Don't block third-party cookies. 
             li Deactivate ad-blocking extensions on the pages where you need to test the API (or create a fresh user profile without extensions). Ad-blocking browser extensions may block some of the API's functionality if script names contain the term "ad".
@@ -30,11 +30,9 @@ body
             li Ensure the Privacy Sandbox APIs are enabled at 
               span.code.select chrome://settings/privacySandbox
               |.
-            li Open 
-                span.code.select chrome://flags 
-                |and enable the  
-                span.code.select privacy-sandbox-ads-apis
-                |flag (will require restart). 
+            li Enable the flag 
+                span.code.select chrome://flags/#privacy-sandbox-ads-apis 
+                | (will require restart). 
                 
     h2 Run the demo
     p In this demo an advertiser uses an adtech provider to run their ads on a publisher sites. Follow the flow below to see how the API generates 
