@@ -18,8 +18,8 @@ body
         |).
     h2 See the code 
     a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" noreferrer noopener target="_blank") Code for this demo
-    |, that you can 
-    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener target="_blank") reuse and customize
+    |. You can 
+    a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize" noreferrer noopener target="_blank") reuse and customize it
     |.
     h2 Set up your browser
     p.important ⚠️ Make sure to follow these steps.
@@ -41,10 +41,7 @@ body
                 | (will require restart). 
                 
     h2 Run the demo
-    p In this demo an advertiser uses an adtech provider to run their ads on a publisher sites. Follow the flow below to see how the API generates 
-        span.code.select event-level 
-        |and 
-        span.code.select aggregatable reports:
+    p In this demo an advertiser uses an adtech provider to run their ads on a publisher sites. Follow the flow below to see how the API generates event-level and aggregatable reports:
     ol
         li First visit the 
             a(href=publisherUrl target="_blank") publisher site
@@ -52,17 +49,16 @@ body
             ol Because this ad is configured with special attribution parameters, a source event is registered. You'll see that either anchor elements or JavaScript calls can be used to generate a source event.
         li Second, either follow the link for a clickable ad or visit the 
             a(href=advertiserUrl target="_blank") advertiser site
-            | directly 
+            |  directly 
         li Third, interact with the product on the 
-            a(href=advertiserUrl target="_blank") advertiser site 
-            | by visiting the product page, adding the product to your cart, or making a purchase... 
+            a(href=advertiserUrl target="_blank") advertiser site
+            |  by visiting the product page, adding the product to your cart, or making a purchase... 
             ol While interacting with the product, the adtech endpoint will be informed. It decides that your actions are conversions, and hence will trigger attributions, with variable trigger data values, for your engagements on the advertiser's site.
             ol After attributions have been triggered, attribution reports are generated and stored in local storage in your browser (on your device). 
         li Finally, open 
             span.code.select chrome://attribution-internals 
             | to inspect the reports that have been generated.
             ol The reports are configured to be sent to the adtech provider configured in Step 1 (which must be the same origin as the adtech mentioned in Step 2 and 3).
-
 
     
 

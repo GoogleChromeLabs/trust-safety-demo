@@ -18,6 +18,7 @@ body {
   font-family: sans-serif;
   padding: 0;
   margin: 0;
+  position: relative;
   --max-width: 50rem;
   --font-size-s: 0.9rem;
   --font-size-xs: 0.8rem;
@@ -78,7 +79,7 @@ article {
 }
 
 article {
-  margin: 2rem 0;
+  margin: 1rem 0;
   line-height: 1.8;
 }
 
@@ -97,7 +98,7 @@ code {
   justify-content: center;
 }
 
-.menu>div {
+.menu > div {
   margin-right: 1.8rem;
 }
 
@@ -105,12 +106,17 @@ code {
   display: flex;
 }
 
-.ads-list>div {
-  margin: 0.6rem 1rem 0.6rem 0;
+.ads-list-instructions {
+  text-align: center;
+  padding-bottom: 0.8rem;
 }
 
-.menu>div>div {
-  margin: 0.6rem 0;
+.ads-list > div {
+  padding: 0.1rem 0.8rem;
+}
+
+.ads-list > div:not(:last-child) {
+  border-right: solid 1px #00000082;
 }
 
 .menu a {
@@ -136,7 +142,8 @@ header {
 
 a {
   color: var(--link-color);
-  transition: color 0.2s linear, background-color 0.2s linear, border 0.2s linear;
+  transition: color 0.2s linear, background-color 0.2s linear,
+    border 0.2s linear;
 }
 
 nav a:hover,
@@ -147,12 +154,13 @@ nav a.current {
 }
 
 #footer {
+  --padding: 0.4rem;
   background-color: rgba(0, 0, 0, 0.164);
-  padding: 0.4rem;
+  padding: var(--padding);
   z-index: 1000;
   text-align: center;
   font-size: 0.9rem;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: calc(100vw - 2 * (var(--padding)));
 }
