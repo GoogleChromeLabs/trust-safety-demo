@@ -71,6 +71,10 @@ video {
   background: black;
 }
 
+.important {
+  color: red;
+}
+
 .code,
 code {
   font-size: var(--font-size-s);

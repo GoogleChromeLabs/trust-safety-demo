@@ -19,14 +19,15 @@ if (document.featurePolicy.allowsFeature('attribution-reporting')) {
     text: `💡 Demo tip: \n\n The conversion pixel makes a request to the adtech endpoint (attributionsrc). \n The adtech endpoint then instructs the browser to trigger an attribution. \n If the browser finds a source event that matches this trigger, it generates an attribution report. \n\n You can see the report in chrome://attribution-internals.\n`,
     duration: -1, // infinity
     close: true,
-    gravity: 'bottom',
+    gravity: 'top',
     position: 'right',
     stopOnFocus: true, // Prevents dismissing of toast on hover
     offset: {
-      y: '8vh'
+      y: 500,
+      x: 40
     },
     style: {
-      background: '#6700d6db',
+      background: '#000000d6',
       cursor: 'pointer',
       fontFamily: "'Lucida Console', Monaco, monospace",
       fontSize: '.8rem',
