@@ -1,7 +1,5 @@
 # Attribution Reporting API: demo
 
-## See the live demo
-
 ## >> [Live demo](https://goo.gle/attribution-reporting-demo)
 
 ## Set and run locally
