@@ -41,19 +41,21 @@ app.get('/', (req, res) => {
 
 app.use(function(req, res, next) {
   // Optional: set a regular measurement 3P cookie
+  var headers = []
   const legacyMeasurementCookie = req.cookies['measure']
   if (legacyMeasurementCookie === undefined) {
     const cookieValue = Math.floor(Math.random() * 1000000000000000)
-    res.set(
-      'Set-Cookie',
-      `measure=${cookieValue}; SameSite=None; Secure; HttpOnly`
-    )
+    headers.push(`measure=${cookieValue}; SameSite=None; Secure; HttpOnly`)
   }
 
   // Set the Attribution Reporting debug cookie
   const debugCookie = req.cookies['ar_debug']
   if (debugCookie === undefined) {
-    res.set('Set-Cookie', 'ar_debug=1; SameSite=None; Secure; HttpOnly')
+    headers.push('ar_debug=1; SameSite=None; Secure; HttpOnly')
+  }
+
+  if (headers.length > 0) {
+    res.set('Set-Cookie', headers)
   }
   next()
 })
