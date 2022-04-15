@@ -6,7 +6,7 @@ head
   link(rel='stylesheet' href='/styles.css')
 body
     h1 Demo: Attribution Reporting API
-    div.version Demo version: v-2022-04-06
+    div.version Demo version: v-2022-04-29
     h2 Ask questions / Share feedback 👋
     div#feedback
         strong Is there a feature you'd like to see added to this demo? Do you have any question, request, or an issue running the demo? 
@@ -26,8 +26,8 @@ body
         h3 Browser requirements
         ul
             li Use the latest 
-                a(href="https://www.google.com/chrome/canary/" noreferrer noopener target="_blank") Chrome Canary or Dev
-                |.
+                a(href="https://www.google.com/chrome/beta/" noreferrer noopener target="_blank") Chrome Beta
+                | , Canary or Dev.
             li Don't use Incognito or Guest mode, because the API is disabled on these profiles.
             li Don't block third-party cookies. 
             li Deactivate ad-blocking extensions on the pages where you need to test the API (or create a fresh user profile without extensions). Ad-blocking browser extensions may block some of the API's functionality if script names contain the term "ad".
@@ -49,7 +49,7 @@ body
             ol Because this ad is configured with special attribution parameters, a source event is registered. You'll see that either anchor elements or JavaScript calls can be used to generate a source event.
         li Second, either follow the link for a clickable ad or visit the 
             a(href=advertiserUrl target="_blank") advertiser site
-            |  directly 
+            |  directly (direct visits will *not* trigger a conversion)
         li Third, interact with the product on the 
             a(href=advertiserUrl target="_blank") advertiser site
             |  by visiting the product page, adding the product to your cart, or making a purchase... 
@@ -58,8 +58,4 @@ body
         li Finally, open 
             span.code.select chrome://attribution-internals 
             | to inspect the reports that have been generated.
-            ol The reports are configured to be sent to the adtech provider configured in Step 1 (which must be the same origin as the adtech mentioned in Step 2 and 3).
-
-    
-
-    
+            ol The reports are configured to be sent to the adtech provider setup in Step 1
