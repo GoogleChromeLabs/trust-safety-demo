@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
 /* -------------------------------------------------------------------------- */
 
 app.use(function(req, res, next) {
-  // Optional: set a regular measurement 3P cookie
   var headers = []
+   // Optional: set a regular measurement 3P cookie
   const legacyMeasurementCookie = req.cookies['measure']
   if (legacyMeasurementCookie === undefined) {
     const cookieValue = Math.floor(Math.random() * 1000000000000000)
