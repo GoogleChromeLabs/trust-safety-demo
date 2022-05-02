@@ -1,0 +1,69 @@
+{
+  "hosting": [{
+      "site": "arapi-home",
+      "public": "sites/home",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [{
+        "source": "**",
+        "function": "home"
+      }]
+    },
+    {
+      "site": "arapi-adtech",
+      "public": "sites/adtech",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [{
+          "source": "**",
+          "function": "adtech"
+        },
+        {
+          "source": "/.well-known/**",
+          "function": "adtech"
+        }
+      ]
+    },
+    {
+      "site": "arapi-advertiser",
+      "public": "sites/advertiser",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [{
+        "source": "**",
+        "function": "advertiser"
+      }]
+    },
+    {
+      "site": "arapi-publisher",
+      "public": "sites/publisher",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [{
+        "source": "**",
+        "function": "publisher"
+      }]
+    }
+  ],
+  "emulators": {
+    "functions": {
+      "port": "5080"
+    },
+    "hosting": {
+      "host": "localhost",
+      "port": "8080"
+    }
+  }
+}

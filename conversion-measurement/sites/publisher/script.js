@@ -36,3 +36,11 @@ for (var i = 0; i < document.links.length; i++) {
   }
 }
 document.links[current].className = 'current'
+
+document.onreadystatechange = function() {
+  if (document.readyState !== "complete") {
+    document.querySelector(".loading").style.visibility = "visible";
+  } else {
+    document.querySelector(".loading").style.display = "none";
+  }
+};

@@ -98,7 +98,7 @@ code {
   justify-content: center;
 }
 
-.menu > div {
+.menu>div {
   margin-right: 1.8rem;
 }
 
@@ -111,11 +111,11 @@ code {
   padding-bottom: 0.8rem;
 }
 
-.ads-list > div {
+.ads-list>div {
   padding: 0.1rem 0.8rem;
 }
 
-.ads-list > div:not(:last-child) {
+.ads-list>div:not(:last-child) {
   border-right: solid 1px #00000082;
 }
 
@@ -142,8 +142,7 @@ header {
 
 a {
   color: var(--link-color);
-  transition: color 0.2s linear, background-color 0.2s linear,
-    border 0.2s linear;
+  transition: color 0.2s linear, background-color 0.2s linear, border 0.2s linear;
 }
 
 nav a:hover,
@@ -163,4 +162,34 @@ nav a.current {
   position: absolute;
   bottom: 0;
   width: calc(100vw - 2 * (var(--padding)));
+}
+
+
+/* from https://www.w3docs.com/snippets/css/how-to-create-loading-spinner-with-css.html */
+
+@keyframes spinner {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+.loading::before {
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 5px #cfd0d1;
+  border-bottom-color: #1c87c9;
+  border-radius: 50%;
+  content: "";
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  /* top: 10;
+  left: 10; */
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+  margin-top: 100;
+  margin-left: 100;
 }

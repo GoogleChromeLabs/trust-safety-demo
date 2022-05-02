@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const functions = require('firebase-functions');
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const session = require('express-session')
@@ -24,9 +25,10 @@ const publisherUrl = process.env.PUBLISHER_URL
 const advertiserUrl = process.env.ADVERTISER_URL
 const adtechUrl = process.env.ADTECH_URL
 
-const app = express()
-app.set('view engine', 'pug')
-app.use(
+const advertiser = express()
+advertiser.set('view engine', 'pug')
+advertiser.set('views', './views/advertiser')
+advertiser.use(
   session({
     secret: '343ji43j4n3jn4jk3n',
     saveUninitialized: true,
@@ -34,11 +36,10 @@ app.use(
   })
 )
 
-app.use(express.json())
-app.use(express.static('static'))
+advertiser.use(express.json())
 
 // Middleware run on each request
-app.use((req, res, next) => {
+advertiser.use((req, res, next) => {
   // Check if session is initialized
   if (!req.session.initialized) {
     // Initialize variables on the session object (persisted across requests made by the same user)
@@ -49,11 +50,11 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/', (req, res) => {
+advertiser.get('/', (req, res) => {
   res.render('home', { demoHomeUrl, publisherUrl, advertiserUrl, adtechUrl })
 })
 
-app.get('/settings', (req, res) => {
+advertiser.get('/settings', (req, res) => {
   const { prio, dedup } = req.session
   res.render('settings', {
     prio,
@@ -65,7 +66,7 @@ app.get('/settings', (req, res) => {
   })
 })
 
-app.post('/demo-settings', (req, res) => {
+advertiser.post('/demo-settings', (req, res) => {
   req.session.prio = req.body.prio
   req.session.dedup = req.body.dedup
   const { prio, dedup } = req.session
@@ -79,12 +80,12 @@ app.post('/demo-settings', (req, res) => {
   })
 })
 
-app.post('/new-purchase', (req, res) => {
+advertiser.post('/new-purchase', (req, res) => {
   req.session.purchaseId = Math.floor(Math.random() * 100000)
   res.redirect('checkout')
 })
 
-app.get('/blue-shoes', (req, res) => {
+advertiser.get('/blue-shoes', (req, res) => {
   const { prio, dedup } = req.session
   const searchParams = new URLSearchParams({
     'conversion-type': 'visit-product-page',
@@ -105,7 +106,7 @@ app.get('/blue-shoes', (req, res) => {
   })
 })
 
-app.get('/signup-newsletter', (req, res) => {
+advertiser.get('/signup-newsletter', (req, res) => {
   const { prio, dedup } = req.session
   const searchParams = new URLSearchParams({
     'conversion-type': 'signup-newsletter',
@@ -127,7 +128,7 @@ app.get('/signup-newsletter', (req, res) => {
   })
 })
 
-app.get('/checkout', (req, res) => {
+advertiser.get('/checkout', (req, res) => {
   if (!req.session.purchaseId) {
     req.session.purchaseId = Math.floor(Math.random() * 100000)
   }
@@ -156,7 +157,7 @@ app.get('/checkout', (req, res) => {
   })
 })
 
-app.get('/add-to-cart', (req, res) => {
+advertiser.get('/add-to-cart', (req, res) => {
   const { prio, dedup } = req.session
   const searchParams = new URLSearchParams({
     'conversion-type': 'add-to-cart',
@@ -178,7 +179,7 @@ app.get('/add-to-cart', (req, res) => {
   })
 })
 
-app.get('/t-shirt', (req, res) => {
+advertiser.get('/t-shirt', (req, res) => {
   const { prio, dedup } = req.session
   const searchParams = new URLSearchParams({
     'conversion-type': 'visit-product-page',
@@ -200,9 +201,4 @@ app.get('/t-shirt', (req, res) => {
   })
 })
 
-const listener = app.listen(process.env.PORT || PORT, () => {
-  console.log(
-    '\x1b[1;33m%s\x1b[0m',
-    `👟 Advertiser server is listening on port ${listener.address().port}`
-  )
-})
+exports.advertiser = functions.https.onRequest(advertiser);

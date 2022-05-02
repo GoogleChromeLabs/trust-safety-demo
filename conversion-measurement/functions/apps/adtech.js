@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
+const functions = require('firebase-functions');
 const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
+const http = require('http')
 
-const app = express()
-app.use(express.json())
-app.use(cookieParser())
+const adtech = express()
+adtech.use(express.json())
+adtech.use(cookieParser())
 
-app.set('view engine', 'pug')
-const PORT = 8084
-const demoHomeUrl = process.env.DEMO_HOME_URL
-const publisherUrl = process.env.PUBLISHER_URL
-const advertiserUrl = process.env.ADVERTISER_URL
+adtech.set('view engine', 'pug')
+adtech.set('views', './views/adtech')
 const adtechUrl = process.env.ADTECH_URL
 
-app.use(express.static('static'))
-
-app.get('/', (req, res) => {
+adtech.get('/', (req, res) => {
   res.render('index')
 })
 
@@ -39,13 +36,14 @@ app.get('/', (req, res) => {
 /*                               Debugging setup                              */
 /* -------------------------------------------------------------------------- */
 
-app.use(function(req, res, next) {
+adtech.use(function(req, res, next) {
+  console.log('Time:', Date.now(), " ", req.originalUrl, " Cookies: ", req.cookies)
+
   var headers = []
-   // Optional: set a regular measurement 3P cookie
-  const legacyMeasurementCookie = req.cookies['measure']
+  const legacyMeasurementCookie = req.cookies['__session']
   if (legacyMeasurementCookie === undefined) {
     const cookieValue = Math.floor(Math.random() * 1000000000000000)
-    headers.push(`measure=${cookieValue}; SameSite=None; Secure; HttpOnly`)
+    headers.push(`__session=${cookieValue}; SameSite=None; Secure; HttpOnly`)
   }
 
   // Set the Attribution Reporting debug cookie
@@ -57,6 +55,7 @@ app.use(function(req, res, next) {
   if (headers.length > 0) {
     res.set('Set-Cookie', headers)
   }
+
   next()
 })
 
@@ -64,7 +63,7 @@ app.use(function(req, res, next) {
 /*                                 Ad serving                                 */
 /* -------------------------------------------------------------------------- */
 
-app.get('/ad-click', (req, res) => {
+adtech.get('/ad-click', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-click', {
     href,
@@ -72,7 +71,7 @@ app.get('/ad-click', (req, res) => {
   })
 })
 
-app.get('/ad-click-js', (req, res) => {
+adtech.get('/ad-click-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-click-js', {
     href,
@@ -80,42 +79,42 @@ app.get('/ad-click-js', (req, res) => {
   })
 })
 
-app.get('/ad-view-img', (req, res) => {
+adtech.get('/ad-view-img', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-view-img', {
     attributionsrc: `${adtechUrl}/register-source`
   })
 })
 
-app.get('/ad-view-js', (req, res) => {
+adtech.get('/ad-view-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-view-js', {
     attributionsrc: `${adtechUrl}/register-source`
   })
 })
 
-app.get('/ad-script-view-img', (req, res) => {
+adtech.get('/ad-script-view-img', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad-view-img`
   const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
-app.get('/ad-script-view-js', (req, res) => {
+adtech.get('/ad-script-view-js', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad-view-js`
   const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
-app.get('/ad-script-click-element', (req, res) => {
+adtech.get('/ad-script-click-element', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adClickUrl = `${process.env.ADTECH_URL}/ad-click`
   const iframe = `<iframe src='${adClickUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
-app.get('/ad-script-click-js', (req, res) => {
+adtech.get('/ad-script-click-js', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-js`
   const iframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
@@ -126,12 +125,12 @@ app.get('/ad-script-click-js', (req, res) => {
 /*                  Source registration (ad click or view)                    */
 /* -------------------------------------------------------------------------- */
 
-app.get('/register-source', (req, res) => {
+adtech.get('/register-source', (req, res) => {
   // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
   const attributionDestination = process.env.ADVERTISER_URL
     // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
-  const legacyMeasurementCookie = req.cookies['measure']
+  const legacyMeasurementCookie = req.cookies['__session']
   res.set(
     'Attribution-Reporting-Register-Source',
     JSON.stringify({
@@ -195,7 +194,7 @@ function getPriority(conversionType, usePriorities) {
   }
 }
 
-app.get('/conversion', (req, res) => {
+adtech.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
   const productCategory = req.query['product-category']
   const triggerData = getTriggerData(conversionType)
@@ -253,7 +252,8 @@ app.get('/conversion', (req, res) => {
   )
 
   // Debug report (common to event-level and aggregate)
-  const legacyMeasurementCookie = req.cookies['measure']
+  console.log("Conversion Cookies Set: ", req.cookies)
+  const legacyMeasurementCookie = req.cookies['__session']
     // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
     // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   res.set(
@@ -268,65 +268,62 @@ app.get('/conversion', (req, res) => {
 /*                                 Reports                                    */
 /* -------------------------------------------------------------------------- */
 
-app.get('/reports', (req, res) => {
+adtech.get('/reports', (req, res) => {
   res.send(JSON.stringify(reports))
 })
 
 // Event-level reports
-app.post(
+adtech.post(
   '/.well-known/attribution-reporting/report-event-attribution',
   async(req, res) => {
-    console.log('REGULAR REPORT RECEIVED (event-level):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a report from the browser`
+      `🚀 Adtech has received an event-level report from the browser`
     )
-    res.sendStatus(200)
-  }
-)
-
-// Aggregatable reports
-app.post(
-  '.well-known/attribution-reporting/report-aggregate-attribution',
-  async(req, res) => {
-    console.log('REGULAR REPORT RECEIVED (aggregate):', req.body)
-    console.log(
-      '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a report from the browser`
-    )
+    console.log('REGULAR REPORT RECEIVED (event-level):\n=== \n', req.body, '\n=== \n')
     res.sendStatus(200)
   }
 )
 
 // Event-level Debug reports
-app.post(
+adtech.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async(req, res) => {
-    console.log('DEBUG REPORT RECEIVED (event-level):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a debug report from the browser`
+      `🚀 Adtech has received an event-level debug report from the browser`
     )
+    console.log('DEBUG REPORT RECEIVED (event-level):\n=== \n', req.body, '\n=== \n')
+    res.sendStatus(200)
+  }
+)
+
+// Aggregatable reports
+adtech.post(
+  '/.well-known/attribution-reporting/report-aggregate-attribution',
+  async(req, res) => {
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received an aggregatable report from the browser`
+    )
+    console.log('REGULAR REPORT RECEIVED (aggregate):\n=== \n', req.body, '\n=== \n')
+
     res.sendStatus(200)
   }
 )
 
 // Aggregatable Debug reports
-app.post(
+adtech.post(
   '/.well-known/attribution-reporting/debug/report-aggregate-attribution',
   async(req, res) => {
-    console.log('DEBUG REPORT RECEIVED (aggregate):', req.body)
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a debug report from the browser`
+      `🚀 Adtech has received an aggregatable debug report from the browser`
     )
+    console.log('DEBUG REPORT RECEIVED (aggregate):\n=== \n', req.body, '\n=== \n')
+
     res.sendStatus(200)
   }
 )
 
-const listener = app.listen(process.env.PORT || PORT, () => {
-  console.log(
-    '\x1b[1;31m%s\x1b[0m',
-    `🚀 Adtech server is listening on port ${listener.address().port}`
-  )
-})
+exports.adtech = functions.https.onRequest(adtech);
