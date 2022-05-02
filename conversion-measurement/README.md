@@ -8,7 +8,7 @@
 1. Make sure you have [node.js](https://nodejs.org/en/download/) and the latest Firebase CLI `npm install -g firebase-tools` installed.
 1. Install all dependencies in the functions folder `cd functions && npm install && cd ..`.
 1. Run the Firebase emulator with `firebase emulators:start` to startup all the sites. If you have no Firebase project setup you can add `--project none`.
-    * Make sure you see the following output and port mappings. If the port mappings differe please see the [#Troubleshooting](#troubleshooting) section.
+    * Make sure you see the following output and port mappings. If the port mappings differ please see the [#Troubleshooting](#troubleshooting) section.
 
     ```sh
     ...
