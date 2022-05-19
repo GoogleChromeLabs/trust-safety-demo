@@ -64,15 +64,4 @@ publisher.get('/view-element-img', (req, res) => {
   })
 })
 
-publisher.get('/view-js', (req, res) => {
-  const adScriptUrl = `${process.env.ADTECH_URL}/ad-script-view-js`
-  res.render('article', {
-    adScriptUrl,
-    demoHomeUrl,
-    publisherUrl,
-    advertiserUrl,
-    adtechUrl
-  })
-})
-
 exports.publisher = functions.https.onRequest(publisher);
