@@ -124,6 +124,10 @@ code {
   text-decoration: none;
 }
 
+.disabled {
+  opacity: 0.7;
+}
+
 .select {
   user-select: all;
   cursor: default;
