@@ -86,23 +86,9 @@ adtech.get('/ad-view-img', (req, res) => {
   })
 })
 
-adtech.get('/ad-view-js', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}`
-  res.render('ad-view-js', {
-    attributionsrc: `${adtechUrl}/register-source`
-  })
-})
-
 adtech.get('/ad-script-view-img', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad-view-img`
-  const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
-  res.send(`document.write("${iframe}");`)
-})
-
-adtech.get('/ad-script-view-js', (req, res) => {
-  res.set('Content-Type', 'text/javascript')
-  const adUrl = `${process.env.ADTECH_URL}/ad-view-js`
   const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
