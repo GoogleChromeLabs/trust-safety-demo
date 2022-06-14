@@ -19,6 +19,7 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const http = require('http')
+const structuredHeaders = require('structured-headers');
 
 const adtech = express()
 adtech.use(express.json())
@@ -107,6 +108,19 @@ adtech.get('/ad-script-click-js', (req, res) => {
   res.send(`document.write("${iframe}");`)
 })
 
+const useOldHeaders = req => {
+  const ua = req.get('Sec-CH-UA')
+
+  try {
+    return structuredHeaders.parseList(ua).some(item => {
+      return ['Google Chrome', 'Chromium'].includes(item.brand) &&
+        Number.parseFloat(item[1].get('v')) < 104
+    })
+  } catch {
+    return false
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                  Source registration (ad click or view)                    */
 /* -------------------------------------------------------------------------- */
@@ -117,31 +131,44 @@ adtech.get('/register-source', (req, res) => {
     // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
   const legacyMeasurementCookie = req.cookies['__session']
+
+  const cfg = {
+    source_event_id: `${sourceEventId}`,
+    destination: attributionDestination,
+    // Optional: expiry of 7 days (default is 30)
+    expiry: '604800',
+    // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+    // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
+    debug_key: legacyMeasurementCookie,
+    filter_data: {
+      conversion_product_type: ['category_1']
+    }
+  }
+
+  // Generates a "0x159" key piece (low order bits of the key) named "campaignCounts"
+  const aggregatableId = 'campaignCounts'
+
+  // Campaign 345 (out of 511)
+  // 345 to hex is 0x159
+  // User saw ad from campaign 345 (out of 511)
+  const aggregatableKeyPiece = '0x159'
+
+  if (useOldHeaders(req)) {
+    res.set(
+      'Attribution-Reporting-Register-Aggregatable-Source',
+      JSON.stringify([{
+        id: aggregatableId,
+        key_piece: aggregatableKeyPiece
+      }])
+    )
+  } else {
+    cfg.aggregation_keys = {}
+    cfg.aggregation_keys[aggregatableId] = aggregatableKeyPiece
+  }
+
   res.set(
     'Attribution-Reporting-Register-Source',
-    JSON.stringify({
-      source_event_id: `${sourceEventId}`,
-      destination: attributionDestination,
-      // Optional: expiry of 7 days (default is 30)
-      expiry: '604800',
-      // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-      // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
-      debug_key: legacyMeasurementCookie,
-      filter_data: {
-        conversion_product_type: ['category_1']
-      }
-    })
-  )
-  res.set(
-    'Attribution-Reporting-Register-Aggregatable-Source',
-    JSON.stringify([{
-      // Generates a "0x159" key piece (low order bits of the key) named
-      // "campaignCounts"
-      id: 'campaignCounts',
-      // Campaign 345 (out of 511)
-      // 345 to hex is 0x159
-      key_piece: '0x159' // User saw ad from campaign 345 (out of 511)
-    }])
+    JSON.stringify(cfg)
   )
   res.status(200).send('OK')
 })
@@ -193,59 +220,78 @@ adtech.get('/conversion', (req, res) => {
     // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
-  // Set filters
-  res.set(
-    'Attribution-Reporting-Filters',
-    JSON.stringify({
-      // Because conversion_product_type has been set to category_1 in the header Attribution-Reporting-Register-Source, any incoming conversion whose productCategory does not match category_1 will be filtered out i.e. will not generate a report.
-      conversion_product_type: [productCategory]
-    })
-  )
+  const filters = {
+    // Because conversion_product_type has been set to category_1 in the header Attribution-Reporting-Register-Source, any incoming conversion whose productCategory does not match category_1 will be filtered out i.e. will not generate a report.
+    conversion_product_type: [productCategory]
+  }
 
-  // Event-level report: instruct the browser to schedule-send a report
-  res.set(
-    'Attribution-Reporting-Register-Event-Trigger',
-    // ⚠️ Note the enclosing []!
-    JSON.stringify([{
-      trigger_data: `${triggerData}`,
-      // if priorities are on, specify the priority
-      ...(usePriorities && { priority: `${priority}` }),
-      // if deduplication is on, specify the deduplication key
-      ...(useDeduplication && { deduplication_key: deduplicationKey })
-    }])
-  )
+  const eventTriggerData = [{
+    trigger_data: `${triggerData}`,
+    // if priorities are on, specify the priority
+    ...(usePriorities && { priority: `${priority}` }),
+    // if deduplication is on, specify the deduplication key
+    ...(useDeduplication && { deduplication_key: deduplicationKey })
+  }]
 
-  // Aggregatable report: instruct the browser to schedule-send a report
-  res.set(
-    'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
-    JSON.stringify([
-      // Each dict independently adds pieces to multiple source keys.
-      {
-        // Conversion type purchase = 2 at a 9 bit offset, i.e. 2 << 9.
-        // A 9 bit offset is needed because there are 511 possible campaigns, which
-        // will take up 9 bits in the resulting key.
-        key_piece: '0x400',
-        // Apply this key piece to:
-        source_keys: ['campaignCounts']
-      }
-    ])
-  )
-  res.set(
-    'Attribution-Reporting-Register-Aggregatable-Values',
-    JSON.stringify({
-      campaignCounts: 32768
-    })
-  )
+  const aggregatableTriggerData = [
+    // Each dict independently adds pieces to multiple source keys.
+    {
+      // Conversion type purchase = 2 at a 9 bit offset, i.e. 2 << 9.
+      // A 9 bit offset is needed because there are 511 possible campaigns, which
+      // will take up 9 bits in the resulting key.
+      key_piece: '0x400',
+      // Apply this key piece to:
+      source_keys: ['campaignCounts']
+    }
+  ]
+
+  const aggregatableValues = {
+    campaignCounts: 32768
+  }
 
   // Debug report (common to event-level and aggregate)
   console.log("Conversion Cookies Set: ", req.cookies)
+  // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
+  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   const legacyMeasurementCookie = req.cookies['__session']
-    // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-    // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
-  res.set(
-    'Attribution-Reporting-Trigger-Debug-Key',
-    `${legacyMeasurementCookie}`
-  )
+
+  if (useOldHeaders(req)) {
+    // Set filters
+    res.set(
+      'Attribution-Reporting-Filters',
+      JSON.stringify(filters)
+    )
+
+    // Event-level report: instruct the browser to schedule-send a report
+    res.set(
+      'Attribution-Reporting-Register-Event-Trigger',
+      JSON.stringify(eventTriggerData)
+    )
+
+    // Aggregatable report: instruct the browser to schedule-send a report
+    res.set(
+      'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
+      JSON.stringify(aggregatableTriggerData)
+    )
+
+    res.set(
+      'Attribution-Reporting-Register-Aggregatable-Values',
+      JSON.stringify(aggregatableValues)
+    )
+
+    res.set(
+      'Attribution-Reporting-Trigger-Debug-Key',
+      `${legacyMeasurementCookie}`
+    )
+  } else {
+    res.set('Attribution-Reporting-Register-Trigger', JSON.stringify({
+      filters: filters,
+      event_trigger_data: eventTriggerData,
+      aggregatable_trigger_data: aggregatableTriggerData,
+      aggregatable_values: aggregatableValues,
+      debug_key: `${legacyMeasurementCookie}`
+    }))
+  }
 
   res.sendStatus(200)
 })
