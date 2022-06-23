@@ -22,10 +22,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.21.2",
     "pug": "^3.0.0",
     "request": "^2.88.2",
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.0"
+    "structured-headers": "^0.4.1"
   },
   "private": true
 }
