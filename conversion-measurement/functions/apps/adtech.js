@@ -22,6 +22,19 @@ const http = require('http')
 const structuredHeaders = require('structured-headers');
 
 const adtech = express()
+
+const useOldHeaders = req => {
+  const ua = req.get('Sec-CH-UA')
+  try {
+    return structuredHeaders.parseList(ua).some(item => {
+      return ['Google Chrome', 'Chromium'].includes(item[0]) &&
+        Number.parseFloat(item[1].get('v')) < 104
+    })
+  } catch {
+    return false
+  }
+}
+
 adtech.use(express.json())
 adtech.use(cookieParser())
 
@@ -107,19 +120,6 @@ adtech.get('/ad-script-click-js', (req, res) => {
   const iframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
-
-const useOldHeaders = req => {
-  const ua = req.get('Sec-CH-UA')
-
-  try {
-    return structuredHeaders.parseList(ua).some(item => {
-      return ['Google Chrome', 'Chromium'].includes(item.brand) &&
-        Number.parseFloat(item[1].get('v')) < 104
-    })
-  } catch {
-    return false
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 /*                  Source registration (ad click or view)                    */
@@ -251,6 +251,7 @@ adtech.get('/conversion', (req, res) => {
 
   // Debug report (common to event-level and aggregate)
   console.log("Conversion Cookies Set: ", req.cookies)
+
   // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
   // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   const legacyMeasurementCookie = req.cookies['__session']
