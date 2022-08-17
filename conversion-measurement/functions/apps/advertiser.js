@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const session = require('express-session')
@@ -201,4 +201,4 @@ advertiser.get('/t-shirt', (req, res) => {
   })
 })
 
-exports.advertiser = functions.https.onRequest(advertiser);
+exports.advertiser = functions.https.onRequest(advertiser)

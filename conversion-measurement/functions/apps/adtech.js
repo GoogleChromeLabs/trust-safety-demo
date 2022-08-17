@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
-const http = require('http')
-const structuredHeaders = require('structured-headers');
+const structuredHeaders = require('structured-headers')
 
 const adtech = express()
 
-const useOldHeaders = req => {
+const useOldHeaders = (req) => {
   const ua = req.get('Sec-CH-UA')
   try {
-    return structuredHeaders.parseList(ua).some(item => {
-      return ['Google Chrome', 'Chromium'].includes(item[0]) &&
+    return structuredHeaders.parseList(ua).some((item) => {
+      return (
+        ['Google Chrome', 'Chromium'].includes(item[0]) &&
         Number.parseFloat(item[1].get('v')) < 104
+      )
     })
   } catch {
     return false
@@ -50,8 +51,15 @@ adtech.get('/', (req, res) => {
 /*                               Debugging setup                              */
 /* -------------------------------------------------------------------------- */
 
-adtech.use(function(req, res, next) {
-  console.log('Time:', Date.now(), " ", req.originalUrl, " Cookies: ", req.cookies)
+adtech.use(function (req, res, next) {
+  console.log(
+    'Time:',
+    Date.now(),
+    ' ',
+    req.originalUrl,
+    ' Cookies: ',
+    req.cookies
+  )
 
   var headers = []
   const legacyMeasurementCookie = req.cookies['__session']
@@ -128,7 +136,7 @@ adtech.get('/ad-script-click-js', (req, res) => {
 adtech.get('/register-source', (req, res) => {
   // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
   const attributionDestination = process.env.ADVERTISER_URL
-    // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
   const legacyMeasurementCookie = req.cookies['__session']
 
@@ -156,20 +164,19 @@ adtech.get('/register-source', (req, res) => {
   if (useOldHeaders(req)) {
     res.set(
       'Attribution-Reporting-Register-Aggregatable-Source',
-      JSON.stringify([{
-        id: aggregatableId,
-        key_piece: aggregatableKeyPiece
-      }])
+      JSON.stringify([
+        {
+          id: aggregatableId,
+          key_piece: aggregatableKeyPiece
+        }
+      ])
     )
   } else {
     cfg.aggregation_keys = {}
     cfg.aggregation_keys[aggregatableId] = aggregatableKeyPiece
   }
 
-  res.set(
-    'Attribution-Reporting-Register-Source',
-    JSON.stringify(cfg)
-  )
+  res.set('Attribution-Reporting-Register-Source', JSON.stringify(cfg))
   res.status(200).send('OK')
 })
 
@@ -217,7 +224,7 @@ adtech.get('/conversion', (req, res) => {
 
   // Use the purchase ID as a deduplication key, since we only want to count purchases with the same ID once
   const deduplicationKey = req.query['purchase-id']
-    // Use deduplication only if it's on in the app settings and if a deduplication key is presents
+  // Use deduplication only if it's on in the app settings and if a deduplication key is presents
   const useDeduplication = !!(deduplicationKey && req.query['dedup'] === 'true')
 
   const filters = {
@@ -225,13 +232,15 @@ adtech.get('/conversion', (req, res) => {
     conversion_product_type: [productCategory]
   }
 
-  const eventTriggerData = [{
-    trigger_data: `${triggerData}`,
-    // if priorities are on, specify the priority
-    ...(usePriorities && { priority: `${priority}` }),
-    // if deduplication is on, specify the deduplication key
-    ...(useDeduplication && { deduplication_key: deduplicationKey })
-  }]
+  const eventTriggerData = [
+    {
+      trigger_data: `${triggerData}`,
+      // if priorities are on, specify the priority
+      ...(usePriorities && { priority: `${priority}` }),
+      // if deduplication is on, specify the deduplication key
+      ...(useDeduplication && { deduplication_key: deduplicationKey })
+    }
+  ]
 
   const aggregatableTriggerData = [
     // Each dict independently adds pieces to multiple source keys.
@@ -250,7 +259,7 @@ adtech.get('/conversion', (req, res) => {
   }
 
   // Debug report (common to event-level and aggregate)
-  console.log("Conversion Cookies Set: ", req.cookies)
+  console.log('Conversion Cookies Set: ', req.cookies)
 
   // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
   // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
@@ -258,10 +267,7 @@ adtech.get('/conversion', (req, res) => {
 
   if (useOldHeaders(req)) {
     // Set filters
-    res.set(
-      'Attribution-Reporting-Filters',
-      JSON.stringify(filters)
-    )
+    res.set('Attribution-Reporting-Filters', JSON.stringify(filters))
 
     // Event-level report: instruct the browser to schedule-send a report
     res.set(
@@ -285,13 +291,16 @@ adtech.get('/conversion', (req, res) => {
       `${legacyMeasurementCookie}`
     )
   } else {
-    res.set('Attribution-Reporting-Register-Trigger', JSON.stringify({
-      filters: filters,
-      event_trigger_data: eventTriggerData,
-      aggregatable_trigger_data: aggregatableTriggerData,
-      aggregatable_values: aggregatableValues,
-      debug_key: `${legacyMeasurementCookie}`
-    }))
+    res.set(
+      'Attribution-Reporting-Register-Trigger',
+      JSON.stringify({
+        filters: filters,
+        event_trigger_data: eventTriggerData,
+        aggregatable_trigger_data: aggregatableTriggerData,
+        aggregatable_values: aggregatableValues,
+        debug_key: `${legacyMeasurementCookie}`
+      })
+    )
   }
 
   res.sendStatus(200)
@@ -308,12 +317,16 @@ adtech.get('/reports', (req, res) => {
 // Event-level reports
 adtech.post(
   '/.well-known/attribution-reporting/report-event-attribution',
-  async(req, res) => {
+  async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received an event-level report from the browser`
     )
-    console.log('REGULAR REPORT RECEIVED (event-level):\n=== \n', req.body, '\n=== \n')
+    console.log(
+      'REGULAR REPORT RECEIVED (event-level):\n=== \n',
+      req.body,
+      '\n=== \n'
+    )
     res.sendStatus(200)
   }
 )
@@ -321,12 +334,16 @@ adtech.post(
 // Event-level Debug reports
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
-  async(req, res) => {
+  async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received an event-level debug report from the browser`
     )
-    console.log('DEBUG REPORT RECEIVED (event-level):\n=== \n', req.body, '\n=== \n')
+    console.log(
+      'DEBUG REPORT RECEIVED (event-level):\n=== \n',
+      req.body,
+      '\n=== \n'
+    )
     res.sendStatus(200)
   }
 )
@@ -334,12 +351,16 @@ adtech.post(
 // Aggregatable reports
 adtech.post(
   '/.well-known/attribution-reporting/report-aggregate-attribution',
-  async(req, res) => {
+  async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received an aggregatable report from the browser`
     )
-    console.log('REGULAR REPORT RECEIVED (aggregate):\n=== \n', req.body, '\n=== \n')
+    console.log(
+      'REGULAR REPORT RECEIVED (aggregate):\n=== \n',
+      req.body,
+      '\n=== \n'
+    )
 
     res.sendStatus(200)
   }
@@ -348,15 +369,19 @@ adtech.post(
 // Aggregatable Debug reports
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-aggregate-attribution',
-  async(req, res) => {
+  async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
       `🚀 Adtech has received an aggregatable debug report from the browser`
     )
-    console.log('DEBUG REPORT RECEIVED (aggregate):\n=== \n', req.body, '\n=== \n')
+    console.log(
+      'DEBUG REPORT RECEIVED (aggregate):\n=== \n',
+      req.body,
+      '\n=== \n'
+    )
 
     res.sendStatus(200)
   }
 )
 
-exports.adtech = functions.https.onRequest(adtech);
+exports.adtech = functions.https.onRequest(adtech)

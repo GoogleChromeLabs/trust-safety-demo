@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
@@ -64,4 +64,4 @@ publisher.get('/view-element-img', (req, res) => {
   })
 })
 
-exports.publisher = functions.https.onRequest(publisher);
+exports.publisher = functions.https.onRequest(publisher)
