@@ -18,6 +18,8 @@ const functions = require('firebase-functions')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
+const path = require('path')
+const { createHash } = require('node:crypto')
 const structuredHeaders = require('structured-headers')
 
 const adtech = express()
@@ -46,6 +48,35 @@ const adtechUrl = process.env.ADTECH_URL
 adtech.get('/', (req, res) => {
   res.render('index')
 })
+
+/* -------------------------------------------------------------------------- */
+/*                                     Logging                                */
+/* -------------------------------------------------------------------------- */
+
+function log(...args) {
+  console.log('\x1b[45m%s\x1b[0m', '[from adtech server] ', ...args)
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Key helper functions                          */
+/* -------------------------------------------------------------------------- */
+
+const SCALING_FACTOR_PURCHASE_COUNT = 32768
+const SCALING_FACTOR_PURCHASE_VALUE = 22
+
+function createHashAs64BitHex(input) {
+  return createHash('sha256').update(input).digest('hex').substring(0, 16)
+}
+
+function generateSourceKeyPiece(input) {
+  const hash = createHashAs64BitHex(input)
+  return `0x${hash}0000000000000000`
+}
+
+function generateTriggerKeyPiece(input) {
+  const hash = createHashAs64BitHex(input)
+  return `0x0000000000000000${hash}`
+}
 
 /* -------------------------------------------------------------------------- */
 /*                               Debugging setup                              */
@@ -102,10 +133,7 @@ adtech.get('/ad-click-js', (req, res) => {
 })
 
 adtech.get('/ad-view-img', (req, res) => {
-  const href = `${process.env.ADVERTISER_URL}`
-  res.render('ad-view-img', {
-    attributionsrc: `${adtechUrl}/register-source`
-  })
+  res.render('ad-view-img')
 })
 
 adtech.get('/ad-script-view-img', (req, res) => {
@@ -133,51 +161,71 @@ adtech.get('/ad-script-click-js', (req, res) => {
 /*                  Source registration (ad click or view)                    */
 /* -------------------------------------------------------------------------- */
 
-adtech.get('/register-source', (req, res) => {
-  // Send a response with the header Attribution-Reporting-Register-Source in order to ask the browser to register a source event
+adtech.get(['/register-source', '/shoes'], (req, res) => {
   const attributionDestination = process.env.ADVERTISER_URL
   // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
   const sourceEventId = Math.floor(Math.random() * 1000000000000000)
   const legacyMeasurementCookie = req.cookies['__session']
 
-  const cfg = {
+  const headerConfig = {
     source_event_id: `${sourceEventId}`,
     destination: attributionDestination,
     // Optional: expiry of 7 days (default is 30)
     expiry: '604800',
-    // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-    // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional source-time information that you deem useful for debugging or performance comparison.
+    // debug_key as legacyMeasurementCookie is a simple approach for demo purposes. In a real system, you may make debug_key a unique ID, and map it to additional source-time information that you deem useful for debugging or performance comparison.
     debug_key: legacyMeasurementCookie,
     filter_data: {
       conversion_product_type: ['category_1']
     }
+    // aggregation_keys: {
+    //   key_purchaseCount: generateSourceKeyPiece(
+    //     'COUNT, CampaignID=12, GeoID=7'
+    //   ),
+    //   key_purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
+    // }
   }
 
-  // Generates a "0x159" key piece (low order bits of the key) named "campaignCounts"
-  const aggregatableId = 'campaignCounts'
-
-  // Campaign 345 (out of 511)
-  // 345 to hex is 0x159
-  // User saw ad from campaign 345 (out of 511)
-  const aggregatableKeyPiece = '0x159'
+  const aggregatableId1 = 'key_purchaseCount'
+  const aggregatableId2 = 'key_purchaseValue'
+  const aggregatableKeyPiece1 = generateSourceKeyPiece(
+    'COUNT, CampaignID=12, GeoID=7'
+  )
+  const aggregatableKeyPiece2 = generateSourceKeyPiece(
+    'VALUE, CampaignID=12, GeoID=7'
+  )
 
   if (useOldHeaders(req)) {
     res.set(
       'Attribution-Reporting-Register-Aggregatable-Source',
       JSON.stringify([
         {
-          id: aggregatableId,
-          key_piece: aggregatableKeyPiece
+          id: aggregatableId1,
+          key_piece: aggregatableKeyPiece1
+        },
+        {
+          id: aggregatableId2,
+          key_piece: aggregatableKeyPiece2
         }
       ])
     )
   } else {
-    cfg.aggregation_keys = {}
-    cfg.aggregation_keys[aggregatableId] = aggregatableKeyPiece
+    headerConfig.aggregation_keys = {}
+    headerConfig.aggregation_keys[aggregatableId1] = aggregatableKeyPiece1
+    headerConfig.aggregation_keys[aggregatableId2] = aggregatableKeyPiece2
   }
 
-  res.set('Attribution-Reporting-Register-Source', JSON.stringify(cfg))
-  res.status(200).send('OK')
+  // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
+  res.set('Attribution-Reporting-Register-Source', JSON.stringify(headerConfig))
+  log('REGISTERING SOURCE \n', headerConfig)
+
+  if (req.originalUrl === '/shoes') {
+    // Send back the response
+    res.status(200).sendFile('blue-shoes.png', {
+      root: path.join(__dirname, '../../sites/adtech')
+    })
+  } else if (req.originalUrl === '/register-source') {
+    res.status(200).send('OK')
+  }
 })
 
 /* -------------------------------------------------------------------------- */
@@ -216,7 +264,9 @@ function getPriority(conversionType, usePriorities) {
 
 adtech.get('/conversion', (req, res) => {
   const conversionType = req.query['conversion-type']
+  const isConversionAPurchase = conversionType === CHECKOUT_COMPLETED
   const productCategory = req.query['product-category']
+  const purchaseValue = req.query['purchase-value']
   const triggerData = getTriggerData(conversionType)
 
   const usePriorities = req.query['prio-checkout'] === 'true'
@@ -245,17 +295,15 @@ adtech.get('/conversion', (req, res) => {
   const aggregatableTriggerData = [
     // Each dict independently adds pieces to multiple source keys.
     {
-      // Conversion type purchase = 2 at a 9 bit offset, i.e. 2 << 9.
-      // A 9 bit offset is needed because there are 511 possible campaigns, which
-      // will take up 9 bits in the resulting key.
-      key_piece: '0x400',
+      key_piece: generateTriggerKeyPiece(`ProductCategory=${productCategory}`),
       // Apply this key piece to:
-      source_keys: ['campaignCounts']
+      source_keys: ['key_purchaseCount', 'key_purchaseValue']
     }
   ]
 
   const aggregatableValues = {
-    campaignCounts: 32768
+    key_purchaseCount: 1 * SCALING_FACTOR_PURCHASE_COUNT,
+    key_purchaseValue: parseInt(purchaseValue) * SCALING_FACTOR_PURCHASE_VALUE
   }
 
   // Debug report (common to event-level and aggregate)
@@ -275,31 +323,38 @@ adtech.get('/conversion', (req, res) => {
       JSON.stringify(eventTriggerData)
     )
 
-    // Aggregatable report: instruct the browser to schedule-send a report
-    res.set(
-      'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
-      JSON.stringify(aggregatableTriggerData)
-    )
-
-    res.set(
-      'Attribution-Reporting-Register-Aggregatable-Values',
-      JSON.stringify(aggregatableValues)
-    )
-
     res.set(
       'Attribution-Reporting-Trigger-Debug-Key',
       `${legacyMeasurementCookie}`
     )
+
+    // Here we decided to only track purchases for aggregatable/summary reports.
+    // So we only set aggregatable keys and values if the conversion is a purchases.
+    if (isConversionAPurchase) {
+      // Aggregatable report: instruct the browser to schedule-send a report
+      res.set(
+        'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
+        JSON.stringify(aggregatableTriggerData)
+      )
+
+      res.set(
+        'Attribution-Reporting-Register-Aggregatable-Values',
+        JSON.stringify(aggregatableValues)
+      )
+    }
   } else {
+    const headerConfig = {
+      filters: filters,
+      event_trigger_data: eventTriggerData,
+      debug_key: `${legacyMeasurementCookie}`
+    }
+    if (isConversionAPurchase) {
+      headerConfig.aggregatable_trigger_data = aggregatableTriggerData
+      headerConfig.aggregatable_values = aggregatableValues
+    }
     res.set(
       'Attribution-Reporting-Register-Trigger',
-      JSON.stringify({
-        filters: filters,
-        event_trigger_data: eventTriggerData,
-        aggregatable_trigger_data: aggregatableTriggerData,
-        aggregatable_values: aggregatableValues,
-        debug_key: `${legacyMeasurementCookie}`
-      })
+      JSON.stringify(headerConfig)
     )
   }
 
