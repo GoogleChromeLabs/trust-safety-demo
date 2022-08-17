@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const functions = require('firebase-functions');
+const functions = require('firebase-functions')
 const express = require('express')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
@@ -31,11 +31,11 @@ home.get('/', (req, res) => {
   })
 })
 
-if (process.env.NODE_ENV == "development") {
+if (process.env.NODE_ENV == 'development') {
   const listener = app.listen(process.env.PORT || PORT, () => {
     console.log(
       '🏡 Demo home server is listening on port ' + listener.address().port
     )
   })
 }
-exports.home = functions.https.onRequest(home);
+exports.home = functions.https.onRequest(home)
