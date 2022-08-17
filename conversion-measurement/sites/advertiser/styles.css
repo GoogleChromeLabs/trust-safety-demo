@@ -20,7 +20,7 @@ body {
   margin: 0;
   --max-width: 50rem;
   --font-size-s: 0.9rem;
-  --font-size-xs: 0.8rem;
+  --font-size-xs: 0.7rem;
   --link-color: rgb(0, 38, 255);
   --link-color-dark: rgb(0 25 169);
   --link-color-x-light: rgb(0 38 255 / 24%);
@@ -85,7 +85,7 @@ article {
 
 code {
   font-family: 'Lucida Console', Monaco, monospace;
-  font-size: var(--font-size-s);
+  font-size: var(--font-size-xs);
   background-color: #0000000f;
   padding: 0.1rem;
 }
