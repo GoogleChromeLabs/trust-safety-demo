@@ -176,13 +176,13 @@ adtech.get(['/register-source', '/shoes'], (req, res) => {
     debug_key: legacyMeasurementCookie,
     filter_data: {
       conversion_product_type: ['category_1']
+    },
+    aggregation_keys: {
+      key_purchaseCount: generateSourceKeyPiece(
+        'COUNT, CampaignID=12, GeoID=7'
+      ),
+      key_purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
     }
-    // aggregation_keys: {
-    //   key_purchaseCount: generateSourceKeyPiece(
-    //     'COUNT, CampaignID=12, GeoID=7'
-    //   ),
-    //   key_purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
-    // }
   }
 
   const aggregatableId1 = 'key_purchaseCount'
@@ -193,26 +193,6 @@ adtech.get(['/register-source', '/shoes'], (req, res) => {
   const aggregatableKeyPiece2 = generateSourceKeyPiece(
     'VALUE, CampaignID=12, GeoID=7'
   )
-
-  if (useOldHeaders(req)) {
-    res.set(
-      'Attribution-Reporting-Register-Aggregatable-Source',
-      JSON.stringify([
-        {
-          id: aggregatableId1,
-          key_piece: aggregatableKeyPiece1
-        },
-        {
-          id: aggregatableId2,
-          key_piece: aggregatableKeyPiece2
-        }
-      ])
-    )
-  } else {
-    headerConfig.aggregation_keys = {}
-    headerConfig.aggregation_keys[aggregatableId1] = aggregatableKeyPiece1
-    headerConfig.aggregation_keys[aggregatableId2] = aggregatableKeyPiece2
-  }
 
   // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
   res.set('Attribution-Reporting-Register-Source', JSON.stringify(headerConfig))
@@ -310,53 +290,22 @@ adtech.get('/conversion', (req, res) => {
   console.log('Conversion Cookies Set: ', req.cookies)
 
   // Optional: set a debug key, and give it the value of the legacy measurement 3P cookie.
-  // This is a simple approach for demo purposes. In a real system, you would still make this key a unique ID, but you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
+  // This is a simple approach for demo purposes. In a real system, you would make this key a unique ID, and you may map it to additional trigger-time information that you deem useful for debugging or performance comparison.
   const legacyMeasurementCookie = req.cookies['__session']
 
-  if (useOldHeaders(req)) {
-    // Set filters
-    res.set('Attribution-Reporting-Filters', JSON.stringify(filters))
-
-    // Event-level report: instruct the browser to schedule-send a report
-    res.set(
-      'Attribution-Reporting-Register-Event-Trigger',
-      JSON.stringify(eventTriggerData)
-    )
-
-    res.set(
-      'Attribution-Reporting-Trigger-Debug-Key',
-      `${legacyMeasurementCookie}`
-    )
-
-    // Here we decided to only track purchases for aggregatable/summary reports.
-    // So we only set aggregatable keys and values if the conversion is a purchases.
-    if (isConversionAPurchase) {
-      // Aggregatable report: instruct the browser to schedule-send a report
-      res.set(
-        'Attribution-Reporting-Register-Aggregatable-Trigger-Data',
-        JSON.stringify(aggregatableTriggerData)
-      )
-
-      res.set(
-        'Attribution-Reporting-Register-Aggregatable-Values',
-        JSON.stringify(aggregatableValues)
-      )
-    }
-  } else {
-    const headerConfig = {
-      filters: filters,
-      event_trigger_data: eventTriggerData,
-      debug_key: `${legacyMeasurementCookie}`
-    }
-    if (isConversionAPurchase) {
-      headerConfig.aggregatable_trigger_data = aggregatableTriggerData
-      headerConfig.aggregatable_values = aggregatableValues
-    }
-    res.set(
-      'Attribution-Reporting-Register-Trigger',
-      JSON.stringify(headerConfig)
-    )
+  const headerConfig = {
+    filters: filters,
+    event_trigger_data: eventTriggerData,
+    debug_key: `${legacyMeasurementCookie}`
   }
+  if (isConversionAPurchase) {
+    headerConfig.aggregatable_trigger_data = aggregatableTriggerData
+    headerConfig.aggregatable_values = aggregatableValues
+  }
+  res.set(
+    'Attribution-Reporting-Register-Trigger',
+    JSON.stringify(headerConfig)
+  )
 
   res.sendStatus(200)
 })
