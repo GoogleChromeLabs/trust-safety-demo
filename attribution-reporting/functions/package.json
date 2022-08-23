@@ -15,7 +15,7 @@
     "type": "git"
   },
   "bugs": {},
-  "homepage": "https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#readme",
+  "homepage": "https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/attribution-reporting#readme",
   "license": "Apache 2.0",
   "dependencies": {
     "cookie-parser": "^1.4.6",
