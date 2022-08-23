@@ -23,11 +23,13 @@ home.set('view engine', 'pug')
 home.set('views', './views/home')
 
 home.get('/', (req, res) => {
-  const { ADTECH_URL, ADVERTISER_URL, PUBLISHER_URL } = process.env
+  const { ADTECH_URL, ADVERTISER_URL, PUBLISHER_URL, DEMO_HOME_URL } =
+    process.env
   res.render('index', {
     adtechUrl: ADTECH_URL,
     advertiserUrl: ADVERTISER_URL,
-    publisherUrl: PUBLISHER_URL
+    publisherUrl: PUBLISHER_URL,
+    demoHomeUrl: DEMO_HOME_URL
   })
 })
 

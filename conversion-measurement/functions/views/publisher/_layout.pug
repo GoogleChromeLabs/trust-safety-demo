@@ -4,18 +4,19 @@ html
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title 📰 Publisher
     link(rel='stylesheet' href='/styles.css')
+    link(rel='stylesheet' href=`${demoHomeUrl}/shared.styles-browser-setup.css`)
     link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css')
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js")
     style.
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
   body
-    div#notSupportedBanner(style="display:none") The Attribution Reporting API is not enabled on this page. This is probably due to your browser setup. Follow the 
-        a(href=demoHomeUrl) browser setup instructions
-        |.
+    div#notSupportedBanner(style="display:none") Make sure to follow the 
+        a(href=`${demoHomeUrl}#browser-setup`) browser setup instructions
+        | . 
     header
         div.main
             h1 📰 Publisher site 
-            div#menuWrapper
+            div
                 nav.menu
                     div 
                         div.ads-list-instructions 
@@ -53,4 +54,15 @@ html
                 a(href="https://goo.gle/sppi-devrel-eventlevel" target="_blank") Deployed demo
                 | ・
                 a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" target="_blank") Code
-    script(type="text/javascript" src="/script.js")
+    script(type="text/javascript" src=`${demoHomeUrl}/shared.browser-setup.js`)
+    script(type="text/javascript" src=`${demoHomeUrl}/shared.highlight-current-link.js`)
+    script.
+        document.onreadystatechange = function () {
+            if (document.querySelector('.loading')) {
+                if (document.readyState !== 'complete') {
+                document.querySelector('.loading').style.visibility = 'visible'
+                } else {
+                document.querySelector('.loading').style.display = 'none'
+                }
+            }
+        }
