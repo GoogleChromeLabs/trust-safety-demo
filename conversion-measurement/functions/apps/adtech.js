@@ -20,23 +20,8 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const path = require('path')
 const { createHash } = require('node:crypto')
-const structuredHeaders = require('structured-headers')
 
 const adtech = express()
-
-const useOldHeaders = (req) => {
-  const ua = req.get('Sec-CH-UA')
-  try {
-    return structuredHeaders.parseList(ua).some((item) => {
-      return (
-        ['Google Chrome', 'Chromium'].includes(item[0]) &&
-        Number.parseFloat(item[1].get('v')) < 104
-      )
-    })
-  } catch {
-    return false
-  }
-}
 
 adtech.use(express.json())
 adtech.use(cookieParser())
@@ -184,15 +169,6 @@ adtech.get(['/register-source', '/shoes'], (req, res) => {
       key_purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
     }
   }
-
-  const aggregatableId1 = 'key_purchaseCount'
-  const aggregatableId2 = 'key_purchaseValue'
-  const aggregatableKeyPiece1 = generateSourceKeyPiece(
-    'COUNT, CampaignID=12, GeoID=7'
-  )
-  const aggregatableKeyPiece2 = generateSourceKeyPiece(
-    'VALUE, CampaignID=12, GeoID=7'
-  )
 
   // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
   res.set('Attribution-Reporting-Register-Source', JSON.stringify(headerConfig))
