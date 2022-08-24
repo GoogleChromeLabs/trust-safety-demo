@@ -162,12 +162,8 @@ adtech.get(
         conversion_product_type: ['category_1']
       },
       aggregation_keys: {
-        key_purchaseCount: generateSourceKeyPiece(
-          'COUNT, CampaignID=12, GeoID=7'
-        ),
-        key_purchaseValue: generateSourceKeyPiece(
-          'VALUE, CampaignID=12, GeoID=7'
-        )
+        purchaseCount: generateSourceKeyPiece('COUNT, CampaignID=12, GeoID=7'),
+        purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
       }
     }
 
@@ -260,13 +256,13 @@ adtech.get('/conversion', (req, res) => {
     {
       key_piece: generateTriggerKeyPiece(`ProductCategory=${productCategory}`),
       // Apply this key piece to:
-      source_keys: ['key_purchaseCount', 'key_purchaseValue']
+      source_keys: ['purchaseCount', 'purchaseValue']
     }
   ]
 
   const aggregatableValues = {
-    key_purchaseCount: 1 * SCALING_FACTOR_PURCHASE_COUNT,
-    key_purchaseValue: parseInt(purchaseValue) * SCALING_FACTOR_PURCHASE_VALUE
+    purchaseCount: 1 * SCALING_FACTOR_PURCHASE_COUNT,
+    purchaseValue: parseInt(purchaseValue) * SCALING_FACTOR_PURCHASE_VALUE
   }
 
   // Debug report (common to event-level and aggregate)
