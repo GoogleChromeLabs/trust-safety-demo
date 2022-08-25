@@ -184,12 +184,6 @@ adtech.get(
     } else if (req.originalUrl === '/register-source-href') {
       res.redirect(advertiserUrl)
     }
-    // aggregation_keys: {
-    //   key_purchaseCount: generateSourceKeyPiece(
-    //     'COUNT, CampaignID=12, GeoID=7'
-    //   ),
-    //   key_purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
-    // }
   }
 )
 
