@@ -132,12 +132,12 @@ advertiser.get('/checkout', (req, res) => {
   if (!req.session.purchaseId) {
     req.session.purchaseId = Math.floor(Math.random() * 100000)
   }
-  const conversionType = 'checkout-completed'
   const { prio, dedup, purchaseId } = req.session
 
   const searchParams = new URLSearchParams({
-    'conversion-type': 'signup-newsletter',
+    'conversion-type': 'checkout-completed',
     'product-category': 'category_1',
+    'purchase-value': 200,
     'prio-checkout': prio,
     dedup: dedup,
     'purchase-id': purchaseId

@@ -106,6 +106,14 @@ code {
   display: flex;
 }
 
+.conversion-list-section-1 {
+  flex: 8;
+}
+
+.conversion-list-section-2 {
+  flex: 7;
+}
+
 .conversion-list > div > div {
   margin: 0.6rem 1rem 0.6rem 0;
 }

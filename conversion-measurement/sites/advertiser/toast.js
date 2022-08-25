@@ -16,7 +16,7 @@
 
 if (document.featurePolicy.allowsFeature('attribution-reporting')) {
   Toastify({
-    text: `💡 Demo tip: \n\n The conversion pixel makes a request to the adtech endpoint (attributionsrc). \n The adtech endpoint then instructs the browser to trigger an attribution. \n If the browser finds a source event that matches this trigger, it generates an attribution report. \n\n You can see the report in chrome://attribution-internals.\n`,
+    text: `💡 Demo tip: \n\n The conversion pixel makes a request to the adtech endpoint. \n The adtech endpoint then instructs the browser to trigger an attribution. \n If the browser finds a source event that matches this trigger, it generates an attribution report. \n\n You can see the report in chrome://attribution-internals.\n`,
     duration: -1, // infinity
     close: true,
     gravity: 'top',

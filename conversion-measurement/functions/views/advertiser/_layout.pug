@@ -22,38 +22,41 @@ html
                     div
                         strong Choose a way to convert:
                         div.conversion-list
-                            div
+                            div.conversion-list-section-1
                                 div 
-                                    a(href='/blue-shoes') Visit product page: shoes 
+                                    a(href='/blue-shoes') Visit product page: shoes* 
                                     div.trigger
                                         code trigger_data=3 (clicks)
                                         br
                                         code trigger_data=0 (views)
                                 div 
-                                    a(href='/add-to-cart') Add product to cart
+                                    a(href='/add-to-cart') Add product to cart*
                                     div.trigger
                                         code trigger_data=2 (clicks)
                                         br
                                         code trigger_data=0 (views)
                                 div 
-                                    a(href='/checkout' class='checkout') Complete checkout 💰
+                                    a(href='/checkout' class='checkout') Complete checkout**
                                     div.trigger
                                         code trigger_data=1 (clicks)
                                         br
                                         code trigger_data=1 (views)
-                            div
+                            div.conversion-list-section-2
                                 div 
-                                    a(href='/signup-newsletter') Sign up for special offers
+                                    a(href='/signup-newsletter') Sign up for special offers*
                                     div.trigger
                                         code trigger_data=4 (clicks)
                                         br
                                         code trigger_data=0 (views)
                                 div 
-                                    a(href='/t-shirt') Visit product page: T-Shirt 
+                                    a(href='/t-shirt') Visit product page: T-Shirt* 
                                     div.trigger
                                         code trigger_data=3 (clicks)
                                         br
                                         code trigger_data=0 (views)
+                                div 
+                                    div * = We've set up this conversion to generate event-level reports only.
+                                    div ** = We've set up this conversion to generate event-level reports AND aggregatable reports.
                     div 
                         a#settings(href='/settings') Demo Settings ⚙️ 
     div.main.mainContentWrapper
