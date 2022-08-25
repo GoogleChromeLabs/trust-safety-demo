@@ -15,7 +15,7 @@
  */
 
 const MIN_SUPPORTED_BROWSER_VERSION = 105
-const SUPPORTED_USER_AGENTS = ['Google Chrome']
+const SUPPORTED_USER_AGENTS = ['Google Chrome', 'Chromium']
 
 displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
@@ -41,10 +41,8 @@ function checkIsBrowserSupported() {
 }
 
 function checkIsFeatureAllowed() {
-  if (!document.featurePolicy) {
-    return false
-  }
-  return document.featurePolicy.allowsFeature('attribution-reporting')
+  // `!!` makes the return value a boolean (document.featurePolicy will be undefined in e.g. Firefox)
+  return !!document.featurePolicy?.allowsFeature('attribution-reporting')
 }
 
 function getBrowserSetupStatus() {
