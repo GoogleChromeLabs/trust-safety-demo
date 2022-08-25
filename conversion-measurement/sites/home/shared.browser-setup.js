@@ -16,7 +16,6 @@
 
 const MIN_SUPPORTED_BROWSER_VERSION = 105
 const SUPPORTED_USER_AGENTS = ['Google Chrome']
-// , 'Chromium'
 
 displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
