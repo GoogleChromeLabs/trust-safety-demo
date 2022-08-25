@@ -25,8 +25,7 @@
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.21.2",
     "pug": "^3.0.0",
-    "request": "^2.88.2",
-    "structured-headers": "^0.4.1"
+    "request": "^2.88.2"
   },
   "private": true
 }

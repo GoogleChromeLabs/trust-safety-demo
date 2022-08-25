@@ -22,6 +22,9 @@ displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
 
 function checkIsBrowserSupported() {
+  if (!navigator.userAgentData) {
+    return false
+  }
   const supportedAgentsByThisUser = navigator.userAgentData.brands.filter(
     (item) => SUPPORTED_USER_AGENTS.includes(item.brand)
   )
@@ -38,15 +41,20 @@ function checkIsBrowserSupported() {
   }
 }
 
+function checkIsFeatureAllowed() {
+  if (!document.featurePolicy) {
+    return false
+  }
+  return document.featurePolicy.allowsFeature('attribution-reporting')
+}
+
 function getBrowserSetupStatus() {
   const status = {
     isBrowserSetupCorrect: true,
     issues: []
   }
   const isBrowserVersionSupported = checkIsBrowserSupported()
-  const isFeatureAllowed = document.featurePolicy.allowsFeature(
-    'attribution-reporting'
-  )
+  const isFeatureAllowed = checkIsFeatureAllowed()
   if (!isBrowserVersionSupported || !isFeatureAllowed) {
     status.isBrowserSetupCorrect = false
   }
