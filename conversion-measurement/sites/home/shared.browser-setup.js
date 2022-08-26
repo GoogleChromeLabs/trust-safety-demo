@@ -23,17 +23,15 @@ displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
 
 function checkIsBrowserSupported() {
-  if (!navigator.userAgentData) {
-    return false
-  }
-  return navigator.userAgentData?.brands.some(({ brand, version }) => {
+  // `!!` makes the return value a boolean (document.featurePolicy will be undefined in e.g. Firefox)
+  return !!navigator.userAgentData?.brands.some(({ brand, version }) => {
     const minVersion = MIN_SUPPORTED_BRAND_VERSIONS[brand]
     return Number.parseFloat(version) >= minVersion
   })
 }
 
 function checkIsFeatureAllowed() {
-  // `!!` makes the return value a boolean (document.featurePolicy will be undefined in e.g. Firefox)
+  // `!!` makes the return value a boolean (document.featurePolicy?. will be undefined in e.g. Firefox)
   return !!document.featurePolicy?.allowsFeature('attribution-reporting')
 }
 
