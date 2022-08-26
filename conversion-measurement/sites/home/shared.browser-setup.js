@@ -23,7 +23,7 @@ displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
 
 function checkIsBrowserSupported() {
-  // `!!` makes the return value a boolean (document.featurePolicy will be undefined in e.g. Firefox)
+  // `!!` makes the return value a boolean (navigator.userAgentData?. will be undefined in e.g. Firefox)
   return !!navigator.userAgentData?.brands.some(({ brand, version }) => {
     const minVersion = MIN_SUPPORTED_BRAND_VERSIONS[brand]
     return Number.parseFloat(version) >= minVersion
