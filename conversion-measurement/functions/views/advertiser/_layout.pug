@@ -5,17 +5,19 @@ html
     title 👟 Advertiser
     link(rel='stylesheet' href='/styles.css')
     link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css')
+    link(rel='stylesheet' href=`${demoHomeUrl}/shared.styles-browser-setup.css`)
     script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js")
     style.
         @import url('https://fonts.googleapis.com/css2?family=Mohave:ital,wght@1,500&display=swap');
   body
-    div#notSupportedBanner(style="display:none") The Attribution Reporting API is not enabled on this page. This is probably due to your browser setup. Follow the 
-        a(href=demoHomeUrl) browser setup instructions
-        |.
+    div#setup-issues-banner(style="display:none") Make sure to follow the 
+        a(href=`${demoHomeUrl}#browser-setup`) browser setup instructions
+        | . 
+        div#setup-issues-list
     header
         div.main
             h1 👟 Advertiser site
-            div#menuWrapper
+            div
                 nav.menu
                     div 
                         a(href='/') Home
@@ -75,4 +77,6 @@ html
                 a(href="https://goo.gle/sppi-devrel-eventlevel" target="_blank") Deployed demo
                 | ・
                 a(href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" target="_blank") Code
-    script(type="text/javascript" src="/script.js")
+    script(type="text/javascript" src=`${demoHomeUrl}/shared.browser-setup.js`)
+    script(type="text/javascript" src=`${demoHomeUrl}/shared.highlight-current-link.js`)
+
