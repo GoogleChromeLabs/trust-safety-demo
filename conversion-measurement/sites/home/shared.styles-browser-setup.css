@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#notSupportedBanner {
+#setup-issues-banner {
   background: #d40000ef;
   color: rgba(255, 255, 255, 0.8);
   padding: 0.4rem;
@@ -23,6 +23,11 @@
   font-size: var(--font-size-s);
 }
 
-#notSupportedBanner a {
+#setup-issues-list {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+#setup-issues-banner a {
   color: rgba(255, 255, 255, 0.8) !important;
 }

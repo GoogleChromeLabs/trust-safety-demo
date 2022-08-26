@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-const MIN_SUPPORTED_BROWSER_VERSION = 105
-const SUPPORTED_USER_AGENTS = ['Google Chrome', 'Chromium']
+const MIN_SUPPORTED_BRAND_VERSIONS = {
+  'Google Chrome': 105,
+  Chromium: 105
+}
 
 displayBrowserVersionRequirements()
 displayWarningBannerIfSetupIncorrect()
@@ -24,20 +26,10 @@ function checkIsBrowserSupported() {
   if (!navigator.userAgentData) {
     return false
   }
-  const supportedAgentsByThisUser = navigator.userAgentData.brands.filter(
-    (item) => SUPPORTED_USER_AGENTS.includes(item.brand)
-  )
-  if (supportedAgentsByThisUser.length === 0) {
-    return false
-  } else {
-    const browserVersion = Number.parseFloat(
-      supportedAgentsByThisUser[0].version
-    )
-    if (browserVersion < MIN_SUPPORTED_BROWSER_VERSION) {
-      return false
-    }
-    return true
-  }
+  return navigator.userAgentData?.brands.some(({ brand, version }) => {
+    const minVersion = MIN_SUPPORTED_BRAND_VERSIONS[brand]
+    return Number.parseFloat(version) >= minVersion
+  })
 }
 
 function checkIsFeatureAllowed() {
@@ -57,9 +49,7 @@ function getBrowserSetupStatus() {
   }
   if (!isBrowserVersionSupported) {
     status.issues.push(
-      `Your browser is not supported by this demo. Use ${SUPPORTED_USER_AGENTS.join(
-        ' or '
-      )}, version ${MIN_SUPPORTED_BROWSER_VERSION} or newer.`
+      `Your browser is not supported by this demo. ${getBrowserRecommendationDisplayText()}.`
     )
   }
   if (!isFeatureAllowed) {
@@ -76,10 +66,16 @@ function displayBrowserVersionRequirements() {
     'browserVersionRequirementsEl'
   )
   if (browserVersionRequirementsEl) {
-    browserVersionRequirementsEl.innerText = `Use ${SUPPORTED_USER_AGENTS.join(
-      ' or '
-    )}, version ${MIN_SUPPORTED_BROWSER_VERSION} or newer.`
+    // Prints out e.g. 'Google Chrome version 105 (or newer), or Chromium version 105 (or newer)'
+    browserVersionRequirementsEl.innerText = `${getBrowserRecommendationDisplayText()}.`
   }
+}
+
+function getBrowserRecommendationDisplayText() {
+  // Prints out e.g. 'Google Chrome version 105 (or newer), or Chromium version 105 (or newer)'
+  return `Use ${Object.entries(MIN_SUPPORTED_BRAND_VERSIONS)
+    .map((entry) => `${entry[0]} version ${entry[1]} (or newer)`)
+    .join(', or ')}`
 }
 
 function displayWarningBannerIfSetupIncorrect() {
@@ -87,13 +83,14 @@ function displayWarningBannerIfSetupIncorrect() {
   const { isBrowserSetupCorrect, issues } = getBrowserSetupStatus()
 
   if (!isBrowserSetupCorrect) {
-    const banner = document.getElementById('notSupportedBanner')
+    const banner = document.getElementById('setup-issues-banner')
+    const list = document.getElementById('setup-issues-list')
+
     if (banner.style.display === 'none') {
       banner.style.display = 'block'
-      banner.innerHTML += `Your setup seems incorrect.<br>`
-      banner.innerHTML += `${issues.length} issue(s):`
-      banner.innerHTML += issues.map((e) => `<li>${e}</li>`).join('')
-      banner.innerHTML += '</ul>'
+      list.innerHTML = `Your setup seems incorrect.<br> ${
+        issues.length
+      } issue(s): <ul> ${issues.map((e) => `<li>${e}</li>`).join('')}</ul>`
     } else {
       banner.style.display = 'none'
     }
