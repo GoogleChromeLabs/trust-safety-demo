@@ -121,21 +121,24 @@ adtech.get('/ad-view-img', (req, res) => {
 adtech.get('/ad-script-view-img', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adUrl = `${process.env.ADTECH_URL}/ad-view-img`
-  const iframe = `<iframe src='${adUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  // allow='attribution-reporting' is no longer needed during the origin trial
+  const iframe = `<iframe src='${adUrl}' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
 adtech.get('/ad-script-click-element', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adClickUrl = `${process.env.ADTECH_URL}/ad-click`
-  const iframe = `<iframe src='${adClickUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  // allow='attribution-reporting' is no longer needed during the origin trial
+  const iframe = `<iframe src='${adClickUrl}' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
 adtech.get('/ad-script-click-js', (req, res) => {
   res.set('Content-Type', 'text/javascript')
   const adClickNoLinkUrl = `${process.env.ADTECH_URL}/ad-click-js`
-  const iframe = `<iframe src='${adClickNoLinkUrl}' allow='attribution-reporting' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
+  // allow='attribution-reporting' is no longer needed during the origin trial
+  const iframe = `<iframe src='${adClickNoLinkUrl}' width=190 height=190 scrolling=no frameborder=1 padding=0></iframe>`
   res.send(`document.write("${iframe}");`)
 })
 
