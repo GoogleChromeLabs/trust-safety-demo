@@ -164,7 +164,8 @@ adtech.get(
       aggregation_keys: {
         purchaseCount: generateSourceKeyPiece('COUNT, CampaignID=12, GeoID=7'),
         purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
-      }
+      },
+      debug_reporting: true
     }
 
     // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
@@ -275,7 +276,8 @@ adtech.get('/conversion', (req, res) => {
   const headerConfig = {
     filters: filters,
     event_trigger_data: eventTriggerData,
-    debug_key: `${legacyMeasurementCookie}`
+    debug_key: `${legacyMeasurementCookie}`,
+    debug_reporting: true
   }
   if (isConversionAPurchase) {
     headerConfig.aggregatable_trigger_data = aggregatableTriggerData
@@ -314,13 +316,13 @@ adtech.post(
   }
 )
 
-// Event-level Debug reports
+// Basic debug reports for event-level
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received an event-level debug report from the browser`
+      `🚀 Adtech has received a basic debug report for event-level from the browser`
     )
     console.log(
       'DEBUG REPORT RECEIVED (event-level):\n=== \n',
@@ -349,19 +351,33 @@ adtech.post(
   }
 )
 
-// Aggregatable Debug reports
+// Basic debug reports for aggregatable
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-aggregate-attribution',
   async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received an aggregatable debug report from the browser`
+      `🚀 Adtech has received a basic debug report for aggregatable from the browser`
     )
     console.log(
       'DEBUG REPORT RECEIVED (aggregate):\n=== \n',
       req.body,
       '\n=== \n'
     )
+
+    res.sendStatus(200)
+  }
+)
+
+// Verbose debug reports
+adtech.post(
+  '/.well-known/attribution-reporting/debug/verbose',
+  async (req, res) => {
+    console.log(
+      '\x1b[1;31m%s\x1b[0m',
+      `🚀 Adtech has received one or more verbose debug reports from the browser`
+    )
+    console.log('VERBOSE REPORT(S) RECEIVED:\n=== \n', req.body, '\n=== \n')
 
     res.sendStatus(200)
   }
