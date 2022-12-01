@@ -316,13 +316,13 @@ adtech.post(
   }
 )
 
-// Basic debug reports for event-level
+// Primary debug reports for event-level
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-event-attribution',
   async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a basic debug report for event-level from the browser`
+      `🚀 Adtech has received a primary debug report for event-level from the browser`
     )
     console.log(
       'DEBUG REPORT RECEIVED (event-level):\n=== \n',
@@ -351,13 +351,13 @@ adtech.post(
   }
 )
 
-// Basic debug reports for aggregatable
+// Primary debug reports for aggregatable
 adtech.post(
   '/.well-known/attribution-reporting/debug/report-aggregate-attribution',
   async (req, res) => {
     console.log(
       '\x1b[1;31m%s\x1b[0m',
-      `🚀 Adtech has received a basic debug report for aggregatable from the browser`
+      `🚀 Adtech has received a primary debug report for aggregatable from the browser`
     )
     console.log(
       'DEBUG REPORT RECEIVED (aggregate):\n=== \n',
