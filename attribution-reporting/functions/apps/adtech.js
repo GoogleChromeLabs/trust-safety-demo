@@ -19,7 +19,11 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const path = require('path')
+const { promisify } = require('util')
 const { createHash } = require('node:crypto')
+const childProcess = require('child_process')
+
+const exec = promisify(childProcess.exec)
 
 const adtech = express()
 
@@ -222,7 +226,7 @@ function getPriority(conversionType, usePriorities) {
   }
 }
 
-adtech.get('/conversion', (req, res) => {
+adtech.get('/conversion', async (req, res) => {
   const conversionType = req.query['conversion-type']
   const isConversionAPurchase = conversionType === CHECKOUT_COMPLETED
   const productCategory = req.query['product-category']
@@ -283,6 +287,23 @@ adtech.get('/conversion', (req, res) => {
     headerConfig.aggregatable_trigger_data = aggregatableTriggerData
     headerConfig.aggregatable_values = aggregatableValues
   }
+
+  const token = req.headers['sec-attribution-reporting-private-state-token']
+  if (token) {
+    const { stdout, stderr } = await exec(
+      `${path.resolve('../private_state_token_issuer/bin/main')} --issue ${token}`,
+      {
+        cwd: path.resolve('../private_state_token_issuer')
+      }
+    )
+    if (stdout) {
+      res.set('sec-attribution-reporting-private-state-token', stdout)
+      console.log('Trigger Attestation Header Set: ', stdout)
+    } else {
+      log(stderr)
+    }
+  }
+
   res.set(
     'Attribution-Reporting-Register-Trigger',
     JSON.stringify(headerConfig)
@@ -364,6 +385,37 @@ adtech.post(
       req.body,
       '\n=== \n'
     )
+
+    const token = req.headers['sec-attribution-reporting-private-state-token']
+    if (token) {
+      const { report_id, attribution_destination } = JSON.parse(
+        req.body.shared_info
+      )
+      const message = `${report_id}${attribution_destination}`
+      try {
+        const { stdout, stderr } = await exec(
+          `${path.resolve('../private_state_token_issuer/bin/main')} --redeem ${token} ${message}`,
+          {
+            cwd: path.resolve('../private_state_token_issuer')
+          }
+        )
+        if (stdout) {
+          console.log(
+            'DEBUG REPORT (aggregate) HAD A VALID ATTESTATION HEADER:\n=== \n',
+            stdout,
+            '\n=== \n'
+          )
+        } else {
+          throw stderr
+        }
+      } catch (e) {
+        console.log(
+          'DEBUG REPORT (aggregate) HAD AN  INVALID ATTESTATION HEADER:\n=== \n',
+          e,
+          '\n=== \n'
+        )
+      }
+    }
 
     res.sendStatus(200)
   }
