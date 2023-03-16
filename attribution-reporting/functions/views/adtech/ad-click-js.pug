@@ -11,7 +11,6 @@ div (JS method will be called on click)
   
 script.
   // \!{}\ is the syntax for this template engine (pug) to access server-defined variables in a script
-  const attributionsrc = !{JSON.stringify(attributionsrc)};
   const href = !{JSON.stringify(href)};
   
   const ad = document.getElementById("ad");
@@ -20,6 +19,7 @@ script.
     window.open(
     href,
     "_blank",
-    `attributionsrc=${attributionsrc}`);
+    // attributionsrc is required in this case
+    "attributionsrc");
   });
   

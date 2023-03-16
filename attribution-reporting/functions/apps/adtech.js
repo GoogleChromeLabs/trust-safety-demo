@@ -109,8 +109,7 @@ adtech.get('/ad-click', (req, res) => {
 adtech.get('/ad-click-js', (req, res) => {
   const href = `${process.env.ADVERTISER_URL}`
   res.render('ad-click-js', {
-    href,
-    attributionsrc: `${adtechUrl}/register-source-js`
+    href
   })
 })
 
@@ -143,50 +142,42 @@ adtech.get('/ad-script-click-js', (req, res) => {
 /*                  Source registration (ad click or view)                    */
 /* -------------------------------------------------------------------------- */
 
-adtech.get(
-  ['/register-source-js', '/register-source-image', '/register-source-href'],
-  (req, res) => {
-    const attributionDestination = process.env.ADVERTISER_URL
-    // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
-    const sourceEventId = Math.floor(Math.random() * 1000000000000000)
-    const legacyMeasurementCookie = req.cookies['__session']
+adtech.get(['/register-source-image', '/register-source-href'], (req, res) => {
+  const attributionDestination = process.env.ADVERTISER_URL
+  // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+  const sourceEventId = Math.floor(Math.random() * 1000000000000000)
+  const legacyMeasurementCookie = req.cookies['__session']
 
-    const headerConfig = {
-      source_event_id: `${sourceEventId}`,
-      destination: attributionDestination,
-      // Optional: expiry of 7 days (default is 30)
-      expiry: '604800',
-      // debug_key as legacyMeasurementCookie is a simple approach for demo purposes. In a real system, you may make debug_key a unique ID, and map it to additional source-time information that you deem useful for debugging or performance comparison.
-      debug_key: legacyMeasurementCookie,
-      filter_data: {
-        conversion_product_type: ['category_1']
-      },
-      aggregation_keys: {
-        purchaseCount: generateSourceKeyPiece('COUNT, CampaignID=12, GeoID=7'),
-        purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
-      },
-      debug_reporting: true
-    }
-
-    // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
-    res.set(
-      'Attribution-Reporting-Register-Source',
-      JSON.stringify(headerConfig)
-    )
-    log('REGISTERING SOURCE \n', headerConfig)
-
-    if (req.originalUrl === '/register-source-image') {
-      // Send back the response
-      res.status(200).sendFile('blue-shoes.png', {
-        root: path.join(__dirname, '../../sites/adtech')
-      })
-    } else if (req.originalUrl === '/register-source-js') {
-      res.status(200).send('OK')
-    } else if (req.originalUrl === '/register-source-href') {
-      res.redirect(advertiserUrl)
-    }
+  const headerConfig = {
+    source_event_id: `${sourceEventId}`,
+    destination: attributionDestination,
+    // Optional: expiry of 7 days (default is 30)
+    expiry: '604800',
+    // debug_key as legacyMeasurementCookie is a simple approach for demo purposes. In a real system, you may make debug_key a unique ID, and map it to additional source-time information that you deem useful for debugging or performance comparison.
+    debug_key: legacyMeasurementCookie,
+    filter_data: {
+      conversion_product_type: ['category_1']
+    },
+    aggregation_keys: {
+      purchaseCount: generateSourceKeyPiece('COUNT, CampaignID=12, GeoID=7'),
+      purchaseValue: generateSourceKeyPiece('VALUE, CampaignID=12, GeoID=7')
+    },
+    debug_reporting: true
   }
-)
+
+  // Send a response with the header Attribution-Reporting-Register-Source in order to instruct the browser to register a source event
+  res.set('Attribution-Reporting-Register-Source', JSON.stringify(headerConfig))
+  log('REGISTERING SOURCE \n', headerConfig)
+
+  if (req.originalUrl === '/register-source-image') {
+    // Send back the response
+    res.status(200).sendFile('blue-shoes.png', {
+      root: path.join(__dirname, '../../sites/adtech')
+    })
+  } else if (req.originalUrl === '/register-source-href') {
+    res.redirect(advertiserUrl)
+  }
+})
 
 /* -------------------------------------------------------------------------- */
 /*                     Attribution trigger (conversion)                       */
