@@ -176,7 +176,7 @@ adtech.get(
     res.status(200).sendFile('blue-shoes.png', {
       root: path.join(__dirname, '../../sites/adtech')
     })
-  } else if (req.originalUrl === '/register-source-href') {
+  } else if (['/register-source-href', '/register-source-js'].includes(req.originalUrl)) {
     res.redirect(advertiserUrl)
   }
 })
