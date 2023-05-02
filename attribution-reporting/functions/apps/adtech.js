@@ -145,6 +145,10 @@ adtech.get('/ad-script-click-js', (req, res) => {
 adtech.get(
   ['/register-source-image', '/register-source-href', '/register-source-js'],
   (req, res) => {
+    const attributionDestination = process.env.ADVERTISER_URL
+    // For demo purposes, sourceEventId is a random ID. In a real system, this ID would be tied to a unique serving-time identifier mapped to any information an adtech provider may need
+    const sourceEventId = Math.floor(Math.random() * 1000000000000000)
+    const legacyMeasurementCookie = req.cookies['__session']
 
   const headerConfig = {
     source_event_id: `${sourceEventId}`,
