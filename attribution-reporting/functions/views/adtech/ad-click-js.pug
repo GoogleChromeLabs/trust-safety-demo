@@ -10,14 +10,11 @@ div (JS method will be called on click)
   div(id="ad" style="cursor:pointer; color: blue; text-decoration:underline;") Click me
   
 script.
-  // \!{}\ is the syntax for this template engine (pug) to access server-defined variables in a script
-  const href = !{JSON.stringify(href)};
-  
   const ad = document.getElementById("ad");
   ad.addEventListener("click", () => {
     // Instruct the browser to initiate source registration
     window.open(
-    href,
+    "/register-source-js",
     "_blank",
     // attributionsrc is required for source registration
     "attributionsrc");
