@@ -1,5 +1,6 @@
 {
-  "hosting": [{
+  "hosting": [
+    {
       "site": "arapi-home",
       "public": "sites/home",
       "ignore": [
@@ -7,10 +8,12 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [{
-        "source": "**",
-        "function": "home"
-      }]
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "home"
+        }
+      ]
     },
     {
       "site": "arapi-adtech",
@@ -20,7 +23,8 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [{
+      "rewrites": [
+        {
           "source": "**",
           "function": "adtech"
         },
@@ -38,10 +42,12 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [{
-        "source": "**",
-        "function": "advertiser"
-      }]
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "advertiser"
+        }
+      ]
     },
     {
       "site": "arapi-publisher",
@@ -51,10 +57,12 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [{
-        "source": "**",
-        "function": "publisher"
-      }]
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "publisher"
+        }
+      ]
     }
   ],
   "emulators": {
@@ -65,5 +73,17 @@
       "host": "localhost",
       "port": "8080"
     }
-  }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
 }
