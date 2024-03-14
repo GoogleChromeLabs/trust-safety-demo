@@ -1,0 +1,12 @@
+{
+  "name": "Devtools - Protected Audience debugger extension demo",
+  "description": "Summarizes Protected Audience debugging events.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "minimum_chrome_version": "123.0.6274.0",
+  "devtools_page": "devtools.html",
+  "permissions": ["debugger"],
+  "background": {
+    "service_worker": "service-worker.js"
+  }
+}
