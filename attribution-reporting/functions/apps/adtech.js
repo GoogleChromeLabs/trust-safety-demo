@@ -171,12 +171,15 @@ adtech.get(
   res.set('Attribution-Reporting-Register-Source', JSON.stringify(headerConfig))
   log('REGISTERING SOURCE \n', headerConfig)
 
-  if (req.originalUrl === '/register-source-image') {
+  const urlParts = req.originalUrl.split('/')
+  const url = urlParts[urlParts.length - 1]
+
+  if (url === 'register-source-image') {
     // Send back the response
     res.status(200).sendFile('blue-shoes.png', {
       root: path.join(__dirname, '../../sites/adtech')
     })
-  } else if (['/register-source-href', '/register-source-js'].includes(req.originalUrl)) {
+  } else if (['register-source-href', 'register-source-js'].includes(url)) {
     res.redirect(advertiserUrl)
   }
 })

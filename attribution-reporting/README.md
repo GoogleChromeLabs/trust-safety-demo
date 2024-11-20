@@ -6,7 +6,7 @@
 
 ### Set up (one time only)
 1. If it's not yet installed on your machine, install [node.js](https://nodejs.org/en/download/). 
-2. Install the latest Firebase CLI by running the following in your terminal: `npm install -g firebase-tools`.
+2. Install the latest Firebase CLI by running the following in your terminal: `npm install -g firebase-tools`. The version known to work with this README.md is 13.3.0.
 3. In your terminal, run `git clone https://github.com/GoogleChromeLabs/trust-safety-demo.git && cd trust-safety-demo/attribution-reporting`. This command will create a folder, clone all of the `trust-safety` demo code in that folder, and navigate you to the `attribution-reporting` demo subfolder.
 4. In your terminal, run `cd functions && npm install && cd ..`. This command will install all the required dependencies for you to locally run the `attribution-reporting` demo.
 
